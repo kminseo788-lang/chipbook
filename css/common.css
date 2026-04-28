@@ -559,4 +559,7 @@ input, textarea { font-family: inherit; }
 @media (max-width: 768px) {
   .header__hamburger { display: flex; }
   .header__auth-btns { display: none; }
+  .header__inner { justify-content: space-between; }
+  .header__left { flex: 1; }
+  .header__right { gap: 16px; }
 }
