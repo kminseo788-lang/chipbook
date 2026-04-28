@@ -325,3 +325,9 @@
   .library-stats { flex-wrap: wrap; }
   .library-stat { min-width: 33%; }
 }
+
+@media (max-width: 1024px) {
+  .reading-books { grid-template-columns: repeat(3, 1fr); }
+  .author-books-grid { grid-template-columns: repeat(3, 180px); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
