@@ -297,3 +297,56 @@
   }
   .book-list-item__rating { margin-bottom: 0; }
 }
+
+/* ─── 반응형 ─── */
+
+/* 노트북 (1024px~) → 화면 꽉 차게 */
+@media (min-width: 1025px) {
+  .search-hero__inner,
+  .search-results .inner {
+    max-width: 100%;
+    padding: 0 40px;
+  }
+  .books-grid { grid-template-columns: repeat(5, 1fr); gap: 24px; }
+}
+
+/* 태블릿 (769px~1024px) → 양쪽 여백 24px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .search-hero__inner,
+  .search-results .inner {
+    max-width: 100%;
+    padding: 0 24px;
+  }
+  .books-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .search-hero__visual { font-size: 60px; }
+}
+
+/* 모바일 (768px 이하) → 카드 2열, 좌우 여백 16px */
+@media (max-width: 768px) {
+  .search-hero { padding: 28px 0 24px; }
+  .search-hero__inner { flex-direction: column; gap: 0; }
+  .search-hero__visual { display: none; }
+  .search-hero__title { font-size: 20px; }
+  .search-hero__desc { font-size: 13px; margin-bottom: 14px; }
+  .search-bar__input { font-size: 14px; }
+  .search-bar__btn { padding: 0 16px; font-size: 14px; }
+  .all-tags { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .results-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .view-toggle { display: none; }
+
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .book-card { width: 100%; }
+  .book-card__cover { width: 100%; height: 220px; }
+
+  .book-list-item { flex-wrap: wrap; }
+  .book-list-item__right {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .book-list-item__rating { margin-bottom: 0; }
+}
