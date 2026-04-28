@@ -251,3 +251,36 @@
 }
 .page-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
 .page-btn:hover:not(.active) { border-color: var(--color-primary); color: var(--color-primary); }
+
+
+/* ─── 반응형 ─── */
+
+/* 태블릿 (1024px 이하) */
+@media (max-width: 1024px) {
+  .books-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .search-hero { padding: 40px 0 32px; }
+  .search-hero__visual { font-size: 60px; }
+}
+
+/* 모바일 (768px 이하) */
+@media (max-width: 768px) {
+  .search-hero { padding: 28px 0 24px; }
+  .search-hero__inner { flex-direction: column; gap: 0; }
+  .search-hero__visual { display: none; }
+  .search-hero__title { font-size: 20px; }
+  .search-hero__desc { font-size: 13px; margin-bottom: 14px; }
+
+  .search-bar__input { font-size: 14px; }
+  .search-bar__btn { padding: 0 16px; font-size: 14px; }
+
+  .all-tags { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  .results-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .view-toggle { display: none; }
+
+  .books-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  .book-list-item { flex-wrap: wrap; }
+  .book-list-item__right { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+  .book-list-item__rating { margin-bottom: 0; }
+}
