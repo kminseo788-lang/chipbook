@@ -493,3 +493,22 @@ input, textarea { font-family: inherit; }
 .gap-8 { gap: 8px; }
 .gap-16 { gap: 16px; }
 .gap-24 { gap: 24px; }
+
+
+/* ─── 반응형 ─── */
+@media (max-width: 1024px) {
+  .inner { padding: 0 24px; }
+  .header__inner { padding: 0 24px; gap: 24px; }
+  .header__nav { gap: 20px; }
+}
+
+@media (max-width: 768px) {
+  :root { --header-height: 56px; }
+  .inner { padding: 0 16px; }
+  .header__inner { padding: 0 16px; gap: 12px; }
+  .header__nav { display: none; }
+  .header__slogan { display: none; }
+  .btn { height: 44px; font-size: 14px; }
+  .btn--lg { height: 50px; font-size: 15px; }
+  .section-header__title { font-size: 18px; }
+}
