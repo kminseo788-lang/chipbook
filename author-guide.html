@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>작가 등록 안내 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    body { background: #FAF8F5; }
+    .guide-hero { background: #FAF8F5; padding: 64px 0; border-bottom: 1px solid var(--color-border); }
+    .guide-hero__inner { display: flex; gap: 60px; align-items: center; }
+    .guide-hero__text { flex: 1; }
+    .guide-hero__text h1 { font-size: 36px; font-weight: 700; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.5px; }
+    .guide-hero__text p { font-size: 15px; color: var(--color-text-sub); line-height: 1.8; margin-bottom: 24px; }
+    .guide-hero__checks { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+    .guide-check { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .guide-check::before { content: '✓'; color: var(--color-primary); font-weight: 700; }
+    .guide-hero__image { flex-shrink: 0; width: 420px; height: 360px; background: #E8E4DC; border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; font-size: 80px; }
+
+    .section { padding: 64px 0; }
+    .section--white { background: #fff; }
+    .section--cream { background: #FAF8F5; }
+
+    .guide-features-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+    .guide-feature { text-align: center; padding: 20px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: #fff; }
+    .guide-feature__icon { font-size: 32px; margin-bottom: 12px; }
+    .guide-feature__title { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .guide-feature__desc { font-size: 12px; color: var(--color-text-sub); line-height: 1.5; }
+    .guide-feature__note { font-size: 11px; color: var(--color-text-light); margin-top: 4px; }
+
+    .promo-comparison { display: flex; align-items: center; gap: 32px; }
+    .promo-old { flex: 1; padding: 20px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: #fff; }
+    .promo-new { flex: 1; padding: 20px; border: 2px solid var(--color-primary); border-radius: var(--radius-lg); background: var(--color-primary-bg); }
+    .promo-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .promo-item { font-size: 13px; color: var(--color-text-sub); padding: 4px 0; display: flex; align-items: center; gap: 6px; }
+    .promo-x { color: #e53935; }
+    .promo-check { color: var(--color-primary); }
+    .promo-arrow { font-size: 24px; color: var(--color-text-sub); flex-shrink: 0; }
+
+    .notice-box { background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 24px; display: flex; gap: 16px; }
+    .notice-box__icon { font-size: 20px; flex-shrink: 0; }
+    .notice-box__text p { font-size: 13px; color: var(--color-text-sub); line-height: 1.7; margin-bottom: 6px; }
+    .notice-box__text p:first-child { font-size: 14px; font-weight: 600; color: var(--color-text); }
+
+    .final-cta { text-align: center; padding: 72px 0; }
+    .final-cta p { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .final-cta .sub { font-size: 15px; color: var(--color-text-sub); font-weight: 400; margin-bottom: 28px; }
+  </style>
+</head>
+<body>
+  <header style="padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #FAF8F5; z-index: 100; border-bottom: 1px solid var(--color-border);">
+    <a href="index.html" style="font-size: 20px; font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 8px;">📚 chipbook</a>
+    <a href="#" style="font-size: 14px; color: var(--color-text-sub)">작가 등록 과정 살펴보기 ›</a>
+  </header>
+
+  <main>
+    <section class="guide-hero">
+      <div class="inner guide-hero__inner">
+        <div class="guide-hero__text">
+          <p style="font-size:14px;color:var(--color-text-sub);margin-bottom:8px">2단계. 작가 등록 안내</p>
+          <h1>당신의 경험을 전달하는 방법은<br>생각보다 단순합니다.</h1>
+          <p>복잡한 글쓰기 기술이 아니라<br>당신이 겪은 경험을 정리하는 것부터 시작합니다.</p>
+          <div class="guide-hero__checks">
+            <p class="guide-check">필요한 요소만 담아 집중해서 작성</p>
+            <p class="guide-check">자동 저장으로 언제든 이어서 작성</p>
+            <p class="guide-check">미리보기로 완성도를 확인</p>
+          </div>
+          <a href="author-payment.html" class="btn btn--primary btn--lg">작가 등록 시작하기 ›</a>
+        </div>
+        <div class="guide-hero__image">✏️</div>
+      </div>
+    </section>
+
+    <!-- 지원 기능 -->
+    <section class="section section--white">
+      <div class="inner">
+        <h2 style="text-align:center;font-size:24px;font-weight:700;margin-bottom:40px">혼자 시작해도 괜찮습니다<br><span style="font-size:16px;color:var(--color-text-sub);font-weight:400">chipbook은 작가님의 글쓰기를 함께 도와드립니다.</span></h2>
+        <div class="guide-features-grid">
+          <div class="guide-feature">
+            <div class="guide-feature__icon">▶️</div>
+            <p class="guide-feature__title">글쓰기 가이드 영상 제공</p>
+            <p class="guide-feature__desc">실제 작성 과정을 담은 영상으로 차근차근 따라할 수 있습니다.</p>
+          </div>
+          <div class="guide-feature">
+            <div class="guide-feature__icon">📚</div>
+            <p class="guide-feature__title">예시 도서 제공</p>
+            <p class="guide-feature__desc">인기 도서의 구성을 참고해 아이디어와 흐름을 잡을 수 있습니다.</p>
+          </div>
+          <div class="guide-feature">
+            <div class="guide-feature__icon">🛡</div>
+            <p class="guide-feature__title">기본 보호 장치 지원</p>
+            <p class="guide-feature__desc">저작권 관련 안내와 면책 문구 템플릿을 제공합니다.</p>
+            <p class="guide-feature__note">※ 법적 자문이 아닙니다.</p>
+          </div>
+          <div class="guide-feature">
+            <div class="guide-feature__icon">✅</div>
+            <p class="guide-feature__title">검수 시스템</p>
+            <p class="guide-feature__desc">전문가의 검수를 통해 콘텐츠 품질을 높여갑니다.</p>
+          </div>
+          <div class="guide-feature">
+            <div class="guide-feature__icon">🎓</div>
+            <p class="guide-feature__title">지속적인 성장 지원</p>
+            <p class="guide-feature__desc">작가님을 위한 업데이트와 추가 가이드를 계속 제공합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 홍보 비교 -->
+    <section class="section section--cream">
+      <div class="inner">
+        <div style="display:flex;gap:60px;align-items:center">
+          <div style="flex:1">
+            <h2 style="font-size:24px;font-weight:700;margin-bottom:8px">홍보도 더 단순해집니다</h2>
+            <p style="font-size:18px;font-weight:700;margin-bottom:24px">여러 링크를 관리할 필요 없이<br>내 글이 담긴 링크 하나면 충분합니다.</p>
+            <div class="promo-comparison">
+              <div class="promo-old">
+                <p class="promo-title" style="color:var(--color-text-sub)">기존 방식</p>
+                <p class="promo-item"><span class="promo-x">✗</span> 여러 링크를 계속 관리해야 함</p>
+                <p class="promo-item"><span class="promo-x">✗</span> 수익은 나지만, 내 것이 남지 않음</p>
+                <p class="promo-item"><span class="promo-x">✗</span> 시간을 써도 쌓이는 자산이 없음</p>
+              </div>
+              <div class="promo-arrow">→</div>
+              <div class="promo-new">
+                <p class="promo-title" style="color:var(--color-primary)">chipbook 방식</p>
+                <p class="promo-item"><span class="promo-check">✓</span> 내가 만든 콘텐츠, 내가 가진 링크</p>
+                <p class="promo-item"><span class="promo-check">✓</span> 홍보할수록 내 콘텐츠가 쌓임</p>
+                <p class="promo-item"><span class="promo-check">✓</span> 어디에 공유해도 나의 자산이 됨</p>
+              </div>
+            </div>
+          </div>
+          <div style="flex-shrink:0;font-size:80px;opacity:.5">📱</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 안내 -->
+    <div class="inner" style="padding: 32px 0">
+      <div class="notice-box">
+        <div class="notice-box__icon">ℹ️</div>
+        <div class="notice-box__text">
+          <p>안내사항</p>
+          <p>· 콘텐츠의 책임은 작성자에게 있으며, 플랫폼은 작성 과정을 돕기 위한 기본 가이드를 제공합니다.</p>
+          <p>· 보다 자세한 내용은 다음 단계에서 확인하실 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 최종 CTA -->
+    <section class="final-cta section--cream">
+      <div class="inner">
+        <p style="font-size:16px;color:var(--color-text-sub);margin-bottom:8px">완벽하게 준비된 후 시작할 필요는 없습니다.</p>
+        <p>지금 가진 경험으로도 충분합니다.</p>
+        <p class="sub"></p>
+        <a href="author-payment.html" class="btn btn--primary" style="height:56px;padding:0 48px;font-size:17px;border-radius:40px">작가 등록 시작하기 ›</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+  
+  
+<script type="module">
+import { renderHeader, renderFooter } from "./js/common.js"
+document.addEventListener("DOMContentLoaded", async () => {
+  await renderHeader()
+  renderFooter()
+})
+</script>
+</body>
+</html>

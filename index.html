@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chipbook — 짧고 바로 써먹을 수 있는 도서</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+  <!-- 헤더 -->
+  <header id="header"></header>
+
+  <main>
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+      <div class="inner hero__inner">
+        <div class="hero__content">
+          <p class="hero__label">지금 당신의 문제를 해결해줄</p>
+          <h1 class="hero__title">짧고 바로 써먹을 수<br>있는 도서를 찾아보세요</h1>
+          <p class="hero__desc">모르면 계속 시간과 돈을 낭비하게 됩니다.<br>핵심만 담은 실용서로, 낭비를 줄이는 근본적인 방법을 알려드립니다.</p>
+          <div class="hero__search">
+            <input type="text" class="hero__input" id="heroSearchInput" placeholder="예) 돈이 모이지 않는 이유, 시간관리 방법, 육아 스트레스">
+            <button class="hero__search-btn" id="heroSearchBtn">검색하기</button>
+          </div>
+          <div class="hero__tags">
+            <span class="hero__tags-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              태그를 여러 개 선택하면 더 디테일하게 검색할 수 있어요.
+            </span>
+            <div class="hero__tag-list" id="heroTagList"></div>
+          </div>
+        </div>
+        <div class="hero__visual">
+          <div class="hero__badge">10분이면<br>한 가지를<br>바꿀 수 있어요</div>
+          <div class="hero__image-placeholder">
+            <div class="hero__books-visual">
+              <div class="book-stack">
+                <div class="book-item" style="background:#1B5E3A;color:#fff">chipbook</div>
+                <div class="book-item" style="background:#E8F5E9;color:#1B5E3A">시간관리</div>
+                <div class="book-item" style="background:#FFF8E1;color:#F57F17">습관</div>
+              </div>
+              <div class="coffee-mug">☕</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 무료도서 섹션 -->
+    <section class="section section--white">
+      <div class="inner">
+        <div class="section-header">
+          <div class="section-header__left">
+            <h2 class="section-header__title">무료도서</h2>
+            <span class="section-header__sub">부담 없이 먼저 읽어보세요</span>
+          </div>
+          <a href="search.html?type=free" class="section-header__more">더보기 →</a>
+        </div>
+        <div class="book-list" id="freeBookList"></div>
+      </div>
+    </section>
+
+    <!-- 추천도서 섹션 -->
+    <section class="section section--gray">
+      <div class="inner">
+        <div class="section-header">
+          <div class="section-header__left">
+            <h2 class="section-header__title">추천도서</h2>
+            <span class="section-header__sub">지금 앞이 읽는 도서를 추천해요</span>
+          </div>
+          <div class="section-header__right">
+            <span class="recommend-notice">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              매 1시간마다 새로운 추천도서를 만나보세요
+            </span>
+            <a href="search.html?type=recommended" class="section-header__more">더보기 →</a>
+          </div>
+        </div>
+        <!-- 슬라이더 -->
+        <div class="slider-wrap">
+          <button class="slider-btn slider-btn--prev" id="sliderPrev">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="slider-viewport">
+            <div class="book-list slider-track" id="recommendBookList"></div>
+          </div>
+          <button class="slider-btn slider-btn--next" id="sliderNext">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="slider-dots" id="sliderDots"></div>
+      </div>
+    </section>
+
+    <!-- 작가도전 CTA 섹션 -->
+    <section class="section section--white">
+      <div class="inner">
+        <div class="author-cta">
+          <div class="author-cta__content">
+            <p class="author-cta__label">작가도전</p>
+            <h2 class="author-cta__title">당신의 경험이 누군가에게<br>작은 변화를 만들 수 있어요</h2>
+            <p class="author-cta__desc">누구나 작가가 될 수 있습니다.<br>지금 당신의 이야기를 책으로 만들어보세요.</p>
+            <a href="author-landing.html" class="btn btn--primary">작가 신청하기 →</a>
+          </div>
+          <div class="author-cta__visual">
+            <div class="author-cta__note">
+              <p class="author-cta__handwriting">당신의 경험,<br>누군가의 변화를<br>만듭니다.</p>
+            </div>
+            <div class="author-cta__book">
+              <div class="mini-book">chipbook</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 서비스 특징 섹션 -->
+    <section class="section section--features">
+      <div class="inner">
+        <div class="features-list">
+          <div class="feature-item">
+            <div class="feature-item__icon">📖</div>
+            <div class="feature-item__text">
+              <p class="feature-item__title">짧고 실용적인 콘텐츠</p>
+              <p class="feature-item__desc">10~30분이면 완독</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-item__icon">🎁</div>
+            <div class="feature-item__text">
+              <p class="feature-item__title">생활에 바로 적용</p>
+              <p class="feature-item__desc">실천 중심 노하우</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-item__icon">💚</div>
+            <div class="feature-item__text">
+              <p class="feature-item__title">작은 변화의 시작</p>
+              <p class="feature-item__desc">습관이 삶을 바꿉니다</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-item__icon">🛡</div>
+            <div class="feature-item__text">
+              <p class="feature-item__title">검증된 프리미엄 도서</p>
+              <p class="feature-item__desc">전문가와 작가의 인사이트</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer id="footer"></footer>
+
+  
+  
+  <script type="module" src="js/index.js"></script>
+</body>
+</html>

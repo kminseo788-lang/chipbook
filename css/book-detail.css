@@ -1,0 +1,159 @@
+/* chipbook book-detail.css */
+
+.book-detail-top {
+  display: flex;
+  gap: 60px;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 32px;
+}
+
+.book-detail-cover {
+  flex-shrink: 0;
+  width: 280px;
+  height: 380px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 24px;
+  box-shadow: -8px 6px 0 rgba(0,0,0,.12);
+}
+
+.book-detail-cover__title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 8px;
+  text-align: right;
+}
+
+.book-detail-cover__author {
+  font-size: 13px;
+  opacity: .8;
+  text-align: right;
+}
+
+.book-detail-info { flex: 1; }
+
+.book-detail-cats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.book-detail-cat {
+  padding: 4px 12px;
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.book-detail-title {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.book-detail-subtitle {
+  font-size: 16px;
+  color: var(--color-text-sub);
+  margin-bottom: 16px;
+}
+
+.book-detail-desc {
+  font-size: 15px;
+  color: var(--color-text);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.book-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--color-text-sub);
+}
+.book-detail-meta span { display: flex; align-items: center; gap: 6px; }
+.book-detail-meta__sep { color: var(--color-border); }
+
+.book-detail-price {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-text);
+}
+
+.book-detail-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.book-detail-format {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--color-text-sub);
+}
+.book-detail-format span { display: flex; align-items: center; gap: 6px; }
+
+/* 목차 */
+.book-detail-toc { margin-bottom: 32px; }
+.book-detail-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.toc-part {
+  padding: 20px;
+  border-right: 1px solid var(--color-border);
+}
+.toc-part:last-child { border-right: none; }
+.toc-part__num { font-size: 12px; color: var(--color-text-sub); font-weight: 600; margin-bottom: 6px; }
+.toc-part__title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.toc-part__chapters { list-style: disc; padding-left: 16px; }
+.toc-part__chapter { font-size: 13px; color: var(--color-text-sub); line-height: 1.8; }
+
+/* 작가 */
+.book-detail-author { margin-bottom: 32px; }
+.author-profile { display: flex; gap: 24px; }
+.author-profile__photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-primary-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+.author-profile__info { flex: 1; }
+.author-profile__name { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.author-profile__bio { font-size: 14px; color: var(--color-text-sub); line-height: 1.7; margin-bottom: 12px; }
+.author-profile__stats { display: flex; gap: 16px; }
+.author-profile__stat { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-sub); }
+
+/* 더 보기 슬라이더 */
+.book-detail-more { margin-bottom: 48px; }
+.book-slider-wrap { display: flex; align-items: center; gap: 16px; }
+.book-slider-viewport { overflow: hidden; flex: 1; }
+.book-slider-viewport .book-list { transition: transform .35s ease; }

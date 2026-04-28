@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>찜한 도서 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/search.css">
+  <style>
+    .wishlist-hero { padding: 40px 0 0; }
+    .wishlist-hero__title { font-size: 24px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .wishlist-hero__desc { font-size: 14px; color: var(--color-text-sub); margin-bottom: 24px; }
+    .wishlist-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--color-border); margin-bottom: 32px; }
+    .wishlist-tab { padding: 10px 20px; font-size: 14px; font-weight: 500; color: var(--color-text-sub); border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; font-family: var(--font-main); transition: all .2s; }
+    .wishlist-tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header id="header"></header>
+  <main class="page-wrapper">
+    <div class="inner">
+      <div class="wishlist-hero">
+        <h1 class="wishlist-hero__title">♡ 찜한 도서</h1>
+        <p class="wishlist-hero__desc">관심 있는 도서를 찜해두고 나중에 확인해보세요.</p>
+        <div class="wishlist-tabs">
+          <button class="wishlist-tab active" onclick="filterWishlist('all')">전체 (<span id="countAll">0</span>)</button>
+          <button class="wishlist-tab" onclick="filterWishlist('paid')">전자책 (<span id="countPaid">0</span>)</button>
+          <button class="wishlist-tab" onclick="filterWishlist('free')">무료 (<span id="countFree">0</span>)</button>
+        </div>
+        <div class="results-header">
+          <span></span>
+          <div class="results-controls">
+            <select class="results-sort"><option>최신순</option><option>가격순</option></select>
+            <div class="view-toggle">
+              <button class="view-btn" id="wGridBtn" onclick="setWView('grid')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              </button>
+              <button class="view-btn active" id="wListBtn" onclick="setWView('list')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="wishlistContainer"></div>
+      <div style="text-align:center;margin-top:32px">
+        <button class="btn btn--outline-gray" onclick="loadMore()">더 많은 도서 보기 ∨</button>
+      </div>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+  
+  
+  <script>
+    let wView = 'list';
+    let wFilter = 'all';
+    let wBooks = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      wBooks = window.MockData.wishlistBooks;
+      document.getElementById('countAll').textContent = wBooks.length;
+      document.getElementById('countPaid').textContent = wBooks.filter(b => !b.is_free).length;
+      document.getElementById('countFree').textContent = wBooks.filter(b => b.is_free).length;
+      renderWishlist();
+    });
+
+    function filterWishlist(f) {
+      wFilter = f;
+      document.querySelectorAll('.wishlist-tab').forEach((t, i) => t.classList.toggle('active', ['all','paid','free'][i] === f));
+      renderWishlist();
+    }
+
+    function setWView(v) {
+      wView = v;
+      document.getElementById('wGridBtn').classList.toggle('active', v === 'grid');
+      document.getElementById('wListBtn').classList.toggle('active', v === 'list');
+      renderWishlist();
+    }
+
+    function renderWishlist() {
+      let books = wBooks;
+      if (wFilter === 'paid') books = books.filter(b => !b.is_free);
+      if (wFilter === 'free') books = books.filter(b => b.is_free);
+
+      const c = document.getElementById('wishlistContainer');
+      if (!books.length) { c.innerHTML = '<div class="empty-state"><div class="empty-state__icon">♡</div><p class="empty-state__title">찜한 도서가 없어요</p><p class="empty-state__desc">마음에 드는 도서를 찜해보세요</p></div>'; return; }
+
+      if (wView === 'grid') {
+        c.innerHTML = `<div class="books-grid">${books.map(b => `
+          <div class="book-card">
+            <a href="book-detail.html?book_id=${b.id}">
+              <div class="book-card__cover" style="background:${b.cover_color};color:${b.cover_text_color}">
+                ${b.is_free ? '<span class="badge badge--free">무료</span>' : ''}
+                <div class="book-card__cover-title">${b.title}</div>
+              </div>
+            </a>
+            <div class="book-card__info">
+              <p class="book-card__title">${b.title}</p>
+              <p class="book-card__author">${b.author_name}</p>
+              <p class="book-card__price">${b.is_free ? '무료' : formatPrice(b.price)}</p>
+            </div>
+          </div>`).join('')}</div>`;
+      } else {
+        c.innerHTML = `<div class="books-list-view">${books.map(b => `
+          <div class="book-list-item">
+            <a href="book-detail.html?book_id=${b.id}">
+              <div class="book-list-item__cover" style="background:${b.cover_color};color:${b.cover_text_color}">${b.title.slice(0,8)}</div>
+            </a>
+            <div class="book-list-item__info">
+              <a href="book-detail.html?book_id=${b.id}"><p class="book-list-item__title">${b.title}</p></a>
+              <p class="book-list-item__author">${b.author_name} 작가</p>
+              <p class="book-list-item__desc">${b.description}</p>
+              <div class="book-list-item__tags">${b.tags.map(t => `<span class="book-list-item__tag">${t}</span>`).join('')}</div>
+            </div>
+            <div class="book-list-item__right">
+              <p class="book-list-item__price">${b.is_free ? '무료' : formatPrice(b.price)}</p>
+              <p class="book-list-item__rating"><span class="stars">★</span> ${b.rating}</p>
+              <div class="book-list-item__actions">
+                <a href="book-detail.html?book_id=${b.id}" class="btn btn--primary btn--sm">상세보기</a>
+                <button class="book-list-item__wishlist active" onclick="removeWish('${b.id}', this)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>`).join('')}</div>`;
+      }
+    }
+
+    function removeWish(bookId, btn) {
+      toggleWishlist(bookId);
+      wBooks = window.MockData.wishlistBooks;
+      renderWishlist();
+    }
+
+    function loadMore() { alert('더 불러오기 (Supabase 연결 후 구현)'); }
+  </script>
+<script type="module">
+import { renderHeader, renderFooter } from "./js/common.js"
+document.addEventListener("DOMContentLoaded", async () => {
+  await renderHeader()
+  renderFooter()
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 도서 관리 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    .my-books-page { background: var(--color-bg-sub); padding: 40px 0 64px; min-height: calc(100vh - 72px); }
+    .my-books-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .my-books-header h1 { font-size: 24px; font-weight: 700; }
+    .books-table { background: #fff; border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; }
+    .books-table-header {
+      display: grid;
+      grid-template-columns: 60px 1fr 100px 100px 80px 120px;
+      padding: 12px 20px;
+      background: var(--color-bg-sub);
+      border-bottom: 1px solid var(--color-border);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-sub);
+    }
+    .books-table-row {
+      display: grid;
+      grid-template-columns: 60px 1fr 100px 100px 80px 120px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--color-border);
+      align-items: center;
+      font-size: 14px;
+    }
+    .books-table-row:last-child { border-bottom: none; }
+    .books-table-row:hover { background: var(--color-bg-sub); }
+    .book-cover-thumb {
+      width: 40px;
+      height: 54px;
+      border-radius: 4px;
+      display: flex;
+      align-items: flex-end;
+      padding: 4px;
+      font-size: 8px;
+      font-weight: 700;
+    }
+    .book-title-cell { display: flex; flex-direction: column; gap: 4px; padding-right: 16px; }
+    .book-title-cell__name { font-weight: 600; line-height: 1.4; }
+    .book-title-cell__date { font-size: 12px; color: var(--color-text-sub); }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .status-badge--published { background: #E8F5E9; color: #2E7D32; }
+    .status-badge--draft { background: #FFF8E1; color: #F57F17; }
+    .action-btns { display: flex; gap: 6px; }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--color-text-sub); }
+  </style>
+</head>
+<body>
+  <header id="header"></header>
+  <main class="my-books-page">
+    <div class="inner">
+      <div class="my-books-header">
+        <h1>내 도서 관리</h1>
+        <a href="editor.html" class="btn btn--primary">+ 새 도서 쓰기</a>
+      </div>
+
+      <div class="books-table">
+        <div class="books-table-header">
+          <span>표지</span>
+          <span>제목</span>
+          <span>상태</span>
+          <span>가격</span>
+          <span>판매</span>
+          <span>관리</span>
+        </div>
+        <div id="booksList">
+          <div class="empty-state">불러오는 중...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+
+  <script type="module">
+    import { supabase } from './js/supabase.js'
+    import { getCurrentUser, renderHeader, renderFooter, formatPrice } from './js/common.js'
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await renderHeader()
+      renderFooter()
+
+      const user = await getCurrentUser()
+      if (!user) { window.location.href = 'login.html'; return }
+
+      // 작가 프로필 조회
+      const { data: author } = await supabase
+        .from('authors')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle()
+
+      if (!author) {
+        document.getElementById('booksList').innerHTML = '<div class="empty-state"><p>등록된 도서가 없어요.</p><p style="margin-top:8px"><a href="editor.html" style="color:var(--color-primary)">첫 도서를 써보세요!</a></p></div>'
+        return
+      }
+
+      // 도서 목록 조회
+      const { data: books } = await supabase
+        .from('books')
+        .select('*')
+        .eq('author_id', author.id)
+        .order('created_at', { ascending: false })
+
+      if (!books?.length) {
+        document.getElementById('booksList').innerHTML = '<div class="empty-state"><p>등록된 도서가 없어요.</p><p style="margin-top:8px"><a href="editor.html" style="color:var(--color-primary)">첫 도서를 써보세요!</a></p></div>'
+        return
+      }
+
+      document.getElementById('booksList').innerHTML = books.map(book => `
+        <div class="books-table-row">
+          <div>
+            <div class="book-cover-thumb" style="background:${book.cover_color};color:${book.cover_text_color}">
+              ${book.cover_url ? `<img src="${book.cover_url}" style="width:100%;height:100%;object-fit:cover;border-radius:4px">` : book.title?.slice(0,4)}
+            </div>
+          </div>
+          <div class="book-title-cell">
+            <span class="book-title-cell__name">${book.title}</span>
+            <span class="book-title-cell__date">${book.created_at?.slice(0,10)} 출간</span>
+          </div>
+          <div>
+            <span class="status-badge status-badge--${book.status}">${book.status === 'published' ? '발행됨' : '임시저장'}</span>
+          </div>
+          <div>${book.is_free ? '무료' : formatPrice(book.price)}</div>
+          <div>${(book.purchase_count || 0)}권</div>
+          <div class="action-btns">
+            <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm">수정</a>
+            <a href="viewer.html?book_id=${book.id}" class="btn btn--outline-gray btn--sm">보기</a>
+          </div>
+        </div>`).join('')
+    })
+  </script>
+</body>
+</html>

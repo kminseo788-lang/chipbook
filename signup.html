@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <header id="header"></header>
+  <main class="auth-page page-wrapper">
+    <div class="auth-card">
+      <a href="login.html" class="auth-back">← 뒤로가기</a>
+      <h1 class="auth-title">회원가입</h1>
+      <p class="auth-desc">chipbook과 함께 독서의 즐거움을 나눠보세요.</p>
+      <div class="auth-form">
+        <div class="form-group">
+          <label class="form-label">이름</label>
+          <input type="text" class="input" placeholder="이름을 입력하세요">
+        </div>
+        <div class="form-group">
+          <label class="form-label">이메일 주소</label>
+          <input type="email" class="input" placeholder="이메일 주소를 입력하세요">
+        </div>
+        <div class="form-group">
+          <label class="form-label">비밀번호</label>
+          <div class="input-wrap">
+            <input type="password" class="input" id="pw1" placeholder="비밀번호를 입력하세요">
+            <button class="input-eye" onclick="togglePassword('pw1')">👁</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">비밀번호 확인</label>
+          <div class="input-wrap">
+            <input type="password" class="input" id="pw2" placeholder="비밀번호를 다시 입력하세요">
+            <button class="input-eye" onclick="togglePassword('pw2')">👁</button>
+          </div>
+        </div>
+        <label class="checkbox-inline">
+          <input type="checkbox" id="agreeCheck"> 이용약관 및 개인정보처리방침에 동의합니다.
+        </label>
+        <a href="index.html" class="btn btn--primary btn--full btn--lg" style="margin-top:16px">회원가입</a>
+        <div class="auth-divider">이미 계정이 있으신가요? <a href="login.html" class="auth-switch-inline">로그인</a></div>
+      </div>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+<script type="module">
+  import { signUp } from './js/auth.js'
+
+  window.togglePassword = function(id) {
+    const el = document.getElementById(id)
+    el.type = el.type === 'password' ? 'text' : 'password'
+  }
+
+  // a태그를 button으로 바꿔야 해서 클릭 이벤트로 처리
+  document.querySelector('.btn--primary').addEventListener('click', async (e) => {
+    e.preventDefault()
+    const name = document.querySelectorAll('input[type="text"]')[0].value.trim()
+    const email = document.querySelector('input[type="email"]').value.trim()
+    const password = document.getElementById('pw1').value.trim()
+    const passwordConfirm = document.getElementById('pw2').value.trim()
+    const agree = document.getElementById('agreeCheck').checked
+
+    if (!name || !email || !password) {
+      alert('모든 항목을 입력해주세요.')
+      return
+    }
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 일치하지 않습니다.')
+      return
+    }
+    if (!agree) {
+      alert('이용약관에 동의해주세요.')
+      return
+    }
+
+    try {
+      await signUp(email, password, name)
+      alert('회원가입이 완료됐습니다!')
+      window.location.href = 'index.html'
+    } catch (err) {
+      alert('회원가입 실패: ' + err.message)
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <header id="header"></header>
+  <main class="auth-page page-wrapper">
+    <div class="auth-card">
+      <h1 class="auth-title">로그인</h1>
+      <p class="auth-desc">chipbook에 오신 것을 환영합니다.</p>
+      <div class="auth-form">
+        <div class="form-group">
+          <label class="form-label">이메일 주소</label>
+          <input type="email" class="input" placeholder="이메일 주소를 입력하세요">
+        </div>
+        <div class="form-group">
+          <label class="form-label">비밀번호</label>
+          <div class="input-wrap">
+            <input type="password" class="input" id="passwordInput" placeholder="비밀번호를 입력하세요">
+            <button class="input-eye" onclick="togglePassword('passwordInput')">👁</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="checkbox-inline">
+            <input type="checkbox"> 로그인 상태 유지
+          </label>
+          <a href="#" class="form-link">비밀번호 찾기</a>
+        </div>
+        <a href="index.html" class="btn btn--primary btn--full btn--lg">로그인</a>
+        <div class="auth-divider">계정이 없으신가요?</div>
+        <a href="signup.html" class="auth-switch">회원가입</a>
+      </div>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+  <script type="module">
+  import { signIn } from './js/auth.js'
+
+  window.togglePassword = function(id) {
+    const el = document.getElementById(id)
+    el.type = el.type === 'password' ? 'text' : 'password'
+  }
+
+  document.querySelector('.btn--primary').addEventListener('click', async (e) => {
+    e.preventDefault()
+    const email = document.querySelector('input[type="email"]').value.trim()
+    const password = document.getElementById('passwordInput').value.trim()
+
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.')
+      return
+    }
+
+    try {
+      await signIn(email, password)
+      window.location.href = 'index.html'
+    } catch (err) {
+      alert('로그인 실패: ' + err.message)
+    }
+  })
+</script>
+</body>
+</html>

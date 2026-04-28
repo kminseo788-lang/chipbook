@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>도서 상세 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/book-detail.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="page-wrapper">
+    <div class="inner">
+      <div class="breadcrumb" id="breadcrumb"></div>
+
+      <!-- 도서 상단 정보 -->
+      <div class="book-detail-top" id="bookDetailTop">
+        <div class="book-detail-top__loading">불러오는 중...</div>
+      </div>
+
+      <!-- 목차 -->
+      <div class="book-detail-toc card" id="bookToc" style="display:none">
+        <h3 class="book-detail-section-title">목차</h3>
+        <div class="toc-grid" id="tocGrid"></div>
+      </div>
+
+      <!-- 작가 소개 -->
+      <div class="book-detail-author card" id="bookAuthor" style="display:none">
+        <h3 class="book-detail-section-title">작가 소개</h3>
+        <div class="author-profile" id="authorProfile"></div>
+      </div>
+
+      <!-- 이 작가의 다른 도서 -->
+      <div class="book-detail-more" id="authorMoreBooks" style="display:none">
+        <div class="section-header">
+          <div class="section-header__left">
+            <h3 class="section-header__title">이 작가의 다른 도서</h3>
+          </div>
+          <a class="section-header__more" id="authorMoreLink">더보기 →</a>
+        </div>
+        <div class="book-slider-wrap">
+          <button class="slider-btn" id="moreBooksPrev">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="book-slider-viewport">
+            <div class="book-list" id="authorMoreBooksList"></div>
+          </div>
+          <button class="slider-btn" id="moreBooksNext">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+
+  
+  
+  <script type="module" src="js/book-detail.js"></script>
+</body>
+</html>

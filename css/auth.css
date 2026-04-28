@@ -1,0 +1,65 @@
+/* chipbook auth.css */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--color-bg-sub);
+}
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 48px 40px;
+  box-shadow: var(--shadow-md);
+}
+.auth-back {
+  display: inline-block;
+  font-size: 14px;
+  color: var(--color-text-sub);
+  margin-bottom: 20px;
+  transition: color var(--transition);
+}
+.auth-back:hover { color: var(--color-primary); }
+.auth-title { font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+.auth-desc { font-size: 14px; color: var(--color-text-sub); text-align: center; margin-bottom: 32px; }
+.auth-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-label { font-size: 14px; font-weight: 500; }
+.input-wrap { position: relative; }
+.input-wrap .input { padding-right: 48px; }
+.input-eye {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--color-text-sub);
+}
+.form-row { display: flex; justify-content: space-between; align-items: center; }
+.checkbox-inline { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.checkbox-inline input { accent-color: var(--color-primary); width: 16px; height: 16px; cursor: pointer; }
+.form-link { font-size: 13px; color: var(--color-primary); }
+.form-link:hover { text-decoration: underline; }
+.auth-divider {
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-sub);
+  position: relative;
+  padding: 8px 0;
+}
+.auth-switch {
+  display: block;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-primary);
+  padding: 8px;
+}
+.auth-switch:hover { text-decoration: underline; }
+.auth-switch-inline { color: var(--color-primary); font-weight: 600; }
+.auth-switch-inline:hover { text-decoration: underline; }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>결제하기 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+  <header id="header"></header>
+  <main class="page-wrapper payment-page">
+    <div class="inner payment-inner">
+      <!-- 스텝 인디케이터 -->
+      <div class="payment-steps">
+        <div class="payment-step">
+          <span class="payment-step__num">1</span>
+          <span class="payment-step__label">주문 확인</span>
+        </div>
+        <div class="payment-step__line"></div>
+        <div class="payment-step payment-step--active">
+          <span class="payment-step__num active">2</span>
+          <span class="payment-step__label active">결제</span>
+        </div>
+        <div class="payment-step__line"></div>
+        <div class="payment-step">
+          <span class="payment-step__num">3</span>
+          <span class="payment-step__label">결제 완료</span>
+        </div>
+      </div>
+
+      <h1 class="payment-title">결제하기</h1>
+      <p class="payment-desc">아래 내용을 확인하고 결제를 진행해주세요.</p>
+
+      <!-- 주문 상품 -->
+      <div class="payment-product" id="paymentProduct">
+        <div class="payment-product__loading">불러오는 중...</div>
+      </div>
+
+      <!-- 안내 박스 -->
+      <div class="payment-notice">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        결제는 보안이 안전한 PortOne 결제창에서 진행됩니다.<br>
+        결제 수단(카드, 간편결제 등)은 결제창에서 선택하실 수 있습니다.
+      </div>
+
+      <!-- 약관 동의 -->
+      <div class="payment-terms">
+        <h3 class="payment-terms__title">결제 전 약관 동의</h3>
+        <div class="payment-terms__box">
+          <label class="checkbox-item" id="checkAll">
+            <input type="checkbox" id="agreeAll" onchange="toggleAll(this)">
+            <span class="checkbox-item__label" style="font-weight:600">모든 약관에 동의합니다.</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" class="term-check" onchange="checkAllState()">
+            <span class="checkbox-item__label">[필수] 환불 정책에 동의합니다.</span>
+            <a href="refund.html" class="checkbox-item__link">전문 보기 ›</a>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" class="term-check" onchange="checkAllState()">
+            <span class="checkbox-item__label">[필수] 개인정보 수집 및 이용에 동의합니다.</span>
+            <a href="privacy.html" class="checkbox-item__link">전문 보기 ›</a>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" class="term-check" onchange="checkAllState()">
+            <span class="checkbox-item__label">[필수] 전자책 이용 안내에 동의합니다.</span>
+            <a href="terms.html" class="checkbox-item__link">전문 보기 ›</a>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" class="term-check" onchange="checkAllState()">
+            <span class="checkbox-item__label">[필수] 만 14세 이상임을 확인합니다.</span>
+            <span></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 결제 버튼 -->
+      <button class="btn btn--primary btn--full payment-btn" id="payBtn" disabled onclick="requestPayment()">
+        🔒 결제하기
+      </button>
+      <p style="text-align:center;font-size:13px;color:var(--color-text-sub);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        안전한 결제를 위해 모든 통신은 암호화되어 처리됩니다.
+      </p>
+    </div>
+  </main>
+  <footer id="footer"></footer>
+
+  
+  
+  <script type="module" src="js/payment.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>도서 뷰어 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/viewer.css">
+</head>
+<body class="viewer-body">
+
+  <!-- 뷰어 전용 헤더 -->
+  <header class="viewer-header">
+    <div class="viewer-header__inner">
+      <div class="viewer-header__left">
+        <a href="index.html" class="viewer-header__logo">chipbook</a>
+        <span class="viewer-header__badge" id="viewerBadge"></span>
+      </div>
+      <div class="viewer-header__center">
+        <span class="viewer-header__title" id="viewerBookTitle"></span>
+        <span class="viewer-header__author" id="viewerBookAuthor"></span>
+      </div>
+      <div class="viewer-header__right">
+        <div class="viewer-header__search-wrap">
+          <input type="text" class="viewer-header__search" placeholder="검색">
+        </div>
+        <a href="login.html" class="btn btn--outline btn--sm">로그인</a>
+        <a href="signup.html" class="btn btn--primary btn--sm">회원가입</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="viewer-layout">
+    <!-- 좌측 목차 -->
+    <aside class="viewer-toc">
+      <div class="viewer-toc__header">
+        <span class="viewer-toc__title">목차</span>
+        <span class="viewer-toc__progress" id="tocProgress">읽는 중 0%</span>
+      </div>
+      <div class="viewer-toc__progress-bar">
+        <div class="viewer-toc__progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <nav class="viewer-toc__nav" id="tocNav"></nav>
+      <div class="viewer-toc__actions" id="tocActions"></div>
+    </aside>
+
+    <!-- 중앙 본문 -->
+    <main class="viewer-main">
+      <div class="viewer-content" id="viewerContent"></div>
+
+      <!-- 하단 네비게이션 -->
+      <div class="viewer-nav-bar">
+        <button class="viewer-nav-btn" id="prevChapter">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          이전 파트
+        </button>
+        <div class="viewer-nav-pages" id="navPages"></div>
+        <button class="viewer-nav-btn" id="nextChapter">
+          다음 파트
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </main>
+
+    <!-- 우측 패널 -->
+    <aside class="viewer-side" id="viewerSide"></aside>
+  </div>
+
+  
+  
+  <script type="module" src="js/viewer.js"></script>
+</body>
+</html>

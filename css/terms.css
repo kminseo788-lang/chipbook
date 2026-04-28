@@ -1,0 +1,24 @@
+/* chipbook terms.css */
+.terms-page { background: var(--color-bg-sub); padding: 48px 0 64px; }
+.terms-inner { max-width: 860px; }
+.terms-hero { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; gap: 32px; }
+.terms-hero__text { flex: 1; }
+.terms-title { font-size: 32px; font-weight: 700; margin-bottom: 12px; margin-top: 12px; }
+.terms-desc { font-size: 14px; color: var(--color-text-sub); line-height: 1.7; margin-bottom: 16px; }
+.terms-effective { display: inline-flex; align-items: center; gap: 8px; background: var(--color-primary-bg); color: var(--color-primary); padding: 10px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; }
+.terms-hero__icon { font-size: 64px; flex-shrink: 0; opacity: .6; text-align: center; }
+
+.terms-toc { background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px; }
+.terms-toc__title { font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+.terms-toc__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.terms-toc__grid a { font-size: 13px; color: var(--color-text-sub); padding: 4px 0; transition: color .2s; }
+.terms-toc__grid a:hover { color: var(--color-primary); }
+
+.terms-body { background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 32px; }
+.terms-article { padding: 20px 0; border-bottom: 1px solid var(--color-border); }
+.terms-article:last-child { border-bottom: none; }
+.terms-article h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--color-primary); }
+.terms-article p { font-size: 14px; color: var(--color-text-sub); line-height: 1.8; }
+.terms-article ul, .terms-article ol { padding-left: 20px; margin-top: 8px; }
+.terms-article li { font-size: 14px; color: var(--color-text-sub); line-height: 1.8; margin-bottom: 4px; }
+.terms-more-btn-wrap { text-align: center; margin-top: 24px; }

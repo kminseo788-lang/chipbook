@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이페이지 — chipbook</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/mypage.css">
+</head>
+<body>
+  <header id="header"></header>
+
+  <main class="page-wrapper mypage-wrap">
+    <div class="inner mypage-inner">
+
+      <!-- 좌측 사이드바 -->
+      <aside class="mypage-sidebar">
+        <div class="mypage-profile">
+          <div class="mypage-profile__photo">👤</div>
+          <p class="mypage-profile__name" id="profileName"></p>
+          <p class="mypage-profile__email" id="profileEmail"></p>
+          <span class="mypage-profile__role" id="profileRole"></span>
+        </div>
+
+        <!-- 모드 토글 (is_author일 때만 표시) -->
+        <div class="mode-toggle" id="modeToggle" style="display:none">
+          <p class="mode-toggle__label">현재 모드</p>
+          <div class="mode-toggle__btns">
+            <button class="mode-btn active" id="readerModeBtn" onclick="switchMode('reader')">독자 모드</button>
+            <button class="mode-btn" id="authorModeBtn" onclick="switchMode('author')">작가 모드</button>
+          </div>
+        </div>
+
+        <nav class="mypage-nav" id="mypageNav"></nav>
+
+        <!-- 빠른 이동 (작가일 때만) -->
+        <div class="mypage-shortcuts" id="mypageShortcuts" style="display:none">
+          <p class="mypage-shortcuts__title">빠른 이동</p>
+          <a href="#" class="mypage-shortcut">작성한 도서 보기 ›</a>
+          <a href="#" class="mypage-shortcut">내 작가 페이지 ›</a>
+        </div>
+      </aside>
+
+      <!-- 우측 콘텐츠 -->
+      <div class="mypage-content" id="mypageContent"></div>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+  
+  
+  <script type="module" src="js/mypage.js"></script>
+</body>
+</html>
