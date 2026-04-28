@@ -1,4 +1,4 @@
-supabaseupdateNavPages /**
+/**
  * chipbook viewer.js
  * Supabase 연동 버전
  * 
@@ -115,9 +115,16 @@ function renderChapter(index, fullAccess) {
   // 유료 미구매 → 2챕터 이후 미리보기 제한
   const isPreviewOnly = !fullAccess && index >= 2
 
+  // 저작권 문구 (첫 챕터 도입부)
+  const copyrightIntro = index === 0 ? `
+    <div style="font-size:12px;color:var(--color-text-light);text-align:center;padding:8px 0 20px;border-bottom:1px solid var(--color-border);margin-bottom:24px">
+      © ${new Date().getFullYear()} ${currentBook.authors?.pen_name || '저자'}. 이 책의 저작권은 저자에게 있습니다. 무단 전재 및 재배포를 금합니다.
+    </div>` : ''
+
   let html = `
     <div class="viewer-chapter-num">${chapter.part_title || 'PART'}</div>
     <h2 class="viewer-chapter-title">${index + 1}. ${chapter.chapter_title}</h2>
+    ${copyrightIntro}
     <div class="viewer-chapter-body">
       ${isPreviewOnly
         ? `<p>이 챕터의 일부만 미리보기로 제공됩니다.</p><p>계속 읽으시려면 구매 후 이용해주세요.</p>`
@@ -143,6 +150,22 @@ function renderChapter(index, fullAccess) {
         <button class="viewer-action-btn" onclick="handleSaveLibrary()">📚 내 서재에 저장</button>
         <button class="viewer-action-btn" onclick="toggleMemoModal()">📝 메모 작성</button>
         <button class="viewer-action-btn">♡ 좋아요</button>
+      </div>`
+  }
+
+  // 마지막 챕터 → 저작권 + 면책사항 자동 삽입
+  if (index === allChapters.length - 1) {
+    html += `
+      <div style="margin-top:48px;padding:24px;background:#f8f8f6;border-radius:12px;border:1px solid var(--color-border)">
+        <p style="font-size:13px;font-weight:700;margin-bottom:12px;text-align:center">📋 저작권 및 면책사항</p>
+        <div style="font-size:12px;color:var(--color-text-sub);line-height:1.8">
+          <p style="margin-bottom:8px">© ${new Date().getFullYear()} ${currentBook.authors?.pen_name || '저자'}. All rights reserved.</p>
+          <p style="margin-bottom:8px">이 책의 저작권은 저자에게 있습니다. 저작권법에 의해 보호받는 저작물이므로 저자의 서면 동의 없이 내용의 전부 또는 일부를 복제·배포·수정하는 것을 금합니다.</p>
+          <p style="margin-bottom:4px">✗ 무단 복제 및 재배포 금지</p>
+          <p style="margin-bottom:4px">✗ SNS·블로그·카페 등 무단 공유 금지</p>
+          <p style="margin-bottom:12px">✓ 개인 학습 목적의 메모·발췌는 허용됩니다.</p>
+          <p style="border-top:1px solid var(--color-border);padding-top:12px">이 책의 내용은 저자의 개인적 경험을 바탕으로 작성되었으며, 전문적인 의료·법률·재무 조언을 대체하지 않습니다. 실천 결과는 개인에 따라 다를 수 있습니다.</p>
+        </div>
       </div>`
   }
 
@@ -271,6 +294,7 @@ function updateNavPages() {
   const total = allChapters.length
   const cur = currentChapterIndex
 
+  // 현재 챕터 기준으로 앞뒤 3개씩 표시 (최대 7개)
   let start = Math.max(0, cur - 3)
   let end = Math.min(total - 1, start + 6)
   if (end - start < 6) start = Math.max(0, end - 6)
