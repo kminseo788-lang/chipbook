@@ -1,4 +1,4 @@
-/**
+supabaseupdateNavPages /**
  * chipbook viewer.js
  * Supabase 연동 버전
  * 
@@ -269,9 +269,22 @@ function updateNavPages() {
   const container = document.getElementById('navPages')
   if (!container) return
   const total = allChapters.length
-  container.innerHTML = Array.from({ length: Math.min(total, 7) }, (_, i) =>
-    `<button class="nav-page-btn ${i === currentChapterIndex ? 'active' : ''}" onclick="goToChapterByIndex(${i})">${i + 1}</button>`
-  ).join('')
+  const cur = currentChapterIndex
+
+  let start = Math.max(0, cur - 3)
+  let end = Math.min(total - 1, start + 6)
+  if (end - start < 6) start = Math.max(0, end - 6)
+
+  let html = ''
+  if (start > 0) html += `<button class="nav-page-btn" onclick="goToChapterByIndex(0)">1</button><span style="padding:0 4px;color:var(--color-text-light)">…</span>`
+
+  for (let i = start; i <= end; i++) {
+    html += `<button class="nav-page-btn ${i === cur ? 'active' : ''}" onclick="goToChapterByIndex(${i})">${i + 1}</button>`
+  }
+
+  if (end < total - 1) html += `<span style="padding:0 4px;color:var(--color-text-light)">…</span><button class="nav-page-btn" onclick="goToChapterByIndex(${total - 1})">${total}</button>`
+
+  container.innerHTML = html
 }
 
 window.goToChapterByIndex = function(idx) {
