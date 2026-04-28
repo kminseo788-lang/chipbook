@@ -1,349 +1,508 @@
 /**
- * chipbook viewer.js
+ * chipbook editor.js
  * Supabase 연동 버전
- * 
- * 상태 분기:
- * A. 무료 도서          → 전체 열람 + 우측 회원가입 CTA
- * B. 유료 + 구매 완료   → 전체 열람 + 목차만 (우측 패널 없음)
- * C. 유료 + 미구매      → 일부 미리보기 + 우측 결제 버튼
  */
 
 import { supabase } from './supabase.js'
-import { getCurrentUser, isPurchased, formatPrice } from './common.js'
+import { getCurrentUser } from './common.js'
 
-let currentBook = null
-let allChapters = []
-let currentChapterIndex = 0
-let chapterContents = []
+window.parts = []
+window.currentChapterKey = null
+window.chapterContents = {}
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const bookId = new URLSearchParams(window.location.search).get('book_id')
-  if (!bookId) { window.location.href = 'index.html'; return }
-
-  // 도서 정보 조회
-  const { data: book } = await supabase
-    .from('books')
-    .select('*, authors(pen_name)')
-    .eq('id', bookId)
-    .single()
-
-  if (!book) { window.location.href = 'index.html'; return }
-  currentBook = book
-
-  // 챕터 목록 조회
-  const { data: contents } = await supabase
-    .from('book_contents')
-    .select('*')
-    .eq('book_id', bookId)
-    .order('order_index')
-
-  allChapters = contents || []
-  chapterContents = allChapters
-
-  // 헤더 설정
-  document.getElementById('viewerBookTitle').textContent = book.title
-  document.getElementById('viewerBookAuthor').textContent = (book.authors?.pen_name || '') + ' 지음'
-
-  // 현재 유저 + 구매 여부 확인
-  const user = await getCurrentUser()
-  const purchased = await isPurchased(bookId)
-  const isFree = book.is_free
-
-  // 뱃지 설정
-  const badge = document.getElementById('viewerBadge')
-  if (isFree) badge.textContent = '무료 도서'
-  else if (purchased) badge.textContent = '구매한 도서'
-  else badge.textContent = '미리보기'
-
-  // 상태별 분기
-  if (isFree) {
-    renderSideFree(user)       // A: 무료
-  } else if (purchased) {
-    renderSidePurchased()      // B: 유료 + 구매
-  } else {
-    renderSideUnpurchased()    // C: 유료 + 미구매
-  }
-
-  renderToc(isFree || purchased)
-  renderChapter(0, isFree || purchased)
-  initNavigation(isFree || purchased)
-})
-
-// ─── 목차 렌더링 ───
-function renderToc(fullAccess) {
-  const nav = document.getElementById('tocNav')
-  if (!nav) return
-
-  // 파트별 그룹화
-  const parts = {}
-  allChapters.forEach(ch => {
-    const key = ch.part_title || '본문'
-    if (!parts[key]) parts[key] = []
-    parts[key].push(ch)
-  })
-
-  nav.innerHTML = Object.entries(parts).map(([partTitle, chapters]) => `
-    <div class="toc-group">
-      <div class="toc-group__part">${partTitle}</div>
-      ${chapters.map(ch => `
-        <button class="toc-chapter" data-id="${ch.id}" onclick="goToChapterById('${ch.id}')">
-          ${ch.chapter_title}
-        </button>`).join('')}
-    </div>`).join('')
-
-  // 하단 액션 버튼
-  const actions = document.getElementById('tocActions')
-  if (!actions) return
-
-  if (fullAccess) {
-    actions.innerHTML = `
-      <button class="toc-action-btn" onclick="handleSaveLibrary()">📚 내 서재에 저장</button>`
-  } else {
-    actions.innerHTML = `
-      <a href="signup.html" class="btn btn--primary btn--full btn--sm">무료 회원가입하기</a>`
-  }
+let currentStep = 1
+let selectedTags = []
+let autoSaveTimer = null
+let bookId = null
+let authorId = null
+let coverFile = null
+let bookData = {
+  title: '', description: '', oneLine: '',
+  type: 'paid', price: '',
+  coverColor: '#E8F5E9', coverTextColor: '#1B5E3A', coverUrl: ''
 }
 
-// ─── 챕터 렌더링 ───
-function renderChapter(index, fullAccess) {
-  const chapter = allChapters[index]
-  if (!chapter) {
-    document.getElementById('viewerContent').innerHTML = '<p style="color:var(--color-text-sub);padding:40px;text-align:center">챕터를 선택해주세요.</p>'
+const tagData = [
+  { icon: '📋', name: '상황', limit: 2, tags: ['이사', '결혼', '출산', '취업', '창업', '이직', '은퇴', '기타'] },
+  { icon: '📁', name: '분야', limit: 2, tags: ['살림', '육아', '재테크', '건강', '자기계발', '시간관리', '관계', '기타'] },
+  { icon: '❓', name: '문제', limit: 2, tags: ['시간부족', '돈낭비', '정리안됨', '스트레스', '습관부족', '정보부족', '정체성', '의욕상실', '기타'] },
+  { icon: '👥', name: '대상', limit: 2, tags: ['1인가구', '신혼부부', '초보부모', '직장인', '학생', '주부', '시니어', '기타'] },
+  { icon: '🎨', name: '스타일', limit: 2, tags: ['초보용', '체크리스트', '실전형', '이론형', '단계별', '빠르고간결', '깊이있게', '기타'] },
+]
+
+const writingTips = [
+  '구체적인 경험과 감정을 담아 작성하면 독자에게 더 큰 공감을 줄 수 있어요.',
+  '짧고 명확한 문장이 독자의 이해를 높입니다.',
+  '"나는 ~했다"처럼 1인칭 경험을 담으면 진정성이 높아져요.',
+  '실제 숫자나 기간을 활용하면 더 신뢰감 있는 내용이 됩니다.',
+]
+
+// ─── 초기화 ───
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await getCurrentUser()
+  if (!user) {
+    alert('로그인이 필요합니다.')
+    window.location.href = 'login.html'
     return
   }
 
-  // 유료 미구매 → 2챕터 이후 미리보기 제한
-  const isPreviewOnly = !fullAccess && index >= 2
+  await ensureAuthorProfile(user)
 
-  // 저작권 문구 (첫 챕터 도입부)
-  const copyrightIntro = index === 0 ? `
-    <div style="font-size:12px;color:var(--color-text-light);text-align:center;padding:8px 0 20px;border-bottom:1px solid var(--color-border);margin-bottom:24px">
-      © ${new Date().getFullYear()} ${currentBook.authors?.pen_name || '저자'}. 이 책의 저작권은 저자에게 있습니다. 무단 전재 및 재배포를 금합니다.
-    </div>` : ''
-
-  let html = `
-    <div class="viewer-chapter-num">${chapter.part_title || 'PART'}</div>
-    <h2 class="viewer-chapter-title">${index + 1}. ${chapter.chapter_title}</h2>
-    ${copyrightIntro}
-    <div class="viewer-chapter-body">
-      ${isPreviewOnly
-        ? `<p>이 챕터의 일부만 미리보기로 제공됩니다.</p><p>계속 읽으시려면 구매 후 이용해주세요.</p>`
-        : (chapter.content || '<p>내용을 준비 중입니다.</p>')}
-    </div>`
-
-  // 미리보기 제한 UI
-  if (isPreviewOnly) {
-    html += `
-      <div class="viewer-preview-limit">
-        <div class="viewer-preview-blur"></div>
-        <div class="viewer-preview-cta">
-          <p>이후 내용은 구매 후 열람할 수 있습니다</p>
-          <a href="book-payment.html?book_id=${currentBook.id}" class="btn btn--primary">구매하러 가기</a>
-        </div>
-      </div>`
+  const editBookId = new URLSearchParams(window.location.search).get('book_id')
+  if (editBookId) {
+    await loadExistingBook(editBookId)
+  } else {
+    initDefaultParts()
   }
 
-  // 구매자 액션 바
-  if (fullAccess) {
-    html += `
-      <div class="viewer-actions">
-        <button class="viewer-action-btn" onclick="handleSaveLibrary()">📚 내 서재에 저장</button>
-        <button class="viewer-action-btn" onclick="toggleMemoModal()">📝 메모 작성</button>
-        <button class="viewer-action-btn">♡ 좋아요</button>
-      </div>`
+  renderTagCategories()
+  startAutoSave()
+  goToStep(1)
+})
+
+// ─── 작가 프로필 확인/생성 ───
+async function ensureAuthorProfile(user) {
+  const { data: author } = await supabase
+    .from('authors')
+    .select('id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (author) {
+    authorId = author.id
+    return
   }
 
-  // 마지막 챕터 → 저작권 + 면책사항 자동 삽입
-  if (index === allChapters.length - 1) {
-    html += `
-      <div style="margin-top:48px;padding:24px;background:#f8f8f6;border-radius:12px;border:1px solid var(--color-border)">
-        <p style="font-size:13px;font-weight:700;margin-bottom:12px;text-align:center">📋 저작권 및 면책사항</p>
-        <div style="font-size:12px;color:var(--color-text-sub);line-height:1.8">
-          <p style="margin-bottom:8px">© ${new Date().getFullYear()} ${currentBook.authors?.pen_name || '저자'}. All rights reserved.</p>
-          <p style="margin-bottom:8px">이 책의 저작권은 저자에게 있습니다. 저작권법에 의해 보호받는 저작물이므로 저자의 서면 동의 없이 내용의 전부 또는 일부를 복제·배포·수정하는 것을 금합니다.</p>
-          <p style="margin-bottom:4px">✗ 무단 복제 및 재배포 금지</p>
-          <p style="margin-bottom:4px">✗ SNS·블로그·카페 등 무단 공유 금지</p>
-          <p style="margin-bottom:12px">✓ 개인 학습 목적의 메모·발췌는 허용됩니다.</p>
-          <p style="border-top:1px solid var(--color-border);padding-top:12px">이 책의 내용은 저자의 개인적 경험을 바탕으로 작성되었으며, 전문적인 의료·법률·재무 조언을 대체하지 않습니다. 실천 결과는 개인에 따라 다를 수 있습니다.</p>
-        </div>
-      </div>`
-  }
+  const { data: newAuthor } = await supabase
+    .from('authors')
+    .insert({ user_id: user.id, pen_name: user.email.split('@')[0] })
+    .select('id')
+    .single()
 
-  // 무료 도서 마지막 챕터 → 회원가입 유도
-  if (currentBook.is_free && index >= allChapters.length - 2) {
-    html += `
-      <div style="margin-top:32px;padding:24px;background:var(--color-primary-bg);border-radius:12px;text-align:center">
-        <p style="font-weight:600;margin-bottom:8px">이 글이 도움이 되셨나요?</p>
-        <p style="font-size:14px;color:var(--color-text-sub);margin-bottom:16px">더 많은 기능과 함께 다양한 책을 경험할 수 있습니다.</p>
-        <a href="signup.html" class="btn btn--primary">무료 회원가입하기</a>
-      </div>`
-  }
-
-  document.getElementById('viewerContent').innerHTML = html
-  updateNavPages()
-  updateProgress()
-
-  // 목차 활성화
-  document.querySelectorAll('.toc-chapter').forEach((btn, i) => {
-    btn.classList.toggle('active', i === index)
-  })
+  if (newAuthor) authorId = newAuthor.id
 }
 
-// ─── 우측 패널 — A: 무료 도서 ───
-async function renderSideFree(user) {
-  const side = document.getElementById('viewerSide')
-  if (!side) return
-
-  const isLoggedIn = !!user
-
-  side.innerHTML = `
-    ${!isLoggedIn ? `
-      <div class="side-join-cta">
-        <div class="side-join-cta__icons">
-          <div class="side-join-cta__icon">📚<span>내 서재 저장</span></div>
-          <div class="side-join-cta__icon">📝<span>메모 작성</span></div>
-          <div class="side-join-cta__icon">♡<span>찜한 도서 관리</span></div>
-        </div>
-        <a href="signup.html" class="btn btn--primary btn--full">무료 회원가입하기</a>
-        <p class="side-join-cta__sub">가입은 1분이면 충분해요! 😊</p>
-      </div>` : ''}
-    <div class="side-section" id="sideRecommended"></div>`
-
-  await renderSideRecommended()
-}
-
-// ─── 우측 패널 — B: 유료 구매 완료 (우측 패널 없음) ───
-function renderSidePurchased() {
-  const side = document.getElementById('viewerSide')
-  if (!side) return
-  side.style.display = 'none' // 우측 패널 숨김
-}
-
-// ─── 우측 패널 — C: 유료 미구매 ───
-function renderSideUnpurchased() {
-  const side = document.getElementById('viewerSide')
-  if (!side) return
-
-  side.innerHTML = `
-    <div style="padding:20px;background:var(--color-primary-bg);border-radius:12px;text-align:center">
-      <p style="font-size:15px;font-weight:700;margin-bottom:8px">${currentBook.title}</p>
-      <p style="font-size:24px;font-weight:700;color:var(--color-primary);margin-bottom:16px">${formatPrice(currentBook.price)}</p>
-      <a href="book-payment.html?book_id=${currentBook.id}" class="btn btn--primary btn--full">구매하기</a>
-      <p style="font-size:12px;color:var(--color-text-sub);margin-top:10px">지금 구매하면 바로 전체 열람 가능</p>
-    </div>
-    <div class="side-section" id="sideRecommended" style="margin-top:20px"></div>`
-
-  renderSideRecommended()
-}
-
-// ─── 우측 추천 도서 ───
-async function renderSideRecommended() {
-  const container = document.getElementById('sideRecommended')
-  if (!container) return
-
-  const { data: books } = await supabase
+// ─── 기존 도서 불러오기 ───
+async function loadExistingBook(id) {
+  const { data: book } = await supabase
     .from('books')
-    .select('*, authors(pen_name)')
-    .eq('status', 'published')
-    .neq('id', currentBook.id)
-    .limit(3)
+    .select('*')
+    .eq('id', id)
+    .single()
 
-  if (!books?.length) return
+  if (!book) return
+  bookId = book.id
 
-  container.innerHTML = `
-    <p class="side-section__title">이 책과 비슷한 추천 도서</p>
-    ${books.map(b => `
-      <a href="book-detail.html?book_id=${b.id}" class="side-book-item">
-        <div class="side-book-item__cover" style="background:${b.cover_color};color:${b.cover_text_color}">${b.title.slice(0,6)}</div>
-        <div class="side-book-item__info">
-          <p class="side-book-item__title">${b.title}</p>
-          <p class="side-book-item__author">${b.authors?.pen_name || ''} 지음</p>
-          <p class="side-book-item__price">${b.is_free ? '무료' : formatPrice(b.price)}</p>
-        </div>
-      </a>`).join('')}`
-}
+  document.getElementById('bookTitle').value = book.title || ''
+  document.getElementById('bookDesc').value = book.description || ''
+  document.getElementById('bookOneLine').value = book.subtitle || ''
+  document.getElementById('bookPrice').value = book.price || ''
+  bookData.title = book.title
+  bookData.type = book.is_free ? 'free' : 'paid'
+  bookData.coverColor = book.cover_color || '#E8F5E9'
+  bookData.coverTextColor = book.cover_text_color || '#1B5E3A'
 
-// ─── 네비게이션 ───
-function initNavigation(fullAccess) {
-  document.getElementById('prevChapter')?.addEventListener('click', () => {
-    if (currentChapterIndex > 0) {
-      currentChapterIndex--
-      renderChapter(currentChapterIndex, fullAccess)
-    }
-  })
-  document.getElementById('nextChapter')?.addEventListener('click', () => {
-    if (currentChapterIndex < allChapters.length - 1) {
-      currentChapterIndex++
-      renderChapter(currentChapterIndex, fullAccess)
-    }
-  })
-}
+  document.getElementById('titleCount').textContent = (book.title || '').length
+  document.getElementById('descCount').textContent = (book.description || '').length
+  document.getElementById('oneLineCount').textContent = (book.subtitle || '').length
 
-window.goToChapterById = function(id) {
-  const idx = allChapters.findIndex(ch => ch.id === id)
-  if (idx !== -1) {
-    currentChapterIndex = idx
-    const fullAccess = currentBook.is_free || document.getElementById('viewerBadge').textContent === '구매한 도서'
-    renderChapter(idx, fullAccess)
+  const { data: contents } = await supabase
+    .from('book_contents')
+    .select('*')
+    .eq('book_id', id)
+    .order('order_index')
+
+  if (contents?.length) {
+    const partsMap = {}
+    contents.forEach(c => {
+      const key = c.part_title
+      if (!partsMap[key]) partsMap[key] = { title: key, chapters: [] }
+      partsMap[key].chapters.push(c.chapter_title || '')
+      const pIdx = Object.keys(partsMap).indexOf(key)
+      window.chapterContents[`${pIdx}-${partsMap[key].chapters.length - 1}`] = c.content || ''
+    })
+    window.parts = Object.values(partsMap)
+    renderParts()
   }
 }
 
-function updateNavPages() {
-  const container = document.getElementById('navPages')
+// ─── 스텝 이동 ───
+window.goToStep = function(step) {
+  document.querySelectorAll('.editor-section').forEach(s => s.style.display = 'none')
+  const target = document.getElementById(`step${step}`)
+  if (target) target.style.display = 'block'
+
+  document.querySelectorAll('.step-item').forEach(item => {
+    const s = parseInt(item.dataset.step)
+    item.classList.toggle('active', s === step)
+    item.querySelector('.step-num')?.classList.toggle('active', s === step)
+  })
+
+  currentStep = step
+
+  if (step === 4) renderTocList()
+  if (step === 5) renderPublishChecklist()
+}
+
+// ─── 글자수 카운트 ───
+window.updateCount = function(el, countId, max) {
+  document.getElementById(countId).textContent = el.value.length
+  if (countId === 'titleCount') bookData.title = el.value
+}
+
+// ─── 가격 토글 ───
+window.togglePrice = function(show) {
+  bookData.type = show ? 'paid' : 'free'
+  const pf = document.getElementById('priceField')
+  if (pf) pf.style.display = show ? 'block' : 'none'
+}
+
+// ─── 표지 미리보기 ───
+window.previewCover = function(input) {
+  const file = input.files[0]
+  if (!file) return
+  coverFile = file
+  const reader = new FileReader()
+  reader.onload = e => {
+    const preview = document.getElementById('coverPreview')
+    const placeholder = document.getElementById('coverPlaceholder')
+    if (preview) { preview.src = e.target.result; preview.style.display = 'block' }
+    if (placeholder) placeholder.style.display = 'none'
+    bookData.coverUrl = e.target.result
+  }
+  reader.readAsDataURL(file)
+}
+
+// ─── 태그 렌더링 ───
+function renderTagCategories() {
+  const container = document.getElementById('tagCategories')
   if (!container) return
-  const total = allChapters.length
-  const cur = currentChapterIndex
 
-  // 현재 챕터 기준으로 앞뒤 3개씩 표시 (최대 7개)
-  let start = Math.max(0, cur - 3)
-  let end = Math.min(total - 1, start + 6)
-  if (end - start < 6) start = Math.max(0, end - 6)
-
-  let html = ''
-  if (start > 0) html += `<button class="nav-page-btn" onclick="goToChapterByIndex(0)">1</button><span style="padding:0 4px;color:var(--color-text-light)">…</span>`
-
-  for (let i = start; i <= end; i++) {
-    html += `<button class="nav-page-btn ${i === cur ? 'active' : ''}" onclick="goToChapterByIndex(${i})">${i + 1}</button>`
-  }
-
-  if (end < total - 1) html += `<span style="padding:0 4px;color:var(--color-text-light)">…</span><button class="nav-page-btn" onclick="goToChapterByIndex(${total - 1})">${total}</button>`
-
-  container.innerHTML = html
-}
-
-window.goToChapterByIndex = function(idx) {
-  currentChapterIndex = idx
-  const fullAccess = currentBook.is_free || document.getElementById('viewerBadge').textContent === '구매한 도서'
-  renderChapter(idx, fullAccess)
-}
-
-function updateProgress() {
-  const pct = allChapters.length ? Math.round(((currentChapterIndex + 1) / allChapters.length) * 100) : 0
-  const fill = document.getElementById('progressFill')
-  const label = document.getElementById('tocProgress')
-  if (fill) fill.style.width = pct + '%'
-  if (label) label.textContent = `읽는 중 ${pct}%`
-}
-
-function toggleMemoModal() {
-  let modal = document.getElementById('memoModal')
-  if (!modal) {
-    modal = document.createElement('div')
-    modal.id = 'memoModal'
-    modal.className = 'memo-modal'
-    modal.innerHTML = `
-      <div class="memo-modal__header">
-        <p class="memo-modal__title">메모 작성</p>
-        <span class="memo-modal__close" onclick="toggleMemoModal()">✕</span>
+  container.innerHTML = tagData.map((cat, ci) => `
+    <div class="tag-category">
+      <div class="tag-category__header">
+        <span>${cat.icon} ${cat.name}</span>
+        <span class="tag-category__limit">최대 ${cat.limit}개</span>
       </div>
-      <textarea placeholder="기억하고 싶은 내용을 메모해보세요."></textarea>
-      <p class="memo-modal__hint">💡 메모 저장 기능은 준비 중입니다.</p>
-      <button class="btn btn--primary btn--full btn--sm">저장하기</button>`
-    document.body.appendChild(modal)
-  }
-  modal.classList.toggle('show')
+      <div class="tag-list">
+        ${cat.tags.map(tag => `
+          <button class="tag-btn" onclick="toggleTag(${ci}, '${tag}', ${cat.limit})">${tag}</button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('')
 }
 
-function handleSaveLibrary() {
-  alert('내 서재 저장 기능은 준비 중입니다.')
+window.toggleTag = function(catIdx, tag, limit) {
+  const catName = tagData[catIdx].name
+  const existing = selectedTags.filter(t => t.cat === catName)
+  const found = selectedTags.findIndex(t => t.cat === catName && t.tag === tag)
+
+  if (found >= 0) {
+    selectedTags.splice(found, 1)
+  } else {
+    if (existing.length >= limit) { alert(`${catName} 카테고리는 최대 ${limit}개까지 선택 가능합니다.`); return }
+    if (selectedTags.length >= 10) { alert('태그는 최대 10개까지 선택 가능합니다.'); return }
+    selectedTags.push({ cat: catName, tag })
+  }
+
+  renderTagCategories()
+  selectedTags.forEach(t => {
+    const btns = document.querySelectorAll('.tag-btn')
+    btns.forEach(btn => { if (btn.textContent === t.tag) btn.classList.add('active') })
+  })
+
+  document.getElementById('selectedTagCount').textContent = `선택된 태그 (${selectedTags.length}/10)`
+  const summary = document.getElementById('selectedTagSummary')
+  if (summary) {
+    summary.innerHTML = selectedTags.length
+      ? selectedTags.map(t => `<span class="tag-btn active">${t.tag}</span>`).join('')
+      : '<span style="font-size:13px;color:var(--color-text-light)">태그를 선택해주세요</span>'
+  }
+}
+
+// ─── 기본 파트 초기화 ───
+function initDefaultParts() {
+  window.parts = [
+    { title: 'PART 1', chapters: ['소제목을 입력해주세요'] }
+  ]
+  renderParts()
+}
+
+// ─── 파트 렌더링 ───
+function renderParts() {
+  const list = document.getElementById('partsList')
+  if (!list) return
+
+  list.innerHTML = window.parts.map((part, pi) => `
+    <div class="part-item" id="part-${pi}">
+      <div class="part-item__header">
+        <input type="text" class="input part-item__title" value="${part.title}"
+          onchange="window.parts[${pi}].title = this.value" placeholder="파트 제목">
+        <button class="btn btn--outline-gray btn--sm" onclick="deletePart(${pi})">삭제</button>
+      </div>
+      <div class="chapters-list" id="chapters-${pi}">
+        ${part.chapters.map((ch, ci) => `
+          <div class="chapter-item">
+            <span class="chapter-item__num">${ci + 1}</span>
+            <input type="text" class="input chapter-item__input" value="${ch}"
+              onchange="window.parts[${pi}].chapters[${ci}] = this.value" placeholder="소제목 입력">
+            <button class="chapter-item__del" onclick="deleteChapter(${pi}, ${ci})">✕</button>
+          </div>
+        `).join('')}
+      </div>
+      <button class="add-chapter-btn" onclick="addChapter(${pi})">+ 소제목 추가</button>
+    </div>
+  `).join('')
+}
+
+window.addPart = function() {
+  window.parts.push({ title: `PART ${window.parts.length + 1}`, chapters: [''] })
+  renderParts()
+}
+
+window.deletePart = function(pi) {
+  if (window.parts.length <= 1) { alert('최소 1개의 파트가 필요합니다.'); return }
+  window.parts.splice(pi, 1)
+  renderParts()
+}
+
+window.addChapter = function(pi) {
+  window.parts[pi].chapters.push('')
+  renderParts()
+}
+
+window.deleteChapter = function(pi, ci) {
+  if (window.parts[pi].chapters.length <= 1) { alert('최소 1개의 소제목이 필요합니다.'); return }
+  window.parts[pi].chapters.splice(ci, 1)
+  renderParts()
+}
+
+window.saveParts = function() {
+  const allFilled = window.parts.every(p => p.title && p.chapters.every(c => c.trim()))
+  if (!allFilled) { alert('모든 파트 제목과 소제목을 입력해주세요.'); return }
+  alert('파트 구성이 저장되었습니다.')
+  goToStep(4)
+}
+
+// ─── 목차 리스트 렌더링 (STEP 4) ───
+function renderTocList() {
+  const tocList = document.getElementById('tocList')
+  if (!tocList) return
+
+  tocList.innerHTML = window.parts.map((part, pi) => `
+    <div class="toc-part">
+      <div class="toc-part__title">${part.title}</div>
+      ${part.chapters.map((ch, ci) => `
+        <div class="toc-chapter-item ${window.currentChapterKey === `${pi}-${ci}` ? 'active' : ''}"
+          onclick="selectChapter(${pi}, ${ci})">
+          <span>${ci + 1}. ${ch || '(소제목 없음)'}</span>
+          <span class="toc-chapter-item__len">${(window.chapterContents[`${pi}-${ci}`] || '').replace(/<[^>]*>/g, '').length}자</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('')
+}
+
+window.selectChapter = function(pi, ci) {
+  saveCurrentChapter()
+  window.currentChapterKey = `${pi}-${ci}`
+  const part = window.parts[pi]
+  const ch = part?.chapters[ci] || ''
+
+  document.getElementById('editorBreadcrumb').textContent = part?.title || ''
+  document.getElementById('editorChapterTitle').textContent = ch
+  document.getElementById('editorContentArea').innerHTML = window.chapterContents[`${pi}-${ci}`] || ''
+  updateEditorCharCount()
+
+  const tipIdx = Math.floor(Math.random() * writingTips.length)
+  document.getElementById('writingTip').textContent = writingTips[tipIdx]
+
+  renderTocList()
+}
+
+function saveCurrentChapter() {
+  if (!window.currentChapterKey) return
+  const area = document.getElementById('editorContentArea')
+  if (area) window.chapterContents[window.currentChapterKey] = area.innerHTML
+}
+
+window.filterToc = function(query) {
+  const items = document.querySelectorAll('.toc-chapter-item')
+  items.forEach(item => {
+    item.style.display = item.textContent.includes(query) ? '' : 'none'
+  })
+}
+
+// ─── 에디터 툴바 ───
+window.execFormat = function(cmd, value) {
+  document.getElementById('editorContentArea')?.focus()
+  document.execCommand(cmd, false, value || null)
+}
+
+window.insertBlockquote = function() {
+  document.execCommand('formatBlock', false, 'blockquote')
+}
+
+window.insertImage = function() {
+  const url = prompt('이미지 URL을 입력하세요:')
+  if (url) document.execCommand('insertImage', false, url)
+}
+
+window.insertLink = function() {
+  const url = prompt('링크 URL을 입력하세요:')
+  if (url) document.execCommand('createLink', false, url)
+}
+
+window.onEditorInput = function() {
+  updateEditorCharCount()
+  triggerAutoSave()
+}
+
+window.handleEditorKeydown = function(e) {
+  if (e.key === 'Tab') { e.preventDefault(); document.execCommand('insertText', false, '    ') }
+}
+
+function updateEditorCharCount() {
+  const area = document.getElementById('editorContentArea')
+  const count = area ? area.innerText.replace(/\n/g, '').length : 0
+  const el = document.getElementById('editorCharCount')
+  if (el) el.textContent = count
+}
+
+// ─── 발행 체크리스트 ───
+function renderPublishChecklist() {
+  const checks = [
+    { icon: '📝', text: '책 제목', status: bookData.title ? 'ok' : 'err', statusText: bookData.title ? '완료' : '필요' },
+    { icon: '📄', text: '한 줄 소개', status: bookData.oneLine ? 'ok' : 'warn', statusText: bookData.oneLine ? '완료' : '권장' },
+    { icon: '🗂', text: '파트 구성', status: window.parts.length > 0 ? 'ok' : 'err', statusText: `${window.parts.length}개 파트` },
+    { icon: '✍️', text: '내용 작성', status: Object.keys(window.chapterContents).length > 0 ? 'ok' : 'warn', statusText: `${Object.keys(window.chapterContents).length}개 챕터 작성됨` },
+    { icon: '🏷', text: '태그', status: selectedTags.length > 0 ? 'ok' : 'warn', statusText: selectedTags.length > 0 ? `${selectedTags.length}개 선택됨` : '권장' },
+  ]
+
+  const cl = document.getElementById('publishChecklist')
+  if (cl) cl.innerHTML = checks.map(c => `
+    <div class="publish-check-item">
+      <span class="publish-check-icon">${c.icon}</span>
+      <span class="publish-check-text">${c.text}</span>
+      <span class="publish-check-status ${c.status}">${c.statusText}</span>
+    </div>`).join('')
+
+  const preview = document.getElementById('publishPreview')
+  if (preview) preview.innerHTML = `
+    <div class="publish-preview__cover" style="background:${bookData.coverColor};color:${bookData.coverTextColor}">
+      ${bookData.title || '(제목 없음)'}
+    </div>
+    <div class="publish-preview__info">
+      <h3>${bookData.title || '(제목을 입력해주세요)'}</h3>
+      <p>${bookData.oneLine || '(한 줄 소개를 입력해주세요)'}</p>
+      <p style="margin-top:8px;font-size:14px;font-weight:600;color:var(--color-primary)">
+        ${bookData.type === 'free' ? '무료' : (bookData.price ? parseInt(bookData.price).toLocaleString() + '원' : '가격 미설정')}
+      </p>
+      <p style="margin-top:8px;font-size:13px">태그: ${selectedTags.map(t => t.tag).join(', ') || '없음'}</p>
+    </div>`
+}
+
+// ─── 임시저장 / 자동저장 ───
+window.saveDraft = function() {
+  saveCurrentChapter()
+  bookData.title = document.getElementById('bookTitle')?.value || ''
+  showAutoSave()
+  alert('임시저장되었습니다.')
+}
+
+function triggerAutoSave() {
+  clearTimeout(autoSaveTimer)
+  const el = document.getElementById('saveStatusText')
+  if (el) el.textContent = '저장 중...'
+  autoSaveTimer = setTimeout(() => { showAutoSave() }, 1500)
+}
+
+function showAutoSave() {
+  const now = new Date()
+  const time = now.toTimeString().slice(0, 8)
+  const el = document.getElementById('saveStatusText')
+  const timeEl = document.getElementById('autosaveTime')
+  if (el) el.textContent = '자동저장됨'
+  if (timeEl) timeEl.textContent = `마지막 저장: ${time}`
+}
+
+function startAutoSave() {
+  setInterval(() => { triggerAutoSave() }, 30000)
+}
+
+// ─── 발행 ───
+window.publishBook = async function() {
+  saveCurrentChapter()
+  const title = document.getElementById('bookTitle')?.value || bookData.title
+  if (!title) {
+    alert('책 제목을 입력해주세요.')
+    goToStep(1)
+    return
+  }
+
+  const confirmed = confirm('도서를 발행하시겠습니까?\n발행 후에도 수정이 가능합니다.')
+  if (!confirmed) return
+
+  try {
+    const bookPayload = {
+      author_id: authorId,
+      title,
+      description: document.getElementById('bookDesc')?.value || '',
+      subtitle: document.getElementById('bookOneLine')?.value || '',
+      price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
+      is_free: bookData.type === 'free',
+      cover_color: bookData.coverColor,
+      cover_text_color: bookData.coverTextColor,
+      status: 'published',
+      tags: selectedTags.map(t => t.tag),
+    }
+
+    let savedBookId = bookId
+    if (bookId) {
+      await supabase.from('books').update(bookPayload).eq('id', bookId)
+    } else {
+      const { data } = await supabase.from('books').insert(bookPayload).select('id').single()
+      savedBookId = data?.id
+    }
+
+    if (savedBookId) {
+      await supabase.from('book_contents').delete().eq('book_id', savedBookId)
+      const contentRows = []
+      let orderIdx = 0
+      window.parts.forEach(part => {
+        part.chapters.forEach((ch, ci) => {
+          const key = `${window.parts.indexOf(part)}-${ci}`
+          contentRows.push({
+            book_id: savedBookId,
+            part_title: part.title,
+            chapter_title: ch,
+            content: window.chapterContents[key] || '',
+            order_index: orderIdx++,
+          })
+        })
+      })
+      if (contentRows.length) await supabase.from('book_contents').insert(contentRows)
+    }
+
+    alert('🎉 도서가 발행되었습니다!')
+    window.location.href = 'mypage.html?mode=author'
+  } catch (err) {
+    alert('발행 중 오류가 발생했습니다.')
+    console.error(err)
+  }
+}
+
+window.openPreview = function() {
+  alert('미리보기 기능은 준비 중입니다.')
+}
+
+window.showExampleToc = function() {
+  const modal = document.getElementById('exampleModal')
+  if (modal) modal.style.display = 'flex'
+}
+
+window.closeExampleModal = function() {
+  const modal = document.getElementById('exampleModal')
+  if (modal) modal.style.display = 'none'
 }
