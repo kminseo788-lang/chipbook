@@ -150,3 +150,22 @@
 .success-flow-step { text-align: center; font-size: 13px; }
 .success-flow-step__icon { font-size: 24px; margin-bottom: 6px; }
 .success-flow-arrow { color: var(--color-border); font-size: 20px; }
+
+
+/* ─── 반응형 ─── */
+@media (max-width: 1024px) {
+  .payment-inner { max-width: 100%; }
+  .service-grid { grid-template-columns: repeat(2, 1fr); }
+  .caution-grid { grid-template-columns: repeat(2, 1fr); }
+  .success-flow-steps { flex-wrap: wrap; gap: 12px; }
+}
+
+@media (max-width: 768px) {
+  .payment-page { padding: 24px 0 48px; }
+  .payment-title { font-size: 20px; }
+  .payment-product { flex-direction: column; }
+  .payment-product__price { font-size: 20px; }
+  .payment-step__line { min-width: 30px; }
+  .caution-grid { grid-template-columns: 1fr; }
+  .service-grid { grid-template-columns: repeat(2, 1fr); }
+}
