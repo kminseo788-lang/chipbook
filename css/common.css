@@ -563,3 +563,10 @@ input, textarea { font-family: inherit; }
   .header__left { flex: 1; }
   .header__right { gap: 16px; }
 }
+
+@media (max-width: 1024px) {
+  .header__auth-btns .btn { 
+    padding: 0 12px;
+    font-size: 13px;
+  }
+}
