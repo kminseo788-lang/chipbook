@@ -301,11 +301,14 @@
 @media (max-width: 768px) {
   .mypage-wrap { padding: 24px 0 48px; }
   .mypage-inner {
-    flex-direction: column;
+    flex-direction: column !important;
     gap: 16px;
   }
-  .mypage-sidebar { width: 100%; }
-  .mypage-profile { padding: 20px; }
+  .mypage-sidebar {
+    width: 100% !important;
+    flex-shrink: unset;
+  }
+  .mypage-content { width: 100%; min-width: 0; }
 
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .reading-books { grid-template-columns: repeat(2, 1fr); }
@@ -321,6 +324,4 @@
 
   .library-stats { flex-wrap: wrap; }
   .library-stat { min-width: 33%; }
-
-  .purchase-item__actions .btn { font-size: 12px; padding: 0 10px; }
 }
