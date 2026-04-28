@@ -294,3 +294,33 @@
   transition: background var(--transition);
 }
 .revenue-bar:hover { background: var(--color-primary); }
+
+
+
+/* ─── 반응형 ─── */
+@media (max-width: 768px) {
+  .mypage-wrap { padding: 24px 0 48px; }
+  .mypage-inner {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .mypage-sidebar { width: 100%; }
+  .mypage-profile { padding: 20px; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .reading-books { grid-template-columns: repeat(2, 1fr); }
+  .author-books-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .author-book-card { width: 100%; }
+  .author-book-card__cover { width: 100%; height: 160px; }
+
+  .welcome-banner { padding: 20px; }
+  .welcome-banner__visual { display: none; }
+
+  .library-stats { flex-wrap: wrap; }
+  .library-stat { min-width: 33%; }
+
+  .purchase-item__actions .btn { font-size: 12px; padding: 0 10px; }
+}
