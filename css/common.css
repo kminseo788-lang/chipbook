@@ -556,17 +556,17 @@ input, textarea { font-family: inherit; }
   color: var(--color-text);
 }
 
-@media (max-width: 768px) {
-  .header__hamburger { display: flex; }
+@media (max-width: 1024px) {
+  :root { --header-height: 56px; }
+  .inner { padding: 0 16px; }
+  .header__inner { padding: 0 16px; gap: 12px; justify-content: space-between; }
+  .header__nav { display: none; }
+  .header__slogan { display: none; }
   .header__auth-btns { display: none; }
-  .header__inner { justify-content: space-between; }
+  .header__hamburger { display: flex; }
   .header__left { flex: 1; }
   .header__right { gap: 16px; }
-}
-
-@media (max-width: 1024px) {
-  .header__auth-btns .btn { 
-    padding: 0 12px;
-    font-size: 13px;
-  }
+  .btn { height: 44px; font-size: 14px; }
+  .btn--lg { height: 50px; font-size: 15px; }
+  .section-header__title { font-size: 18px; }
 }
