@@ -6,17 +6,11 @@
 
 import { supabase } from './supabase.js'
 
-// ─────────────────────────────────────────
-// 현재 로그인 유저 가져오기
-// ─────────────────────────────────────────
 async function getCurrentUser() {
   const { data: { user } } = await supabase.auth.getUser()
   return user
 }
 
-// ─────────────────────────────────────────
-// URL 파라미터 유틸리티
-// ─────────────────────────────────────────
 function getParam(name) {
   const params = new URLSearchParams(window.location.search)
   return params.get(name)
@@ -26,9 +20,6 @@ function getCurrentBookId() {
   return getParam('book_id')
 }
 
-// ─────────────────────────────────────────
-// 도서 조회
-// ─────────────────────────────────────────
 async function getBookById(bookId) {
   const { data, error } = await supabase
     .from('books')
@@ -49,9 +40,6 @@ async function getAuthorById(authorId) {
   return data
 }
 
-// ─────────────────────────────────────────
-// 구매 여부 확인
-// ─────────────────────────────────────────
 async function isPurchased(bookId) {
   const user = await getCurrentUser()
   if (!user) return false
@@ -64,9 +52,6 @@ async function isPurchased(bookId) {
   return !!data
 }
 
-// ─────────────────────────────────────────
-// 찜 여부 확인
-// ─────────────────────────────────────────
 async function isWishlisted(bookId) {
   const user = await getCurrentUser()
   if (!user) return false
@@ -79,100 +64,59 @@ async function isWishlisted(bookId) {
   return !!data
 }
 
-// ─────────────────────────────────────────
-// 찜 토글
-// ─────────────────────────────────────────
 async function toggleWishlist(bookId) {
   const user = await getCurrentUser()
-  if (!user) {
-    window.location.href = 'login.html'
-    return false
-  }
+  if (!user) { window.location.href = 'login.html'; return false }
   const already = await isWishlisted(bookId)
   if (already) {
-    await supabase
-      .from('wishlist')
-      .delete()
-      .eq('user_id', user.id)
-      .eq('book_id', bookId)
+    await supabase.from('wishlist').delete().eq('user_id', user.id).eq('book_id', bookId)
     return false
   } else {
-    await supabase
-      .from('wishlist')
-      .insert({ user_id: user.id, book_id: bookId })
+    await supabase.from('wishlist').insert({ user_id: user.id, book_id: bookId })
     return true
   }
 }
 
-// ─────────────────────────────────────────
-// 도서 검색
-// ─────────────────────────────────────────
 async function searchBooks(params = {}) {
-  let query = supabase
-    .from('books')
-    .select('*, authors(pen_name)')
-    .eq('status', 'published')
-
-  if (params.keyword) {
-    query = query.or(`title.ilike.%${params.keyword}%,description.ilike.%${params.keyword}%`)
-  }
+  let query = supabase.from('books').select('*, authors(pen_name)').eq('status', 'published')
+  if (params.keyword) query = query.or(`title.ilike.%${params.keyword}%,description.ilike.%${params.keyword}%`)
   if (params.type === 'free') query = query.eq('is_free', true)
   if (params.type === 'recommended') query = query.eq('is_free', false)
   if (params.tag) query = query.contains('tags', [params.tag])
   if (params.author_id) query = query.eq('author_id', params.author_id)
-
   const { data, error } = await query
   if (error) return []
   return data
 }
 
-// ─────────────────────────────────────────
-// 가격 포맷
-// ─────────────────────────────────────────
 function formatPrice(price) {
   return price === 0 ? '무료' : price.toLocaleString('ko-KR') + '원'
 }
 
-// ─────────────────────────────────────────
-// 도서 카드 HTML 생성
-// ─────────────────────────────────────────
 function createBookCard(book, options = {}) {
   const isFree = book.is_free
   const authorName = book.authors?.pen_name || book.author_name || ''
-
   return `
     <div class="book-card" data-book-id="${book.id}">
       <a href="book-detail.html?book_id=${book.id}" class="book-card__cover-link">
-      <div class="book-card__cover" style="background:${book.cover_color}; color:${book.cover_text_color}; overflow:hidden; position:relative;">
-  ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
+        <div class="book-card__cover" style="background:${book.cover_color}; color:${book.cover_text_color}; overflow:hidden; position:relative;">
+          ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
           ${isFree ? '<span class="badge badge--free">무료</span>' : ''}
           <div class="book-card__cover-title">${book.title}</div>
         </div>
       </a>
       <div class="book-card__info">
-        <a href="book-detail.html?book_id=${book.id}">
-          <p class="book-card__title">${book.title}</p>
-        </a>
+        <a href="book-detail.html?book_id=${book.id}"><p class="book-card__title">${book.title}</p></a>
         <p class="book-card__subtitle">${book.subtitle || ''}</p>
         <p class="book-card__author">${authorName} 지음</p>
-        ${options.showStats ? `
-          <div class="book-card__stats">
-            <span>♡ ${((book.like_count||0)/1000).toFixed(1)}K</span>
-            <span>👁 ${((book.view_count||0)/1000).toFixed(1)}K</span>
-          </div>` : ''}
-        ${options.showRating ? `
-          <div class="book-card__rating">
-            <span class="stars">★</span> ${book.rating||0} (${book.review_count||0})
-          </div>` : ''}
-        ${options.showPrice ? `
-          <p class="book-card__price">${isFree ? '무료' : formatPrice(book.price)}</p>` : ''}
+        ${options.showStats ? `<div class="book-card__stats"><span>♡ ${((book.like_count||0)/1000).toFixed(1)}K</span><span>👁 ${((book.view_count||0)/1000).toFixed(1)}K</span></div>` : ''}
+        ${options.showRating ? `<div class="book-card__rating"><span class="stars">★</span> ${book.rating||0} (${book.review_count||0})</div>` : ''}
+        ${options.showPrice ? `<p class="book-card__price">${isFree ? '무료' : formatPrice(book.price)}</p>` : ''}
       </div>
     </div>`
 }
 
-// ─────────────────────────────────────────
-// 헤더 렌더링
-// ─────────────────────────────────────────
+// ─── 헤더 렌더링 ───
 async function renderHeader(options = {}) {
   const { isViewer = false } = options
   if (isViewer) return
@@ -180,10 +124,8 @@ async function renderHeader(options = {}) {
   const headerEl = document.getElementById('header')
   if (!headerEl) return
 
-  // 실제 로그인 유저 확인
   const user = await getCurrentUser()
   const isLoggedIn = !!user
-  const userName = user?.user_metadata?.name || ''
 
   headerEl.innerHTML = `
     <div class="header__inner">
@@ -207,33 +149,58 @@ async function renderHeader(options = {}) {
         <a href="${isLoggedIn ? 'mypage.html' : 'login.html'}" class="header__icon" title="마이페이지">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
+        <div class="header__auth-btns">
+          ${isLoggedIn
+            ? `<a href="mypage.html" class="btn btn--primary btn--sm">마이페이지</a>
+               <button onclick="handleSignOut()" class="btn btn--outline-gray btn--sm">로그아웃</button>`
+            : `<a href="login.html" class="btn btn--outline-gray btn--sm">로그인</a>
+               <a href="signup.html" class="btn btn--primary btn--sm">무료 회원가입</a>`
+          }
+        </div>
+        <!-- 햄버거 버튼 (모바일 전용) -->
+        <button class="header__hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 모바일 메뉴 -->
+    <div class="mobile-menu" id="mobileMenu">
+      <nav class="mobile-menu__nav">
+        <a href="search.html?type=all" class="mobile-menu__item">도서검색</a>
+        <a href="search.html?type=free" class="mobile-menu__item">무료도서</a>
+        <a href="search.html?type=recommended" class="mobile-menu__item">추천도서</a>
+        <a href="author-landing.html" class="mobile-menu__item">작가도전</a>
+      </nav>
+      <div class="mobile-menu__footer">
         ${isLoggedIn
-        ? `<span style="display:flex;gap:8px;">
-    <a href="mypage.html" class="btn btn--primary">마이페이지</a>
-    <button onclick="handleSignOut()" class="btn btn--outline-gray">로그아웃</button>
-  </span>`
-          : `<span style="display:flex;gap:8px;">
-              <a href="login.html" class="btn btn--outline-gray">로그인</a>
-              <a href="signup.html" class="btn btn--primary">무료 회원가입</a>
-            </span>`
+          ? `<a href="mypage.html" class="btn btn--primary btn--full">마이페이지</a>
+             <button onclick="handleSignOut()" class="btn btn--outline-gray btn--full" style="margin-top:8px">로그아웃</button>`
+          : `<a href="login.html" class="btn btn--outline-gray btn--full">로그인</a>
+             <a href="signup.html" class="btn btn--primary btn--full" style="margin-top:8px">무료 회원가입</a>`
         }
       </div>
     </div>`
 
-  // 현재 페이지 nav 활성화
   const path = window.location.pathname.split('/').pop()
   headerEl.querySelectorAll('.header__nav-item').forEach(a => {
     if (a.href.includes(path)) a.classList.add('active')
   })
 }
 
-// ─────────────────────────────────────────
-// 푸터 렌더링
-// ─────────────────────────────────────────
+// ─── 모바일 메뉴 토글 ───
+window.toggleMobileMenu = function() {
+  const menu = document.getElementById('mobileMenu')
+  const btn = document.getElementById('hamburgerBtn')
+  if (!menu) return
+  menu.classList.toggle('open')
+  btn.classList.toggle('open')
+}
+
+// ─── 푸터 렌더링 ───
 function renderFooter() {
   const footerEl = document.getElementById('footer')
   if (!footerEl) return
-
   footerEl.innerHTML = `
     <div class="footer__inner">
       <p class="footer__logo">chipbook</p>
@@ -248,29 +215,15 @@ function renderFooter() {
     </div>`
 }
 
-// ─────────────────────────────────────────
-// 공통 초기화
-// ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
   await renderHeader()
   renderFooter()
 })
 
-// 전역 export (다른 파일에서 import해서 사용)
 export {
-  getCurrentUser,
-  getParam,
-  getCurrentBookId,
-  getBookById,
-  getAuthorById,
-  isPurchased,
-  isWishlisted,
-  toggleWishlist,
-  searchBooks,
-  formatPrice,
-  createBookCard,
-  renderHeader,
-  renderFooter
+  getCurrentUser, getParam, getCurrentBookId, getBookById, getAuthorById,
+  isPurchased, isWishlisted, toggleWishlist, searchBooks,
+  formatPrice, createBookCard, renderHeader, renderFooter
 }
 
 window.handleSignOut = async function() {
