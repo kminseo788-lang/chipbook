@@ -19,7 +19,7 @@ async function renderTags() {
   const container = document.getElementById('heroTagList')
   if (!container) return
   // 태그는 고정값 사용 (books 테이블의 tags 컬럼에서 가져올 수도 있음)
-  const tags = ['시간관리', '돈절약', '미니멀라이프', '육아', '습관', '자기계발', '관계', '정리정돈']
+  const tags = ['살림', '육아', '재테크', '인간관계', '자기계발', '시간관리', '정리정돈', '건강', '1인가구', '직장인']
   container.innerHTML = tags.map(tag =>
     `<span class="tag" onclick="searchByTag('${tag}')">#${tag}</span>`
   ).join('')

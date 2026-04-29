@@ -10,8 +10,7 @@ let selectedTags = []
 let viewMode = 'grid'
 let currentResults = []
 
-const allTags = ['시간관리', '돈절약', '미니멀라이프', '육아', '습관', '자기계발', '관계', '정리정돈', '재테크', '루틴']
-
+const allTags = ['문학', '비문학', '살림', '육아', '건강', '인간관계', '자기계발', '재테크', '시간관리', '정리정돈', '심리', '시', '소설', '에세이', '1인가구', '신혼부부', '직장인', '주부', '초보부모', '학생', '시니어']
 document.addEventListener('DOMContentLoaded', async () => {
   renderTagSelector()
   await parseUrlAndSearch()
