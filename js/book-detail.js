@@ -144,11 +144,6 @@ async function renderAuthor(book) {
 async function renderMoreBooks(book) {
   const moreEl = document.getElementById('authorMoreBooks')
   if (!moreEl) return
-  
-  console.log('화면 너비:', window.innerWidth) // ← 이거 추가
-async function renderMoreBooks(book) {
-  const moreEl = document.getElementById('authorMoreBooks')
-  if (!moreEl) return
 
   const { data: otherBooks } = await supabase
     .from('books')
@@ -167,16 +162,16 @@ async function renderMoreBooks(book) {
   const listEl = document.getElementById('authorMoreBooksList')
   const isMobile = () => window.innerWidth <= 768
 
-const renderList = (count) => {
-  listEl.innerHTML = otherBooks.slice(0, count).map(b =>
-    createBookCard(b, { showRating: true, showPrice: true })
-  ).join('')
-}
+  const renderList = (count) => {
+    listEl.innerHTML = otherBooks.slice(0, count).map(b =>
+      createBookCard(b, { showRating: true, showPrice: true })
+    ).join('')
+  }
 
-const initialCount = isMobile() ? 4 : otherBooks.length
-renderList(initialCount)
+  const initialCount = isMobile() ? 4 : otherBooks.length
+  renderList(initialCount)
 
-if (isMobile() && otherBooks.length > 4) {
+  if (isMobile() && otherBooks.length > 4) {
     const moreBtn = document.createElement('button')
     moreBtn.className = 'btn btn--outline btn--full'
     moreBtn.style.marginTop = '16px'
@@ -186,6 +181,6 @@ if (isMobile() && otherBooks.length > 4) {
       moreBtn.remove()
     }
     const sliderWrap = moreEl.querySelector('.book-slider-wrap')
-sliderWrap.insertAdjacentElement('afterend', moreBtn)
+    sliderWrap.insertAdjacentElement('afterend', moreBtn)
   }
 }
