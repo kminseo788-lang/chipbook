@@ -181,7 +181,7 @@
           <a href="book-detail.html?book_id=${b.id}" class="author-book-item">
             <div class="author-book-cover" style="background:${b.cover_color};color:${b.cover_text_color}">
               ${b.cover_url ? `<img src="${b.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
-              <span style="position:relative;z-index:1">${b.title}</span>
+             
             </div>
             <p class="author-book-title">${b.title}</p>
             <p class="author-book-tag">${b.is_free ? '무료' : formatPrice(b.price)}</p>
