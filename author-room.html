@@ -9,22 +9,76 @@
     .author-room-hero { background: #F7F5F0; padding: 56px 0; border-bottom: 1px solid var(--color-border); }
     .author-room-hero__inner { display: flex; align-items: center; gap: 48px; }
     .author-room-photo { width: 120px; height: 120px; border-radius: 50%; background: var(--color-primary-bg); display: flex; align-items: center; justify-content: center; font-size: 48px; flex-shrink: 0; }
+    .author-room-info { flex: 1; }
     .author-room-info h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
     .author-room-tagline { font-size: 16px; color: var(--color-primary); font-weight: 600; margin-bottom: 16px; }
     .author-room-bio { font-size: 15px; color: var(--color-text-sub); line-height: 1.8; margin-bottom: 16px; }
     .author-room-stat { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--color-text-sub); }
     .author-room-visual { margin-left: auto; font-size: 80px; opacity: .5; flex-shrink: 0; }
+
     .section { padding: 56px 0; }
     .author-books-slider { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 8px; }
+    .author-books-slider::-webkit-scrollbar { display: none; }
     .author-book-item { flex-shrink: 0; width: 160px; }
     .author-book-cover { width: 160px; height: 210px; border-radius: var(--radius-md); display: flex; align-items: flex-end; padding: 12px; font-size: 13px; font-weight: 700; margin-bottom: 10px; transition: transform .2s; }
     .author-book-cover:hover { transform: translateY(-4px); }
     .author-book-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
     .author-book-tag { font-size: 12px; color: var(--color-text-sub); }
+
     .similar-section { background: var(--color-bg-sub); padding: 48px 0; }
+
     .author-cta-banner { background: var(--color-primary-bg); border-radius: var(--radius-xl); padding: 40px; display: flex; gap: 32px; align-items: center; margin-top: 40px; }
+    .author-cta-banner__deco-l { font-size: 80px; flex-shrink: 0; }
+    .author-cta-banner__deco-r { font-size: 60px; flex-shrink: 0; opacity: .6; }
     .author-cta-text h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
     .author-cta-text p { font-size: 14px; color: var(--color-text-sub); line-height: 1.7; margin-bottom: 20px; }
+
+    /* ─── 반응형 ─── */
+    @media (max-width: 768px) {
+      /* 히어로 */
+      .author-room-hero { padding: 32px 0; }
+      .author-room-hero__inner {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .author-room-photo { width: 80px; height: 80px; font-size: 32px; }
+      .author-room-info { min-width: 0; }
+      .author-room-info h1 { font-size: 20px; }
+      .author-room-tagline { font-size: 14px; margin-bottom: 10px; }
+      .author-room-bio {
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+      .author-room-bio br { display: none; }
+      .author-room-stat { font-size: 13px; }
+      .author-room-visual { display: none; }
+
+      /* 브레드크럼 */
+      .breadcrumb { display: none; }
+
+      /* 섹션 */
+      .section { padding: 36px 0; }
+      .similar-section { padding: 36px 0; }
+
+      /* 섹션 헤더 */
+      .section-header { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 20px; }
+      .section-header__title { font-size: 16px; }
+      .section-header__sub { font-size: 12px; }
+
+      /* CTA 배너 */
+      .author-cta-banner {
+        flex-direction: column;
+        padding: 24px 20px;
+        gap: 16px;
+        text-align: center;
+        margin-top: 28px;
+      }
+      .author-cta-banner__deco-l { font-size: 48px; }
+      .author-cta-banner__deco-r { display: none; }
+      .author-cta-text h3 { font-size: 17px; }
+      .author-cta-text p { font-size: 13px; }
+      .author-cta-text .btn { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -74,21 +128,19 @@
         <div class="author-books-slider" id="similarBooksList"></div>
 
         <div class="author-cta-banner">
-          <div style="font-size:80px;flex-shrink:0">📖</div>
+          <div class="author-cta-banner__deco-l">📖</div>
           <div class="author-cta-text">
             <h3>당신의 경험도 누군가에게 큰 도움이 될 수 있어요</h3>
             <p>이 작가처럼, 당신의 이야기도 책이 될 수 있습니다.<br>지금 도전하고 새로운 변화를 시작해보세요.</p>
             <a href="author-landing.html" class="btn btn--primary">✏️ 작가 도전하기 →</a>
           </div>
-          <div style="font-size:60px;flex-shrink:0;opacity:.6">💡</div>
+          <div class="author-cta-banner__deco-r">💡</div>
         </div>
       </div>
     </section>
   </main>
   <footer id="footer"></footer>
 
-  
-  
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const books = window.MockData.books.filter(b => b.author_id === 'author001');
@@ -113,12 +165,12 @@
       }
     });
   </script>
-<script type="module">
-import { renderHeader, renderFooter } from "./js/common.js"
-document.addEventListener("DOMContentLoaded", async () => {
-  await renderHeader()
-  renderFooter()
-})
-</script>
+  <script type="module">
+    import { renderHeader, renderFooter } from "./js/common.js"
+    document.addEventListener("DOMContentLoaded", async () => {
+      await renderHeader()
+      renderFooter()
+    })
+  </script>
 </body>
 </html>
