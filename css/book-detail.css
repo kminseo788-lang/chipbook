@@ -156,7 +156,12 @@
 .book-detail-more { margin-bottom: 48px; }
 .book-slider-wrap { display: flex; align-items: center; gap: 16px; }
 .book-slider-viewport { overflow: hidden; flex: 1; }
-.book-slider-viewport .book-list { transition: transform .35s ease; }
+.book-slider-viewport .book-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  transition: transform .35s ease;
+}
 
 
 
