@@ -28,6 +28,8 @@
     .guide-feature__desc { font-size: 12px; color: var(--color-text-sub); line-height: 1.5; }
     .guide-feature__note { font-size: 11px; color: var(--color-text-light); margin-top: 4px; }
 
+    .promo-section-inner { display: flex; gap: 60px; align-items: center; }
+    .promo-section-deco { flex-shrink: 0; font-size: 80px; opacity: .5; }
     .promo-comparison { display: flex; align-items: center; gap: 32px; }
     .promo-old { flex: 1; padding: 20px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: #fff; }
     .promo-new { flex: 1; padding: 20px; border: 2px solid var(--color-primary); border-radius: var(--radius-lg); background: var(--color-primary-bg); }
@@ -45,6 +47,77 @@
     .final-cta { text-align: center; padding: 72px 0; }
     .final-cta p { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
     .final-cta .sub { font-size: 15px; color: var(--color-text-sub); font-weight: 400; margin-bottom: 28px; }
+
+    /* ─── 반응형 ─── */
+    @media (max-width: 768px) {
+      /* 헤더 */
+      header { padding: 0 20px !important; }
+
+      /* 히어로 */
+      .guide-hero { padding: 40px 0; }
+      .guide-hero__inner {
+        flex-direction: column;
+        gap: 28px;
+      }
+      .guide-hero__text h1 { font-size: 24px; }
+      .guide-hero__text p { font-size: 14px; margin-bottom: 20px; }
+      .guide-check { font-size: 13px; }
+      .guide-hero__image {
+        width: 100%;
+        height: 160px;
+        font-size: 52px;
+      }
+
+      /* 지원 기능 그리드 */
+      .section { padding: 40px 0; }
+      .guide-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      /* 마지막 홀수 아이템 가운데 정렬 */
+      .guide-feature:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+      .guide-feature { padding: 16px 10px; }
+      .guide-feature__icon { font-size: 26px; margin-bottom: 8px; }
+      .guide-feature__title { font-size: 12px; }
+      .guide-feature__desc { font-size: 11px; }
+
+      /* 홍보 섹션 */
+      .promo-section-inner {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .promo-section-deco { display: none; }
+      .promo-comparison {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .promo-arrow {
+        transform: rotate(90deg);
+        align-self: center;
+        font-size: 20px;
+      }
+      .promo-old,
+      .promo-new { width: 100%; box-sizing: border-box; }
+
+      /* 안내 박스 */
+      .notice-box { padding: 16px; gap: 12px; }
+      .notice-box__text p { font-size: 12px; }
+      .notice-box__text p:first-child { font-size: 13px; }
+
+      /* 최종 CTA */
+      .final-cta { padding: 48px 0; }
+      .final-cta p { font-size: 16px; }
+      .final-cta .sub { font-size: 14px; }
+      .final-cta a { width: 100% !important; padding: 0 24px !important; display: flex !important; align-items: center; justify-content: center; }
+
+      /* 섹션 타이틀 */
+      h2[style*="text-align:center"] { font-size: 20px !important; }
+      h2[style*="text-align:center"] span { font-size: 13px !important; }
+    }
   </style>
 </head>
 <body>
@@ -109,7 +182,7 @@
     <!-- 홍보 비교 -->
     <section class="section section--cream">
       <div class="inner">
-        <div style="display:flex;gap:60px;align-items:center">
+        <div class="promo-section-inner">
           <div style="flex:1">
             <h2 style="font-size:24px;font-weight:700;margin-bottom:8px">홍보도 더 단순해집니다</h2>
             <p style="font-size:18px;font-weight:700;margin-bottom:24px">여러 링크를 관리할 필요 없이<br>내 글이 담긴 링크 하나면 충분합니다.</p>
@@ -129,7 +202,7 @@
               </div>
             </div>
           </div>
-          <div style="flex-shrink:0;font-size:80px;opacity:.5">📱</div>
+          <div class="promo-section-deco">📱</div>
         </div>
       </div>
     </section>
@@ -158,14 +231,12 @@
   </main>
 
   <footer id="footer"></footer>
-  
-  
-<script type="module">
-import { renderHeader, renderFooter } from "./js/common.js"
-document.addEventListener("DOMContentLoaded", async () => {
-  await renderHeader()
-  renderFooter()
-})
-</script>
+  <script type="module">
+    import { renderHeader, renderFooter } from "./js/common.js"
+    document.addEventListener("DOMContentLoaded", async () => {
+      await renderHeader()
+      renderFooter()
+    })
+  </script>
 </body>
 </html>
