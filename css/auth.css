@@ -63,3 +63,10 @@
 .auth-switch:hover { text-decoration: underline; }
 .auth-switch-inline { color: var(--color-primary); font-weight: 600; }
 .auth-switch-inline:hover { text-decoration: underline; }
+
+/* ─── 반응형 ─── */
+@media (max-width: 768px) {
+  .auth-page { padding: 24px 16px; align-items: flex-start; }
+  .auth-card { padding: 32px 24px; border-radius: var(--radius-lg); }
+  .auth-title { font-size: 22px; }
+}
