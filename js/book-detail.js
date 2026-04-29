@@ -181,6 +181,6 @@ async function renderMoreBooks(book) {
       moreBtn.remove()
     }
     const sliderWrap = moreEl.querySelector('.book-slider-wrap')
-    sliderWrap.insertAdjacentElement('afterend', moreBtn)
+    listEl.insertAdjacentElement('afterend', moreBtn)
   }
 }
