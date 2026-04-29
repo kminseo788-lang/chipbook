@@ -71,7 +71,7 @@ async function renderBookTop(book) {
       <p class="book-detail-subtitle">${book.subtitle || ''}</p>
       <p class="book-detail-desc">${book.description || ''}</p>
       <div class="book-detail-meta">
-        <span>👤 ${authorName} 작가</span>
+     <a href="author-room.html?author_id=${book.author_id}" style="color:inherit">👤 ${authorName} 작가</a>
         <span class="book-detail-meta__sep">|</span>
         <span>★ ${book.rating || 0} (${book.review_count || 0})</span>
         <span class="book-detail-meta__sep">|</span>
@@ -138,6 +138,7 @@ async function renderAuthor(book) {
     <div class="author-profile__info">
       <p class="author-profile__name">${author.pen_name} 작가</p>
       <p class="author-profile__bio">${author.intro || ''}</p>
+      <a href="author-room.html?author_id=${author.id}" class="btn btn--outline btn--sm" style="margin-top:12px">작가의 방 보기 →</a>
     </div>`
 }
 
