@@ -22,3 +22,18 @@
 .terms-article ul, .terms-article ol { padding-left: 20px; margin-top: 8px; }
 .terms-article li { font-size: 14px; color: var(--color-text-sub); line-height: 1.8; margin-bottom: 4px; }
 .terms-more-btn-wrap { text-align: center; margin-top: 24px; }
+
+
+/* ─── 반응형 ─── */
+@media (max-width: 1024px) {
+  .terms-toc__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .terms-page { padding: 24px 0 48px; }
+  .terms-title { font-size: 22px; }
+  .terms-hero { flex-direction: column; gap: 16px; }
+  .terms-hero__icon { display: none; }
+  .terms-toc__grid { grid-template-columns: repeat(2, 1fr); }
+  .terms-body { padding: 20px 16px; }
+}
