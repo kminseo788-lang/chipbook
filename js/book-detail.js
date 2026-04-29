@@ -141,7 +141,11 @@ async function renderAuthor(book) {
       <a href="author-room.html?author_id=${author.id}" class="btn btn--outline btn--sm" style="margin-top:12px">작가의 방 보기 →</a>
     </div>`
 }
-
+async function renderMoreBooks(book) {
+  const moreEl = document.getElementById('authorMoreBooks')
+  if (!moreEl) return
+  
+  console.log('화면 너비:', window.innerWidth) // ← 이거 추가
 async function renderMoreBooks(book) {
   const moreEl = document.getElementById('authorMoreBooks')
   if (!moreEl) return
