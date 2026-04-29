@@ -152,7 +152,7 @@ async function renderMoreBooks(book) {
     .eq('author_id', book.author_id)
     .eq('status', 'published')
     .neq('id', book.id)
-    .limit(5)
+    .limit(10)
 
   if (!otherBooks?.length) return
 
@@ -160,7 +160,28 @@ async function renderMoreBooks(book) {
   const link = document.getElementById('authorMoreLink')
   if (link) link.href = `search.html?author_id=${book.author_id}`
 
-  document.getElementById('authorMoreBooksList').innerHTML = otherBooks.map(b =>
-    createBookCard(b, { showRating: true, showPrice: true })
-  ).join('')
+  const listEl = document.getElementById('authorMoreBooksList')
+  const isMobile = window.innerWidth <= 768
+  const initialCount = isMobile ? 4 : otherBooks.length
+
+  const renderList = (count) => {
+    listEl.innerHTML = otherBooks.slice(0, count).map(b =>
+      createBookCard(b, { showRating: true, showPrice: true })
+    ).join('')
+  }
+
+  renderList(initialCount)
+
+  // 모바일 더보기 버튼
+  if (isMobile && otherBooks.length > 4) {
+    const moreBtn = document.createElement('button')
+    moreBtn.className = 'btn btn--outline btn--full'
+    moreBtn.style.marginTop = '16px'
+    moreBtn.textContent = `더보기 (${otherBooks.length - 4}권 더)`
+    moreBtn.onclick = () => {
+      renderList(otherBooks.length)
+      moreBtn.remove()
+    }
+    moreEl.appendChild(moreBtn)
+  }
 }
