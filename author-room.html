@@ -8,7 +8,7 @@
   <style>
     .author-room-hero { background: #F7F5F0; padding: 56px 0; border-bottom: 1px solid var(--color-border); }
     .author-room-hero__inner { display: flex; align-items: center; gap: 48px; }
-    .author-room-photo { width: 120px; height: 120px; border-radius: 50%; background: var(--color-primary-bg); display: flex; align-items: center; justify-content: center; font-size: 48px; flex-shrink: 0; }
+    .author-room-photo { width: 120px; height: 120px; border-radius: 50%; background: var(--color-primary-bg); display: flex; align-items: center; justify-content: center; font-size: 48px; flex-shrink: 0; overflow: hidden; }
     .author-room-info { flex: 1; }
     .author-room-info h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
     .author-room-tagline { font-size: 16px; color: var(--color-primary); font-weight: 600; margin-bottom: 16px; }
@@ -19,60 +19,37 @@
     .section { padding: 56px 0; }
     .author-books-slider { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 8px; }
     .author-books-slider::-webkit-scrollbar { display: none; }
-    .author-book-item { flex-shrink: 0; width: 160px; }
-    .author-book-cover { width: 160px; height: 210px; border-radius: var(--radius-md); display: flex; align-items: flex-end; padding: 12px; font-size: 13px; font-weight: 700; margin-bottom: 10px; transition: transform .2s; }
+    .author-book-item { flex-shrink: 0; width: 160px; text-decoration: none; color: inherit; }
+    .author-book-cover { width: 160px; height: 210px; border-radius: var(--radius-md); display: flex; align-items: flex-end; padding: 12px; font-size: 13px; font-weight: 700; margin-bottom: 10px; transition: transform .2s; overflow: hidden; position: relative; }
     .author-book-cover:hover { transform: translateY(-4px); }
     .author-book-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
     .author-book-tag { font-size: 12px; color: var(--color-text-sub); }
 
     .similar-section { background: var(--color-bg-sub); padding: 48px 0; }
-
     .author-cta-banner { background: var(--color-primary-bg); border-radius: var(--radius-xl); padding: 40px; display: flex; gap: 32px; align-items: center; margin-top: 40px; }
     .author-cta-banner__deco-l { font-size: 80px; flex-shrink: 0; }
     .author-cta-banner__deco-r { font-size: 60px; flex-shrink: 0; opacity: .6; }
     .author-cta-text h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
     .author-cta-text p { font-size: 14px; color: var(--color-text-sub); line-height: 1.7; margin-bottom: 20px; }
 
-    /* ─── 반응형 ─── */
     @media (max-width: 768px) {
-      /* 히어로 */
       .author-room-hero { padding: 32px 0; }
-      .author-room-hero__inner {
-        flex-wrap: wrap;
-        gap: 20px;
-      }
+      .author-room-hero__inner { flex-wrap: wrap; gap: 20px; }
       .author-room-photo { width: 80px; height: 80px; font-size: 32px; }
       .author-room-info { min-width: 0; }
       .author-room-info h1 { font-size: 20px; }
       .author-room-tagline { font-size: 14px; margin-bottom: 10px; }
-      .author-room-bio {
-        font-size: 13px;
-        margin-bottom: 10px;
-      }
+      .author-room-bio { font-size: 13px; margin-bottom: 10px; }
       .author-room-bio br { display: none; }
       .author-room-stat { font-size: 13px; }
       .author-room-visual { display: none; }
-
-      /* 브레드크럼 */
       .breadcrumb { display: none; }
-
-      /* 섹션 */
       .section { padding: 36px 0; }
       .similar-section { padding: 36px 0; }
-
-      /* 섹션 헤더 */
       .section-header { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 20px; }
       .section-header__title { font-size: 16px; }
       .section-header__sub { font-size: 12px; }
-
-      /* CTA 배너 */
-      .author-cta-banner {
-        flex-direction: column;
-        padding: 24px 20px;
-        gap: 16px;
-        text-align: center;
-        margin-top: 28px;
-      }
+      .author-cta-banner { flex-direction: column; padding: 24px 20px; gap: 16px; text-align: center; margin-top: 28px; }
       .author-cta-banner__deco-l { font-size: 48px; }
       .author-cta-banner__deco-r { display: none; }
       .author-cta-text h3 { font-size: 17px; }
@@ -84,21 +61,22 @@
 <body>
   <header id="header"></header>
   <main class="page-wrapper">
+
     <div class="author-room-hero">
       <div class="inner author-room-hero__inner">
-        <div class="author-room-photo">👤</div>
+        <div class="author-room-photo" id="authorPhoto">👤</div>
         <div class="author-room-info">
           <div class="breadcrumb" style="margin-bottom:12px">
             <a href="index.html">🏠 홈</a>
             <span class="breadcrumb__sep">›</span>
             <span>작가의 방</span>
             <span class="breadcrumb__sep">›</span>
-            <span>김지혜 작가</span>
+            <span id="breadcrumbName">불러오는 중...</span>
           </div>
-          <h1>김지혜 <span style="font-weight:400">작가의 방</span></h1>
-          <p class="author-room-tagline">일상 속 작은 변화로 삶을 더 단단하게</p>
-          <p class="author-room-bio">살림, 시간관리, 관계 등 일상 속에서 누구나 마주하는 고민들을<br>쉽고 현실적인 방법으로 풀어내는 작가입니다.<br>작은 습관이 모여 인생을 바꿀 수 있다는 믿음으로 오늘도 글을 씁니다.</p>
-          <p class="author-room-stat">📚 출간 도서 <strong style="color:var(--color-primary)">12권</strong></p>
+          <h1 id="authorName">불러오는 중...</h1>
+          <p class="author-room-tagline" id="authorTagline"></p>
+          <p class="author-room-bio" id="authorBio"></p>
+          <p class="author-room-stat">📚 출간 도서 <strong style="color:var(--color-primary)" id="authorBookCount">0</strong>권</p>
         </div>
         <div class="author-room-visual">📚</div>
       </div>
@@ -109,11 +87,13 @@
         <div class="section-header">
           <div class="section-header__left">
             <h2 class="section-header__title">작가의 도서</h2>
-            <span class="section-header__sub">김지혜 작가가 쓴 도서를 만나보세요.</span>
+            <span class="section-header__sub" id="authorBooksSubtitle"></span>
           </div>
-          <a href="search.html?author_id=author001" class="section-header__more">전체 도서 보기 →</a>
+          <a id="authorAllBooksLink" href="search.html" class="section-header__more">전체 도서 보기 →</a>
         </div>
-        <div class="author-books-slider" id="authorBooksList"></div>
+        <div class="author-books-slider" id="authorBooksList">
+          <p style="color:var(--color-text-sub);font-size:14px">불러오는 중...</p>
+        </div>
       </div>
     </section>
 
@@ -125,7 +105,9 @@
           </div>
           <a href="search.html" class="section-header__more">더 많은 도서 보기 →</a>
         </div>
-        <div class="author-books-slider" id="similarBooksList"></div>
+        <div class="author-books-slider" id="similarBooksList">
+          <p style="color:var(--color-text-sub);font-size:14px">불러오는 중...</p>
+        </div>
 
         <div class="author-cta-banner">
           <div class="author-cta-banner__deco-l">📖</div>
@@ -141,35 +123,102 @@
   </main>
   <footer id="footer"></footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const books = window.MockData.books.filter(b => b.author_id === 'author001');
-      const container = document.getElementById('authorBooksList');
-      if (container) {
-        container.innerHTML = books.map(b => `
-          <a href="book-detail.html?book_id=${b.id}" class="author-book-item">
-            <div class="author-book-cover" style="background:${b.cover_color};color:${b.cover_text_color}">${b.title}</div>
-            <p class="author-book-title">${b.title}</p>
-            <p class="author-book-tag"># ${b.tags[0]}</p>
-          </a>`).join('');
-      }
-      const similar = window.MockData.books.filter(b => b.author_id !== 'author001').slice(0, 6);
-      const sc = document.getElementById('similarBooksList');
-      if (sc) {
-        sc.innerHTML = similar.map(b => `
-          <a href="book-detail.html?book_id=${b.id}" class="author-book-item">
-            <div class="author-book-cover" style="background:${b.cover_color};color:${b.cover_text_color}">${b.title}</div>
-            <p class="author-book-title">${b.title}</p>
-            <p class="author-book-tag"># ${b.tags[0]}</p>
-          </a>`).join('');
-      }
-    });
-  </script>
   <script type="module">
-    import { renderHeader, renderFooter } from "./js/common.js"
-    document.addEventListener("DOMContentLoaded", async () => {
+    import { supabase } from './js/supabase.js'
+    import { renderHeader, renderFooter, formatPrice } from './js/common.js'
+
+    document.addEventListener('DOMContentLoaded', async () => {
       await renderHeader()
       renderFooter()
+
+      const authorId = new URLSearchParams(window.location.search).get('author_id')
+      if (!authorId) {
+        document.getElementById('authorName').textContent = '작가를 찾을 수 없어요'
+        document.getElementById('authorBooksList').innerHTML = ''
+        document.getElementById('similarBooksList').innerHTML = ''
+        return
+      }
+
+      // ─── 작가 정보 조회 ───
+      const { data: author } = await supabase
+        .from('authors')
+        .select('*')
+        .eq('id', authorId)
+        .single()
+
+      if (!author) {
+        document.getElementById('authorName').textContent = '작가를 찾을 수 없어요'
+        return
+      }
+
+      // ─── 작가 프로필 렌더링 ───
+      document.title = `${author.pen_name} 작가의 방 — chipbook`
+      document.getElementById('breadcrumbName').textContent = `${author.pen_name} 작가`
+      document.getElementById('authorName').innerHTML = `${author.pen_name} <span style="font-weight:400">작가의 방</span>`
+      document.getElementById('authorTagline').textContent = author.tagline || ''
+      document.getElementById('authorBio').textContent = author.intro || ''
+      document.getElementById('authorBooksSubtitle').textContent = `${author.pen_name} 작가가 쓴 도서를 만나보세요.`
+      document.getElementById('authorAllBooksLink').href = `search.html?author_id=${authorId}`
+
+      if (author.profile_image) {
+        document.getElementById('authorPhoto').innerHTML =
+          `<img src="${author.profile_image}" style="width:100%;height:100%;object-fit:cover;">`
+      }
+
+      // ─── 작가 도서 조회 ───
+      const { data: books } = await supabase
+        .from('books')
+        .select('*')
+        .eq('author_id', authorId)
+        .eq('status', 'published')
+        .order('created_at', { ascending: false })
+
+      document.getElementById('authorBookCount').textContent = books?.length || 0
+
+      const container = document.getElementById('authorBooksList')
+      if (books?.length) {
+        container.innerHTML = books.map(b => `
+          <a href="book-detail.html?book_id=${b.id}" class="author-book-item">
+            <div class="author-book-cover" style="background:${b.cover_color};color:${b.cover_text_color}">
+              ${b.cover_url ? `<img src="${b.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
+              <span style="position:relative;z-index:1">${b.title}</span>
+            </div>
+            <p class="author-book-title">${b.title}</p>
+            <p class="author-book-tag">${b.is_free ? '무료' : formatPrice(b.price)}</p>
+          </a>`).join('')
+      } else {
+        container.innerHTML = '<p style="color:var(--color-text-sub);font-size:14px">등록된 도서가 없어요.</p>'
+      }
+
+      // ─── 비슷한 도서 조회 (같은 태그, 다른 작가) ───
+      const tags = books?.[0]?.tags || []
+      let similarQuery = supabase
+        .from('books')
+        .select('*, authors(pen_name)')
+        .eq('status', 'published')
+        .neq('author_id', authorId)
+        .limit(6)
+
+      if (tags.length) {
+        similarQuery = similarQuery.overlaps('tags', tags)
+      }
+
+      const { data: similarBooks } = await similarQuery
+
+      const sc = document.getElementById('similarBooksList')
+      if (similarBooks?.length) {
+        sc.innerHTML = similarBooks.map(b => `
+          <a href="book-detail.html?book_id=${b.id}" class="author-book-item">
+            <div class="author-book-cover" style="background:${b.cover_color};color:${b.cover_text_color}">
+              ${b.cover_url ? `<img src="${b.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
+              <span style="position:relative;z-index:1">${b.title}</span>
+            </div>
+            <p class="author-book-title">${b.title}</p>
+            <p class="author-book-tag">${b.authors?.pen_name || ''} 지음</p>
+          </a>`).join('')
+      } else {
+        sc.innerHTML = '<p style="color:var(--color-text-sub);font-size:14px">비슷한 도서가 없어요.</p>'
+      }
     })
   </script>
 </body>

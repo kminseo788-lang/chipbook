@@ -168,10 +168,10 @@ async function renderMoreBooks(book) {
     ).join('')
   }
 
-  const initialCount = isMobile() ? 4 : otherBooks.length
+  const initialCount = isMobile() ? 2 : otherBooks.length
   renderList(initialCount)
 
-  if (isMobile() && otherBooks.length > 4) {
+  if (isMobile() && otherBooks.length > 2) {
     const moreBtn = document.createElement('button')
     moreBtn.className = 'btn btn--outline btn--full'
     moreBtn.style.marginTop = '16px'
