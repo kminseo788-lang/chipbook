@@ -14,7 +14,6 @@
     .landing-hero__text h1 span { color: var(--color-primary); }
     .landing-hero__text p { font-size: 16px; color: var(--color-text-sub); line-height: 1.8; margin-bottom: 32px; }
     .landing-hero__image { flex-shrink: 0; width: 420px; height: 360px; background: #E8E4DC; border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; font-size: 100px; }
-    .landing-hero__header-btn { position: absolute; top: 20px; right: 40px; }
 
     .section { padding: 72px 0; }
     .section--cream { background: #FAF8F5; }
@@ -36,18 +35,104 @@
     .value-arrow { font-size: 24px; color: var(--color-border); flex-shrink: 0; padding: 0 8px; }
 
     .quote-section { background: #FAF8F5; padding: 72px 0; }
+    .quote-inner { display: flex; gap: 60px; align-items: center; }
     .quote-text { font-size: 32px; font-weight: 700; line-height: 1.5; color: var(--color-text); }
     .quote-text::before { content: '"'; font-size: 60px; color: var(--color-primary); line-height: 0; vertical-align: -20px; margin-right: 4px; }
     .quote-text::after { content: '"'; font-size: 60px; color: var(--color-primary); line-height: 0; vertical-align: -20px; margin-left: 4px; }
+    .quote-deco { flex-shrink: 0; font-size: 100px; opacity: .4; }
 
     .final-cta { text-align: center; padding: 80px 0; background: #FAF8F5; }
     .final-cta h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
     .final-cta p { font-size: 15px; color: var(--color-text-sub); margin-bottom: 32px; }
     .final-cta-btn { height: 56px; padding: 0 48px; font-size: 17px; border-radius: 40px; }
+
+    /* ─── 반응형 ─── */
+    @media (max-width: 768px) {
+      /* 헤더 */
+      header { padding: 0 20px !important; }
+
+      /* 히어로 */
+      .landing-hero { min-height: auto; }
+      .landing-hero__inner {
+        flex-direction: column;
+        gap: 32px;
+        padding: 48px 0 40px;
+        align-items: flex-start;
+      }
+      .landing-hero__text h1 {
+        font-size: 28px;
+        letter-spacing: -0.5px;
+      }
+      .landing-hero__text p { font-size: 15px; margin-bottom: 24px; }
+      .landing-hero__image {
+        width: 100%;
+        height: 180px;
+        font-size: 60px;
+        border-radius: var(--radius-lg);
+      }
+
+      /* 섹션 공통 */
+      .section { padding: 48px 0; }
+      .section-center-title { margin-bottom: 32px; }
+      .section-center-title h2 { font-size: 22px; }
+
+      /* 무료 콘텐츠 그리드 */
+      .problem-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .problem-item { padding: 16px 12px; }
+      .problem-item__icon { font-size: 32px; margin-bottom: 10px; }
+      .problem-item__text { font-size: 13px; }
+
+      /* 가치 흐름 */
+      .value-flow {
+        flex-direction: column;
+        gap: 0;
+        align-items: stretch;
+      }
+      .value-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        text-align: left;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .value-step:last-child { border-bottom: none; }
+      .value-step__icon {
+        font-size: 28px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        width: 40px;
+        text-align: center;
+      }
+      .value-step__content { flex: 1; }
+      .value-step__title { font-size: 15px; margin-bottom: 4px; }
+      .value-step__desc { font-size: 13px; }
+      .value-arrow { display: none; }
+
+      /* 인용구 */
+      .quote-section { padding: 48px 0; }
+      .quote-inner {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .quote-text { font-size: 22px; }
+      .quote-text::before,
+      .quote-text::after { font-size: 44px; vertical-align: -14px; }
+      .quote-deco { display: none; }
+
+      /* 최종 CTA */
+      .final-cta { padding: 56px 0; }
+      .final-cta h2 { font-size: 22px; }
+      .final-cta p { font-size: 14px; margin-bottom: 24px; }
+      .final-cta-btn { width: 100%; padding: 0 24px; }
+    }
   </style>
 </head>
 <body>
-  <!-- 랜딩 전용 헤더 (간소화) -->
+  <!-- 랜딩 전용 헤더 -->
   <header style="padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #FAF8F5; z-index: 100; border-bottom: 1px solid var(--color-border);">
     <a href="index.html" style="font-size: 20px; font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 8px;">
       📚 chipbook
@@ -89,7 +174,7 @@
           </div>
           <div class="problem-item">
             <div class="problem-item__icon">👛</div>
-            <p class="problem-item__text">시간 낭비, 돈 낭비, 시행착오의 반복은 결국 당신의 목이 되고 맙니다.</p>
+            <p class="problem-item__text">시간 낭비, 돈 낭비, 시행착오의 반복은 결국 당신의 몫이 되고 맙니다.</p>
           </div>
         </div>
       </div>
@@ -104,26 +189,34 @@
         <div class="value-flow">
           <div class="value-step">
             <div class="value-step__icon">✏️</div>
-            <p class="value-step__title">쓰는 사람</p>
-            <p class="value-step__desc">더 많은 시간을 들여 진짜 노하우를 담게 됩니다.</p>
+            <div class="value-step__content">
+              <p class="value-step__title">쓰는 사람</p>
+              <p class="value-step__desc">더 많은 시간을 들여 진짜 노하우를 담게 됩니다.</p>
+            </div>
           </div>
           <div class="value-arrow">→</div>
           <div class="value-step">
             <div class="value-step__icon">📖</div>
-            <p class="value-step__title">읽는 사람</p>
-            <p class="value-step__desc">손해를 보고 싶지 않아 실천하게 됩니다.</p>
+            <div class="value-step__content">
+              <p class="value-step__title">읽는 사람</p>
+              <p class="value-step__desc">손해를 보고 싶지 않아 실천하게 됩니다.</p>
+            </div>
           </div>
           <div class="value-arrow">→</div>
           <div class="value-step">
             <div class="value-step__icon">✅</div>
-            <p class="value-step__title">실천과 변화</p>
-            <p class="value-step__desc">실행하고 결과를 만들어 삶이 달라집니다.</p>
+            <div class="value-step__content">
+              <p class="value-step__title">실천과 변화</p>
+              <p class="value-step__desc">실행하고 결과를 만들어 삶이 달라집니다.</p>
+            </div>
           </div>
           <div class="value-arrow">→</div>
           <div class="value-step">
             <div class="value-step__icon">⭐</div>
-            <p class="value-step__title">좋은 평가와 수익</p>
-            <p class="value-step__desc">만족과 후기가 쌓여 다시 수익으로 돌아옵니다.</p>
+            <div class="value-step__content">
+              <p class="value-step__title">좋은 평가와 수익</p>
+              <p class="value-step__desc">만족과 후기가 쌓여 다시 수익으로 돌아옵니다.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -131,11 +224,11 @@
 
     <!-- 인용구 -->
     <section class="quote-section">
-      <div class="inner" style="display:flex;gap:60px;align-items:center">
+      <div class="inner quote-inner">
         <div style="flex:1">
           <p class="quote-text">내가 겪은 경험이,<br>누군가에게는<br>가장 필요한 답이 됩니다.</p>
         </div>
-        <div style="flex-shrink:0;font-size:100px;opacity:.4">📚</div>
+        <div class="quote-deco">📚</div>
       </div>
     </section>
 
@@ -150,14 +243,12 @@
   </main>
 
   <footer id="footer"></footer>
-  
-  
-<script type="module">
-import { renderHeader, renderFooter } from "./js/common.js"
-document.addEventListener("DOMContentLoaded", async () => {
-  await renderHeader()
-  renderFooter()
-})
-</script>
+  <script type="module">
+    import { renderHeader, renderFooter } from "./js/common.js"
+    document.addEventListener("DOMContentLoaded", async () => {
+      await renderHeader()
+      renderFooter()
+    })
+  </script>
 </body>
 </html>
