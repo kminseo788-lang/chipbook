@@ -530,3 +530,38 @@ input, textarea, select { font-family: inherit; }
 .example-part:last-child { border-bottom: none; }
 .example-part strong { font-size: 14px; display: block; margin-bottom: 8px; color: var(--color-primary); }
 .example-part p { font-size: 13px; color: var(--color-text-sub); padding-left: 12px; line-height: 1.8; }
+
+/* ─── 반응형 (모바일) ─── */
+@media (max-width: 768px) {
+
+  /* 헤더 nav 숨김 */
+  .editor-header__nav { display: none; }
+
+  /* 헤더 우측 버튼 간소화 */
+  .save-status { display: none; }
+  .editor-header__right { gap: 6px; }
+  .btn--sm { padding: 0 10px; font-size: 12px; }
+
+  /* 사이드바 숨김 → 상단 탭으로 대체 */
+  .editor-sidebar { display: none; }
+
+  /* 메인 영역 전체 너비 */
+  .editor-layout { flex-direction: column; }
+  .editor-main { padding: 16px 16px 60px; }
+
+  /* 섹션 패딩 축소 */
+  .editor-section { padding: 20px 16px; }
+
+  /* form 그리드 1열로 */
+  .form-grid { grid-template-columns: 1fr; }
+  .form-field--span2 { grid-column: span 1; }
+  .form-field--cover { grid-row: span 1; }
+  .form-field--row { grid-column: span 1; grid-template-columns: 1fr; }
+
+  /* STEP 4 내용작성 */
+  .content-editor-wrap { flex-direction: column; height: auto; }
+  .content-toc-panel { width: 100%; height: 200px; border-right: none; border-bottom: 1px solid var(--color-border); }
+  .content-editor-panel__header { flex-direction: column; gap: 8px; }
+  .editor-toolbar { gap: 2px; }
+  .editor-content-area { min-height: 300px; }
+}
