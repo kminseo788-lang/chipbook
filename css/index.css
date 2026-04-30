@@ -468,12 +468,14 @@
   }
   .hero__input {
     height:64px;
+     min-height: 64px;  
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     background: #fff;
     width: 100%;
     padding: 0 16px;
     box-shadow: var(--shadow-sm);
+    box-sizing: border-box; 
   }
   .hero__search-btn {
     width: 100%;
