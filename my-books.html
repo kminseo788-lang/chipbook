@@ -144,7 +144,7 @@
         </div>`).join('')
     })
    window.toggleHide = async (bookId, currentStatus, btn) => {
-  const actual = btn.textContent.trim() === '숨기기' ? 'published' : 'hidden'
+const actual = btn.textContent.trim() === '숨김' ? 'published' : 'hidden'
   const newStatus = actual === 'published' ? 'hidden' : 'published'
   const { error } = await supabase
     .from('books')
