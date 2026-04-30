@@ -137,7 +137,7 @@
   <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm">수정</a>
   <a href="viewer.html?book_id=${book.id}" class="btn btn--outline-gray btn--sm">보기</a>
   <button class="btn btn--outline-gray btn--sm" onclick="toggleHide('${book.id}', '${book.status}', this)">
-    ${book.status === 'hidden' ? '공 개' : '숨기기'}
+    ${book.status === 'hidden' ? '공 개' : '숨김'}
   </button>
   <button class="btn btn--outline-gray btn--sm" style="color:#e53935;border-color:#e53935" onclick="deleteBook('${book.id}')">삭제</button>
 </div>
