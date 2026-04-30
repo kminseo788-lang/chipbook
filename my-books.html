@@ -133,12 +133,38 @@
           </div>
           <div>${book.is_free ? '무료' : formatPrice(book.price)}</div>
           <div>${(book.purchase_count || 0)}권</div>
-          <div class="action-btns">
-            <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm">수정</a>
-            <a href="viewer.html?book_id=${book.id}" class="btn btn--outline-gray btn--sm">보기</a>
-          </div>
+         <div class="action-btns">
+  <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm">수정</a>
+  <a href="viewer.html?book_id=${book.id}" class="btn btn--outline-gray btn--sm">보기</a>
+  <button class="btn btn--outline-gray btn--sm" onclick="toggleHide('${book.id}', '${book.status}', this)">
+    ${book.status === 'hidden' ? '공개' : '숨기기'}
+  </button>
+  <button class="btn btn--outline-gray btn--sm" style="color:#e53935;border-color:#e53935" onclick="deleteBook('${book.id}')">삭제</button>
+</div>
         </div>`).join('')
     })
+    window.toggleHide = async (bookId, currentStatus, btn) => {
+  const newStatus = currentStatus === 'hidden' ? 'published' : 'hidden'
+  const { error } = await supabase
+    .from('books')
+    .update({ status: newStatus })
+    .eq('id', bookId)
+  if (!error) {
+    btn.textContent = newStatus === 'hidden' ? '공개' : '숨기기'
+    const row = btn.closest('.books-table-row')
+    const badge = row.querySelector('.status-badge')
+    badge.textContent = newStatus === 'published' ? '발행됨' : '숨김'
+    badge.className = `status-badge status-badge--${newStatus === 'published' ? 'published' : 'draft'}`
+  }
+}
+
+window.deleteBook = async (bookId) => {
+  if (!confirm('정말 삭제하시겠어요?\n삭제 후 복구가 불가능합니다.')) return
+  await supabase.from('book_contents').delete().eq('book_id', bookId)
+  const { error } = await supabase.from('books').delete().eq('id', bookId)
+  if (!error) location.reload()
+  else alert('삭제 중 오류가 발생했어요.')
+}
   </script>
 </body>
 </html>
