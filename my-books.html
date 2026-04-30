@@ -54,6 +54,39 @@
     .status-badge--draft { background: #FFF8E1; color: #F57F17; }
     .action-btns { display: flex; gap: 6px; }
     .empty-state { text-align: center; padding: 60px 20px; color: var(--color-text-sub); }
+
+  @media (max-width: 768px) {
+  .my-books-header h1 { font-size: 18px; }
+
+  /* 테이블 헤더 숨김 */
+  .books-table-header { display: none; }
+
+  /* 행 → 카드형으로 */
+  .books-table-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  /* 표지 + 제목 가로 배치 */
+  .books-table-row > div:nth-child(1),
+  .books-table-row > div:nth-child(2) {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* 버튼 2개씩 줄바꿈 */
+  .action-btns {
+    flex-wrap: wrap;
+  }
+  .action-btns .btn {
+    flex: 1;
+    min-width: calc(50% - 4px);
+    text-align: center;
+  }
+}  
   </style>
 </head>
 <body>
