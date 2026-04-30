@@ -468,7 +468,7 @@
   }
   .hero__input {
     height: 58px;
-     min-height: 64px;  
+   
      
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
