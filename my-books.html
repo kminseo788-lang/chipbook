@@ -150,7 +150,7 @@
     .update({ status: newStatus })
     .eq('id', bookId)
   if (!error) {
-    btn.textContent = newStatus === 'hidden' ? '공개' : '숨기기'
+    btn.textContent = newStatus === 'hidden' ? '공개' : '숨김'
     const row = btn.closest('.books-table-row')
     const badge = row.querySelector('.status-badge')
     badge.textContent = newStatus === 'published' ? '발행됨' : '숨김'
