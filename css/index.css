@@ -457,6 +457,7 @@
 
 /* 검색바 모바일 */
 /* 검색바 모바일 */
+  /* 검색바 모바일 */
   .hero__search {
     flex-direction: column;
     border-radius: var(--radius-md);
@@ -467,16 +468,8 @@
     gap: 8px;
   }
   .hero__input {
-    height: 58px;
-   
-     
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: #fff;
-    width: 100%;
-    padding: 0 16px;
-    box-shadow: var(--shadow-sm);
-  
+    height: 80px !important;
+    background: red !important;
   }
   .hero__search-btn {
     width: 100%;
