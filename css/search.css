@@ -259,15 +259,7 @@
 /* ─── 반응형 ─── */
 
 /* 노트북 (1025px 이상) → 화면 꽉 차게 */
-@media (min-width: 1025px) {
-  .search-hero { padding-left: 40px; padding-right: 40px; }
-  .search-results .inner {
-    max-width: 100%;
-    padding: 0 40px;
-  }
-  .search-hero__inner { max-width: 100%; }
-  .books-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; }
-}
+
 
 /* 태블릿 (769px~1024px) → 양쪽 여백 24px */
 @media (min-width: 769px) and (max-width: 1024px) {
