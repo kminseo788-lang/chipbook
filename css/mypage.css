@@ -324,6 +324,17 @@
 
   .library-stats { flex-wrap: wrap; }
   .library-stat { min-width: 33%; }
+
+ .author-books-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+.author-book-card {
+  width: 100% !important;
+}
+.author-book-card__cover {
+  width: 100% !important;
+  height: 160px;
+} 
 }
 
 @media (max-width: 1024px) {
