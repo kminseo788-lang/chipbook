@@ -467,10 +467,9 @@
     gap: 8px;
   }
   .hero__input {
-    height:64px;
-     min-height: 64px;  
-      -webkit-appearance: none; 
-       appearance: none;
+    height:56px;
+
+     
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     background: #fff;
