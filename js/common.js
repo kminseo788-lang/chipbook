@@ -231,3 +231,29 @@ window.handleSignOut = async function() {
   await supabase.auth.signOut()
   window.location.href = 'index.html'
 }
+
+// 탭바 렌더링
+function renderTabBar() {
+  // 에디터 페이지엔 탭바 안 넣음
+  if (document.body.classList.contains('editor-body')) return
+
+  const currentPage = location.pathname.split('/').pop() || 'index.html'
+  const tabs = [
+    { label: '홈', icon: '🏠', href: 'index.html' },
+    { label: '검색', icon: '🔍', href: 'search.html' },
+    { label: '찜', icon: '🤍', href: 'wishlist.html' },
+    { label: '마이', icon: '👤', href: 'mypage.html' },
+  ]
+
+  const nav = document.createElement('nav')
+  nav.className = 'mobile-tab-bar'
+  nav.innerHTML = tabs.map(t => `
+    <a href="${t.href}" class="tab-bar-item ${currentPage === t.href ? 'active' : ''}">
+      <span class="tab-bar-item__icon">${t.icon}</span>
+      <span class="tab-bar-item__label">${t.label}</span>
+    </a>
+  `).join('')
+  document.body.appendChild(nav)
+}
+
+renderTabBar()
