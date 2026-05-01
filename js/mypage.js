@@ -389,12 +389,49 @@ async function renderAuthorBooks(container) {
 
 // ─── 정산 내역 ───
 async function renderRevenue(container) {
+  const { data: authorProfile } = await supabase
+    .from('authors')
+    .select('id')
+    .eq('user_id', currentUser.id)
+    .single()
+
+  const { data: sales } = await supabase
+    .from('payments')
+    .select('*, books(title, price)')
+    .eq('books.author_id', authorProfile?.id)
+    .eq('payment_status', 'completed')
+
+  const totalRevenue = sales?.reduce((sum, p) => sum + (p.amount || 0), 0) || 0
+  const totalCount = sales?.length || 0
+
   container.innerHTML = `
     <div class="content-section">
       <div class="content-section__header">
         <p class="content-section__title">정산 내역</p>
       </div>
-      <p style="font-size:14px;color:var(--color-text-sub);padding:20px 0">정산 기능은 준비 중이에요.</p>
+      <div class="stats-grid" style="margin-bottom:24px">
+        <div class="stat-card">
+          <p class="stat-card__label">총 판매 금액</p>
+          <p class="stat-card__value">${totalRevenue.toLocaleString()}원</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__label">총 판매 수</p>
+          <p class="stat-card__value">${totalCount}권</p>
+        </div>
+      </div>
+      <div class="purchase-list">
+        ${sales?.length ? sales.map(p => `
+          <div class="purchase-item">
+            <div class="purchase-item__info">
+              <p class="purchase-item__title">${p.books?.title || ''}</p>
+              <p class="purchase-item__date">${p.paid_at?.slice(0,10)}</p>
+            </div>
+            <div class="purchase-item__actions">
+              <p style="font-weight:700;color:var(--color-primary)">${(p.amount||0).toLocaleString()}원</p>
+            </div>
+          </div>`).join('') 
+        : '<p style="font-size:14px;color:var(--color-text-sub)">판매 내역이 없어요.</p>'}
+      </div>
     </div>`
 }
 
