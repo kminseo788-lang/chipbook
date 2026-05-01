@@ -135,14 +135,16 @@
           <div class="form-field form-field--row">
             <div class="form-field__sub">
               <label class="form-field__label">도서 유형</label>
-              <div class="radio-group">
-                <label class="radio-item">
-                  <input type="radio" name="bookType" value="free" onchange="togglePrice(false)"> 무료
-                </label>
-                <label class="radio-item">
-                  <input type="radio" name="bookType" value="paid" checked onchange="togglePrice(true)"> 유료
-                </label>
-              </div>
+             <div class="radio-group">
+  <label class="radio-item">
+   <input type="radio" name="bookType" value="free" onchange="togglePrice('free')"> 무료
+<label class="radio-item">
+  <input type="radio" name="bookType" value="welcome" onchange="togglePrice('welcome')"> 신규회원 무료
+</label>
+...
+<input type="radio" name="bookType" value="paid" checked onchange="togglePrice('paid')"> 유료
+  </label>
+</div>
             </div>
             <div class="form-field__sub" id="priceField">
               <label class="form-field__label">가격 <span class="required">*</span></label>

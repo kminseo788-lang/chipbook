@@ -149,10 +149,10 @@ window.updateCount = function(el, countId, max) {
 }
 
 // ─── 가격 토글 ───
-window.togglePrice = function(show) {
-  bookData.type = show ? 'paid' : 'free'
+window.togglePrice = function(type) {
+  bookData.type = type
   const pf = document.getElementById('priceField')
-  if (pf) pf.style.display = show ? 'block' : 'none'
+  if (pf) pf.style.display = type === 'paid' ? 'block' : 'none'
 }
 
 // ─── 표지 미리보기 ───
@@ -449,7 +449,8 @@ window.publishBook = async function() {
       description: document.getElementById('bookDesc')?.value || '',
       subtitle: document.getElementById('bookOneLine')?.value || '',
       price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
-      is_free: bookData.type === 'free',
+  is_free: bookData.type === 'free' || bookData.type === 'welcome',
+is_welcome: bookData.type === 'welcome',
       cover_color: bookData.coverColor,
       cover_text_color: bookData.coverTextColor,
       status: 'published',
