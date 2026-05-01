@@ -113,6 +113,7 @@ window.switchSection = function(key, el) {
   else if (key === 'dashboard') renderAuthorDashboard(container)
   else if (key === 'books') renderAuthorBooks(container)
   else if (key === 'revenue') renderRevenue(container)
+  else if (key === 'settings') renderSettings(container)
 }
 
 function renderContent() {
