@@ -152,7 +152,7 @@ window.updateCount = function(el, countId, max) {
 window.togglePrice = function(type) {
   bookData.type = type
   const pf = document.getElementById('priceField')
-  if (pf) pf.style.display = type === 'paid' ? 'block' : 'none'
+  if (pf) pf.style.display = type === 'free' ? 'none' : 'block'
 }
 
 // ─── 표지 미리보기 ───
