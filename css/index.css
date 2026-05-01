@@ -426,7 +426,11 @@
   /* 섹션 헤더 */
   .section-header { margin-bottom: 20px; }
   .section-header__title { font-size: 18px; }
-  .section-header__right { display: none; }
+ .section-header__right { 
+  display: flex;
+  justify-content: flex-end;
+}
+.recommend-notice { display: none; } /* 시간 문구만 숨김 */
   .recommend-notice { display: none; }
 
   /* 작가 CTA */
