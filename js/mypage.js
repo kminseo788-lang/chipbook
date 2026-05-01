@@ -71,22 +71,48 @@ window.switchMode = function(mode) {
   renderNav()
   renderContent()
 }
-
 function renderNav() {
   const nav = document.getElementById('mypageNav')
   if (!nav) return
-  const menu = [
-    { icon: '🏠', label: '대시보드' },
-    { icon: '📚', label: '내 도서' },
-    { icon: '🛒', label: '구매 내역' },
-    { icon: '♡', label: '찜한 도서' },
-    { icon: '📝', label: '리뷰 내역' },
-    { icon: '🔔', label: '알림' },
-    { icon: '⚙️', label: '설정' },
+
+  const readerMenu = [
+    { icon: '📚', label: '내 서재', key: 'library' },
+    { icon: '🔖', label: '찜한 도서', key: 'wishlist' },
+    { icon: '🛒', label: '구매 내역', key: 'purchases' },
+    { icon: '⚙️', label: '설정', key: 'settings' },
   ]
+  const authorMenu = [
+    { icon: '📊', label: '대시보드', key: 'dashboard' },
+    { icon: '📖', label: '내 도서 관리', key: 'books' },
+    { icon: '💰', label: '정산 내역', key: 'revenue' },
+    { icon: '⚙️', label: '설정', key: 'settings' },
+  ]
+
+  const menu = currentMode === 'author' ? authorMenu : readerMenu
+
   nav.innerHTML = menu.map((item, i) =>
-    `<div class="mypage-nav-item ${i === 0 ? 'active' : ''}">${item.icon} ${item.label}</div>`
+    `<div class="mypage-nav-item ${i === 0 ? 'active' : ''}" 
+      onclick="switchSection('${item.key}', this)">
+      ${item.icon} ${item.label}
+    </div>`
   ).join('')
+}
+
+window.switchSection = function(key, el) {
+  document.querySelectorAll('.mypage-nav-item').forEach(i => i.classList.remove('active'))
+  el.classList.add('active')
+  const container = document.getElementById('mypageContent')
+  
+  // 독자 모드 섹션
+  if (key === 'library') renderReaderDashboard(container)
+  else if (key === 'wishlist') renderWishlist(container)
+  else if (key === 'purchases') renderPurchases(container)
+  else if (key === 'settings') renderSettings(container)
+  
+  // 작가 모드 섹션
+  else if (key === 'dashboard') renderAuthorDashboard(container)
+  else if (key === 'books') renderAuthorBooks(container)
+  else if (key === 'revenue') renderRevenue(container)
 }
 
 function renderContent() {
