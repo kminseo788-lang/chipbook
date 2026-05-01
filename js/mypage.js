@@ -289,3 +289,139 @@ async function renderAuthorDashboard(container) {
       </div>
     </div>`
 }
+
+// ─── 찜한 도서 ───
+async function renderWishlist(container) {
+  const { data: wishlist } = await supabase
+    .from('wishlist')
+    .select('*, books(*, authors(pen_name))')
+    .eq('user_id', currentUser.id)
+
+  container.innerHTML = `
+    <div class="content-section">
+      <div class="content-section__header">
+        <p class="content-section__title">찜한 도서</p>
+      </div>
+      <div class="purchase-list">
+        ${wishlist?.length ? wishlist.map(w => {
+          const book = w.books
+          return `
+            <div class="purchase-item">
+              <div class="purchase-item__cover" style="background:${book.cover_color};color:${book.cover_text_color}">${book.title?.slice(0,6)}</div>
+              <div class="purchase-item__info">
+                <p class="purchase-item__title">${book.title}</p>
+                <p class="purchase-item__author">${book.authors?.pen_name || ''} 작가</p>
+              </div>
+              <div class="purchase-item__actions">
+                <a href="book-detail.html?id=${book.id}" class="btn btn--outline btn--sm">보러가기</a>
+              </div>
+            </div>`
+        }).join('') : '<p style="font-size:14px;color:var(--color-text-sub)">찜한 도서가 없어요.</p>'}
+      </div>
+    </div>`
+}
+
+// ─── 구매 내역 ───
+async function renderPurchases(container) {
+  const { data: purchases } = await supabase
+    .from('payments')
+    .select('*, books(*, authors(pen_name))')
+    .eq('user_id', currentUser.id)
+    .eq('payment_status', 'completed')
+    .order('paid_at', { ascending: false })
+
+  container.innerHTML = `
+    <div class="content-section">
+      <div class="content-section__header">
+        <p class="content-section__title">구매 내역</p>
+      </div>
+      <div class="purchase-list">
+        ${purchases?.length ? purchases.map(p => {
+          const book = p.books
+          return `
+            <div class="purchase-item">
+              <div class="purchase-item__cover" style="background:${book.cover_color};color:${book.cover_text_color}">${book.title?.slice(0,6)}</div>
+              <div class="purchase-item__info">
+                <p class="purchase-item__title">${book.title}</p>
+                <p class="purchase-item__author">${book.authors?.pen_name || ''} 작가</p>
+                <p class="purchase-item__date">${p.paid_at?.slice(0,10)} 구매</p>
+              </div>
+              <div class="purchase-item__actions">
+                <a href="viewer.html?book_id=${book.id}" class="btn btn--primary btn--sm">읽기</a>
+              </div>
+            </div>`
+        }).join('') : '<p style="font-size:14px;color:var(--color-text-sub)">구매 내역이 없어요.</p>'}
+      </div>
+    </div>`
+}
+
+// ─── 작가 도서 관리 ───
+async function renderAuthorBooks(container) {
+  const { data: authorProfile } = await supabase
+    .from('authors')
+    .select('id')
+    .eq('user_id', currentUser.id)
+    .single()
+
+  const { data: books } = await supabase
+    .from('books')
+    .select('*')
+    .eq('author_id', authorProfile?.id)
+    .order('created_at', { ascending: false })
+
+  container.innerHTML = `
+    <div class="content-section">
+      <div class="content-section__header">
+        <p class="content-section__title">내 도서 관리</p>
+        <a href="editor.html" class="btn btn--primary btn--sm">+ 새 도서</a>
+      </div>
+      <div class="author-books-grid">
+        ${books?.length ? books.map(book => `
+          <div class="author-book-card">
+            <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color}">${book.title}</div>
+            <p class="author-book-card__title">${book.title}</p>
+            <p class="author-book-card__meta">상태: ${book.status === 'published' ? '발행됨' : '임시저장'}</p>
+            <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm btn--full">수정하기</a>
+          </div>`).join('') : '<p style="font-size:14px;color:var(--color-text-sub)">등록된 도서가 없어요.</p>'}
+      </div>
+    </div>`
+}
+
+// ─── 정산 내역 ───
+async function renderRevenue(container) {
+  container.innerHTML = `
+    <div class="content-section">
+      <div class="content-section__header">
+        <p class="content-section__title">정산 내역</p>
+      </div>
+      <p style="font-size:14px;color:var(--color-text-sub);padding:20px 0">정산 기능은 준비 중이에요.</p>
+    </div>`
+}
+
+// ─── 설정 ───
+function renderSettings(container) {
+  container.innerHTML = `
+    <div class="content-section">
+      <div class="content-section__header">
+        <p class="content-section__title">설정</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:8px 0">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div>
+            <p style="font-weight:600;margin-bottom:4px">이름</p>
+            <p style="font-size:13px;color:var(--color-text-sub)">${userProfile?.name || '-'}</p>
+          </div>
+          <button class="btn btn--outline-gray btn--sm">수정</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--color-border)">
+          <div>
+            <p style="font-weight:600;margin-bottom:4px">이메일</p>
+            <p style="font-size:13px;color:var(--color-text-sub)">${currentUser?.email}</p>
+          </div>
+        </div>
+        <div style="padding:16px 0">
+          <button class="btn btn--outline-gray btn--sm" style="color:#e53935;border-color:#e53935" onclick="handleLogout()">로그아웃</button>
+        </div>
+      </div>
+    </div>`
+}
