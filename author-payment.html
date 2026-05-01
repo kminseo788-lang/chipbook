@@ -68,7 +68,7 @@
       <div class="payment-amount-box">
         <p style="font-size:14px;color:var(--color-text-sub);margin-bottom:8px">결제 금액</p>
         <div>
-          <span class="payment-amount">49,000</span><span class="payment-amount-vat">원 (VAT 별도)</span>
+          <span class="payment-amount">278,000</span><span class="payment-amount-vat">원 (VAT 별도)</span>
         </div>
         <div class="payment-amount-features">
           <span class="payment-amount-feature">✓ 1회 결제 (추가 비용 없음)</span>
@@ -195,6 +195,11 @@
   
   
   <script>
+   // 토큰 접근 제한
+const token = new URLSearchParams(location.search).get('token')
+if (token !== 'chipbook2025') {
+  window.location.href = 'index.html'
+} 
     function checkAuthorAllState() {
       const checks = document.querySelectorAll('.term-check');
       const allChecked = [...checks].every(cb => cb.checked);
