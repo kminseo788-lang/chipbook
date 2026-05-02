@@ -332,3 +332,60 @@
   margin-bottom: 8px;
 }
 .memo-modal__hint { font-size: 12px; color: var(--color-text-sub); margin-bottom: 12px; display: flex; align-items: center; gap: 4px; }
+
+
+/* ─── 모바일 반응형 ─── */
+@media (max-width: 768px) {
+
+  /* 레이아웃 세로로 */
+  .viewer-layout {
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  /* 목차 숨김 → 상단 고정 토글로 */
+  .viewer-toc {
+    display: none;
+  }
+
+  /* 본문 전체 너비 */
+  .viewer-main {
+    padding: 16px;
+    overflow-y: visible;
+  }
+
+  .viewer-content {
+    padding: 24px 20px;
+    border-radius: var(--radius-md);
+  }
+
+  /* 챕터 제목 */
+  .viewer-chapter-title { font-size: 20px; }
+  .viewer-chapter-body { font-size: 15px; line-height: 1.8; }
+
+  /* 네비 바 */
+  .viewer-nav-bar {
+    max-width: 100%;
+    margin: 16px 0 24px;
+    padding: 12px 16px;
+  }
+  .viewer-nav-btn { padding: 8px 12px; font-size: 12px; }
+  .nav-page-btn { width: 28px; height: 28px; font-size: 12px; }
+
+  /* 우측 패널 → 본문 아래로 */
+  .viewer-side {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    padding: 20px 16px;
+  }
+
+  /* 헤더 */
+  .viewer-header__center { display: none; }
+  .viewer-header__search-wrap { display: none; }
+  .viewer-header__right .btn { font-size: 12px; padding: 0 10px; height: 30px; }
+
+  /* 액션바 */
+  .viewer-actions { gap: 8px; flex-wrap: wrap; }
+  .viewer-action-btn { font-size: 12px; padding: 6px 10px; }
+}
