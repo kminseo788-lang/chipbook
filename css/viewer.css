@@ -51,7 +51,7 @@
 
 /* 목차 사이드바 */
 .viewer-toc {
-  width: 240px;
+  width: 280px;
   flex-shrink: 0;
   background: #fff;
   border-right: 1px solid var(--color-border);
@@ -148,7 +148,7 @@
   max-width: 100%;
   background: #fff;
   border-radius: var(--radius-lg);
-  padding: 48px 56px;
+  padding: 48px 56px 80px;
   box-shadow: var(--shadow-sm);
   min-height: 400px;
 }
@@ -222,9 +222,10 @@
 
 /* 하단 네비게이션 */
 .viewer-nav-bar {
-  width: 70%;
-  max-width: 100%;
+  width: 100%;
+  max-width: 680px;
   margin-top: 24px;
+  padding: 0 40px 40px;  /* 좌우 패딩 추가 */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -262,7 +263,7 @@
 
 /* 우측 패널 */
 .viewer-side {
-  width: 280px;
+  width: 320px;
   flex-shrink: 0;
   border-left: 1px solid var(--color-border);
   background: #fff;
