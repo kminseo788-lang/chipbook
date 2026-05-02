@@ -149,7 +149,7 @@
   max-width: 100%;
   background: #fff;
   border-radius: var(--radius-lg);
-  padding: 48px 56px 120px;
+  padding: 48px 56px 48px;
   box-shadow: var(--shadow-sm);
   min-height: 400px;
 }
@@ -225,14 +225,16 @@
 .viewer-nav-bar {
   width: 100%;
   max-width: 100%;
-  margin-top: 0;
-  padding: 24px 56px 40px;
+  margin-top: 24px;
+  margin-bottom: 40px;
+  padding: 24px 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   background: #fff;
-  border-top: 1px solid var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 .viewer-nav-btn {
   display: flex;
