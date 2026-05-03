@@ -96,7 +96,15 @@ async function loadExistingBook(id) {
   document.getElementById('bookOneLine').value = book.subtitle || ''
   document.getElementById('bookPrice').value = book.price || ''
   bookData.title = book.title
- bookData.type = book.is_welcome ? 'welcome' : (book.is_free ? 'free' : 'paid')
+bookData.type = book.is_welcome ? 'welcome' : (book.is_free ? 'free' : 'paid')
+
+// 라디오 버튼 UI 동기화
+const radios = document.querySelectorAll('input[name="bookType"]')
+radios.forEach(r => { r.checked = r.value === bookData.type })
+
+// 가격 필드 표시/숨김
+const pf = document.getElementById('priceField')
+if (pf) pf.style.display = bookData.type === 'paid' || bookData.type === 'welcome' ? 'block' : 'none'
   bookData.coverColor = book.cover_color || '#E8F5E9'
   bookData.coverTextColor = book.cover_text_color || '#1B5E3A'
 
