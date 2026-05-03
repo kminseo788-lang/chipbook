@@ -77,14 +77,19 @@ else if (purchased) badge.textContent = '구매한 도서'
 else badge.textContent = '미리보기'
 
 // 상태별 분기
-if (isFree) {
-  renderSideFree(user)
-} else if (isWelcome && isNewUser) {
-  renderSideFree(user) // 신규회원도 무료처럼
-} else if (purchased) {
-  renderSidePurchased()
+// 상태별 분기
+if (!isPreview) {
+  if (isFree) {
+    renderSideFree(user)
+  } else if (isWelcome && isNewUser) {
+    renderSideFree(user)
+  } else if (purchased) {
+    renderSidePurchased()
+  } else {
+    renderSideUnpurchased()
+  }
 } else {
-  renderSideUnpurchased()
+  document.getElementById('viewerSide').style.display = 'none'
 }
   renderToc(hasAccess)
 renderChapter(0, hasAccess)
