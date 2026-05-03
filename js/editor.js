@@ -425,11 +425,62 @@ function renderPublishChecklist() {
 }
 
 // ─── 임시저장 / 자동저장 ───
-window.saveDraft = function() {
+window.saveDraft = async function() {
   saveCurrentChapter()
-  bookData.title = document.getElementById('bookTitle')?.value || ''
-  showAutoSave()
-  alert('임시저장되었습니다.')
+  const title = document.getElementById('bookTitle')?.value || ''
+  bookData.title = title
+
+  if (!title) { alert('제목을 먼저 입력해주세요.'); return }
+
+  try {
+    const payload = {
+      author_id: authorId,
+      title,
+      description: document.getElementById('bookDesc')?.value || '',
+      subtitle: document.getElementById('bookOneLine')?.value || '',
+      price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
+      is_free: bookData.type === 'free' || bookData.type === 'welcome',
+      is_welcome: bookData.type === 'welcome',
+      cover_color: bookData.coverColor,
+      cover_text_color: bookData.coverTextColor,
+      cover_url: bookData.coverUrl || '',
+      status: 'draft',
+      tags: selectedTags.map(t => t.tag),
+    }
+
+    if (bookId) {
+      await supabase.from('books').update(payload).eq('id', bookId)
+    } else {
+      const { data } = await supabase.from('books').insert(payload).select('id').single()
+      if (data) bookId = data.id
+    }
+
+    // 챕터 내용 저장
+    if (bookId) {
+      await supabase.from('book_contents').delete().eq('book_id', bookId)
+      const contentRows = []
+      let orderIdx = 0
+      window.parts.forEach(part => {
+        part.chapters.forEach((ch, ci) => {
+          const key = `${window.parts.indexOf(part)}-${ci}`
+          contentRows.push({
+            book_id: bookId,
+            part_title: part.title,
+            chapter_title: ch,
+            content: window.chapterContents[key] || '',
+            order_index: orderIdx++,
+          })
+        })
+      })
+      if (contentRows.length) await supabase.from('book_contents').insert(contentRows)
+    }
+
+    showAutoSave()
+    alert('임시저장되었습니다.')
+  } catch (err) {
+    alert('저장 중 오류가 발생했습니다.')
+    console.error(err)
+  }
 }
 
 function triggerAutoSave() {
@@ -577,3 +628,12 @@ window.closePreview = function() {
   modal.style.display = 'none'
   frame.src = ''
 }
+
+
+// 페이지 나가기 전 경고
+window.addEventListener('beforeunload', (e) => {
+  if (bookId) {
+    e.preventDefault()
+    e.returnValue = ''
+  }
+})
