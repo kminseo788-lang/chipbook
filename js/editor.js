@@ -96,7 +96,7 @@ async function loadExistingBook(id) {
   document.getElementById('bookOneLine').value = book.subtitle || ''
   document.getElementById('bookPrice').value = book.price || ''
   bookData.title = book.title
-  bookData.type = book.is_free ? 'free' : 'paid'
+ bookData.type = book.is_welcome ? 'welcome' : (book.is_free ? 'free' : 'paid')
   bookData.coverColor = book.cover_color || '#E8F5E9'
   bookData.coverTextColor = book.cover_text_color || '#1B5E3A'
 
