@@ -510,7 +510,11 @@ window.publishBook = async function() {
 }
 
 window.openPreview = function() {
-  alert('미리보기 기능은 준비 중입니다.')
+  if (bookId) {
+    window.open(`viewer.html?book_id=${bookId}`, '_blank')
+  } else {
+    alert('먼저 임시저장을 해주세요.')
+  }
 }
 
 window.showExampleToc = function() {
