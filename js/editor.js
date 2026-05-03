@@ -288,7 +288,7 @@ window.addChapter = function(pi) {
 }
 
 window.deleteChapter = function(pi, ci) {
-  if (window.parts[pi].chapters.length <= 1) { alert('최소 1개의 소제목이 필요합니다.'); return }
+
   window.parts[pi].chapters.splice(ci, 1)
   renderParts()
 }
