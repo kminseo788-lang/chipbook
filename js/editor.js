@@ -513,3 +513,9 @@ window.closeExampleModal = function() {
   const modal = document.getElementById('exampleModal')
   if (modal) modal.style.display = 'none'
 }
+
+
+window.changeFontColor = function(color) {
+  document.getElementById('editorContentArea')?.focus()
+  document.execCommand('foreColor', false, color)
+}

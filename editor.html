@@ -247,10 +247,25 @@
             <!-- 툴바 -->
             <div class="editor-toolbar" id="editorToolbar">
               <select class="toolbar-select" onchange="execFormat('formatBlock', this.value)">
-                <option value="p">본문</option>
-                <option value="h2">제목</option>
-                <option value="h3">소제목</option>
-              </select>
+  <option value="p">본문</option>
+  <option value="h2">제목</option>
+  <option value="h3">소제목</option>
+</select>
+<div class="toolbar-sep"></div>
+<select class="toolbar-select" onchange="execFormat('fontSize', this.value)">
+  <option value="3">보통</option>
+  <option value="4">크게</option>
+  <option value="5">더 크게</option>
+  <option value="2">작게</option>
+</select>
+<div class="toolbar-sep"></div>
+<select class="toolbar-select" onchange="changeFontColor(this.value)">
+  <option value="#1A1A1A">기본색</option>
+  <option value="#1B5E3A">초록</option>
+  <option value="#e53935">빨강</option>
+  <option value="#1565C0">파랑</option>
+  <option value="#777777">회색</option>
+</select>
               <div class="toolbar-sep"></div>
               <button class="toolbar-btn" onclick="execFormat('bold')" title="굵게"><strong>B</strong></button>
               <button class="toolbar-btn" onclick="execFormat('italic')" title="기울임"><em>I</em></button>
