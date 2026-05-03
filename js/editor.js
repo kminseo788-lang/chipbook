@@ -433,20 +433,20 @@ window.saveDraft = async function() {
   if (!title) { alert('제목을 먼저 입력해주세요.'); return }
 
   try {
-    const payload = {
-      author_id: authorId,
-      title,
-      description: document.getElementById('bookDesc')?.value || '',
-      subtitle: document.getElementById('bookOneLine')?.value || '',
-      price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
-      is_free: bookData.type === 'free' || bookData.type === 'welcome',
-      is_welcome: bookData.type === 'welcome',
-      cover_color: bookData.coverColor,
-      cover_text_color: bookData.coverTextColor,
-      cover_url: bookData.coverUrl || '',
-      status: 'draft',
-      tags: selectedTags.map(t => t.tag),
-    }
+  const payload = {
+  author_id: authorId,
+  title,
+  description: document.getElementById('bookDesc')?.value || '',
+  subtitle: document.getElementById('bookOneLine')?.value || '',
+  price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
+  is_free: bookData.type === 'free' || bookData.type === 'welcome',
+  is_welcome: bookData.type === 'welcome',
+  cover_color: bookData.coverColor,
+  cover_text_color: bookData.coverTextColor,
+  cover_url: bookData.coverUrl || '',
+  tags: selectedTags.map(t => t.tag),
+}
+if (!bookId) payload.status = 'draft'
 
     if (bookId) {
       await supabase.from('books').update(payload).eq('id', bookId)
