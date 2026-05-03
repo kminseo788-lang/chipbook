@@ -253,7 +253,8 @@ function renderParts() {
       <div class="part-item__header">
         <input type="text" class="input part-item__title" value="${part.title}"
           onchange="window.parts[${pi}].title = this.value" placeholder="파트 제목">
-        <button class="btn btn--outline-gray btn--sm" onclick="deletePart(${pi})">삭제</button>
+        <button class="btn btn--outline-gray btn--sm" onclick="insertPartAbove(${pi})">위에 추가</button>
+<button class="btn btn--outline-gray btn--sm" onclick="deletePart(${pi})">삭제</button>
       </div>
       <div class="chapters-list" id="chapters-${pi}">
         ${part.chapters.map((ch, ci) => `
@@ -293,8 +294,8 @@ window.deleteChapter = function(pi, ci) {
 }
 
 window.saveParts = function() {
-  const allFilled = window.parts.every(p => p.title && p.chapters.every(c => c.trim()))
-  if (!allFilled) { alert('모든 파트 제목과 소제목을 입력해주세요.'); return }
+  const allFilled = window.parts.every(p => p.title)
+  if (!allFilled) { alert('파트 제목을 입력해주세요.'); return }
   alert('파트 구성이 저장되었습니다.')
   goToStep(4)
 }
@@ -549,4 +550,9 @@ window.uploadAndInsertImage = async function(input) {
   document.getElementById('editorContentArea')?.focus()
   document.execCommand('insertImage', false, data.publicUrl)
   input.value = ''
+}
+
+window.insertPartAbove = function(pi) {
+  window.parts.splice(pi, 0, { title: `PART ${pi + 1}`, chapters: [''] })
+  renderParts()
 }
