@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const bookId = new URLSearchParams(window.location.search).get('book_id')
   if (!bookId) { window.location.href = 'index.html'; return }
 
+  // 미리보기 모드면 우측 패널 숨김
+  const isPreview = new URLSearchParams(window.location.search).get('preview')
+  if (isPreview) {
+    document.getElementById('viewerSide').style.display = 'none'
+  }
+
   // 도서 정보 조회
   const { data: book } = await supabase
     .from('books')

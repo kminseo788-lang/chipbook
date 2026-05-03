@@ -509,13 +509,7 @@ window.publishBook = async function() {
   }
 }
 
-window.openPreview = function() {
-  if (bookId) {
-    window.open(`viewer.html?book_id=${bookId}`, '_blank')
-  } else {
-    alert('먼저 임시저장을 해주세요.')
-  }
-}
+
 
 window.showExampleToc = function() {
   const modal = document.getElementById('exampleModal')
@@ -565,7 +559,7 @@ window.openPreview = function() {
   if (bookId) {
     const modal = document.getElementById('previewModal')
     const frame = document.getElementById('previewFrame')
-    frame.src = `viewer.html?book_id=${bookId}`   
+    frame.src = `viewer.html?book_id=${bookId}&preview=true`  
         modal.style.display = 'flex'
   } else {
     alert('먼저 임시저장을 해주세요.')
