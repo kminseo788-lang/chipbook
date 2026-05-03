@@ -296,6 +296,12 @@ window.deleteChapter = function(pi, ci) {
 window.saveParts = function() {
   const allFilled = window.parts.every(p => p.title)
   if (!allFilled) { alert('파트 제목을 입력해주세요.'); return }
+  
+  // 소제목 없는 파트에 빈 소제목 자동 추가
+  window.parts.forEach(p => {
+    if (p.chapters.length === 0) p.chapters.push('')
+  })
+  
   alert('파트 구성이 저장되었습니다.')
   goToStep(4)
 }
