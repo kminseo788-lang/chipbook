@@ -108,6 +108,14 @@ if (pf) pf.style.display = bookData.type === 'paid' || bookData.type === 'welcom
   bookData.coverColor = book.cover_color || '#E8F5E9'
   bookData.coverTextColor = book.cover_text_color || '#1B5E3A'
 
+  if (book.cover_url) {
+  const preview = document.getElementById('coverPreview')
+  const placeholder = document.getElementById('coverPlaceholder')
+  if (preview) { preview.src = book.cover_url; preview.style.display = 'block' }
+  if (placeholder) placeholder.style.display = 'none'
+  bookData.coverUrl = book.cover_url
+}
+
   document.getElementById('titleCount').textContent = (book.title || '').length
   document.getElementById('descCount').textContent = (book.description || '').length
   document.getElementById('oneLineCount').textContent = (book.subtitle || '').length
