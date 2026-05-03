@@ -276,12 +276,15 @@ async function renderAuthorDashboard(container) {
       </div>
       <div class="author-books-grid">
         ${authorBooks.map(book => `
-          <div class="author-book-card">
-            <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color}">${book.title}</div>
-            <p class="author-book-card__title">${book.title}</p>
-            <p class="author-book-card__meta">상태: ${book.status}</p>
-            <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm btn--full">도서 관리</a>
-          </div>`).join('')}
+  <div class="author-book-card">
+  <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color};overflow:hidden;position:relative;">
+    ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
+    <span style="position:relative;z-index:1">${book.title}</span>
+  </div>
+  <p class="author-book-card__title">${book.title}</p>
+  <p class="author-book-card__meta">상태: ${book.status}</p>
+  <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm btn--full">도서 관리</a>
+</div>`).join('')}
         <a href="editor.html" class="author-book-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:var(--color-bg-sub);border:1px dashed var(--color-border);min-height:200px;cursor:pointer;text-decoration:none;">
           <span style="font-size:28px">+</span>
           <p style="font-size:13px;color:var(--color-text-sub)">새 도서 등록하기</p>
@@ -378,11 +381,14 @@ async function renderAuthorBooks(container) {
       <div class="author-books-grid">
         ${books?.length ? books.map(book => `
           <div class="author-book-card">
-            <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color}">${book.title}</div>
-            <p class="author-book-card__title">${book.title}</p>
-            <p class="author-book-card__meta">상태: ${book.status === 'published' ? '발행됨' : '임시저장'}</p>
-            <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm btn--full">수정하기</a>
-          </div>`).join('') : '<p style="font-size:14px;color:var(--color-text-sub)">등록된 도서가 없어요.</p>'}
+  <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color};overflow:hidden;position:relative;">
+    ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
+    <span style="position:relative;z-index:1">${book.title}</span>
+  </div>
+  <p class="author-book-card__title">${book.title}</p>
+  <p class="author-book-card__meta">상태: ${book.status === 'published' ? '발행됨' : '임시저장'}</p>
+  <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm btn--full">수정하기</a>
+</div>`).join('') : '<p style="font-size:14px;color:var(--color-text-sub)">등록된 도서가 없어요.</p>'}
       </div>
     </div>`
 }
