@@ -280,7 +280,8 @@
               <button class="toolbar-btn" onclick="execFormat('justifyCenter')" title="가운데">▬</button>
               <button class="toolbar-btn" onclick="execFormat('justifyRight')" title="오른쪽">▶</button>
               <div class="toolbar-sep"></div>
-              <button class="toolbar-btn" onclick="insertImage()" title="이미지">🖼</button>
+             <button class="toolbar-btn" onclick="document.getElementById('imageUploadInput').click()" title="이미지">🖼</button>
+<input type="file" id="imageUploadInput" accept="image/*" style="display:none" onchange="uploadAndInsertImage(this)">
               <button class="toolbar-btn" onclick="insertLink()" title="링크">🔗</button>
             </div>
 

@@ -519,3 +519,26 @@ window.changeFontColor = function(color) {
   document.getElementById('editorContentArea')?.focus()
   document.execCommand('foreColor', false, color)
 }
+
+window.uploadAndInsertImage = async function(input) {
+  const file = input.files[0]
+  if (!file) return
+
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${Date.now()}.${fileExt}`
+  const filePath = `book-images/${fileName}`
+
+  const { error } = await supabase.storage
+    .from('chipbook')
+    .upload(filePath, file)
+
+  if (error) { alert('이미지 업로드 실패'); console.error(error); return }
+
+  const { data } = supabase.storage
+    .from('chipbook')
+    .getPublicUrl(filePath)
+
+  document.getElementById('editorContentArea')?.focus()
+  document.execCommand('insertImage', false, data.publicUrl)
+  input.value = ''
+}
