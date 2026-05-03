@@ -460,17 +460,20 @@ window.publishBook = async function() {
   if (!confirmed) return
 
   try {
-   const bookPayload = {
+ const bookPayload = {
   author_id: authorId,
   title,
-  ...
+  description: document.getElementById('bookDesc')?.value || '',
+  subtitle: document.getElementById('bookOneLine')?.value || '',
+  price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
+  is_free: bookData.type === 'free' || bookData.type === 'welcome',
+  is_welcome: bookData.type === 'welcome',
   cover_color: bookData.coverColor,
   cover_text_color: bookData.coverTextColor,
-  cover_url: bookData.coverUrl || '',  // ← 이거 추가
+  cover_url: bookData.coverUrl || '',
   status: 'published',
   tags: selectedTags.map(t => t.tag),
 }
-
     let savedBookId = bookId
     if (bookId) {
       await supabase.from('books').update(bookPayload).eq('id', bookId)
