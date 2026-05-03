@@ -565,13 +565,12 @@ window.openPreview = function() {
   if (bookId) {
     const modal = document.getElementById('previewModal')
     const frame = document.getElementById('previewFrame')
-    frame.src = `viewer.html?book_id=${bookId}`
-    modal.style.display = 'flex'
+    frame.src = `viewer.html?book_id=${bookId}`   
+        modal.style.display = 'flex'
   } else {
     alert('먼저 임시저장을 해주세요.')
   }
 }
-
 window.closePreview = function() {
   const modal = document.getElementById('previewModal')
   const frame = document.getElementById('previewFrame')
