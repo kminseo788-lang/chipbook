@@ -279,7 +279,7 @@ async function renderAuthorDashboard(container) {
   <div class="author-book-card">
   <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color};overflow:hidden;position:relative;">
     ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
-    <span style="position:relative;z-index:1">${book.title}</span>
+    
   </div>
   <p class="author-book-card__title">${book.title}</p>
   <p class="author-book-card__meta">상태: ${book.status}</p>
@@ -383,7 +383,7 @@ async function renderAuthorBooks(container) {
           <div class="author-book-card">
   <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color};overflow:hidden;position:relative;">
     ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
-    <span style="position:relative;z-index:1">${book.title}</span>
+
   </div>
   <p class="author-book-card__title">${book.title}</p>
   <p class="author-book-card__meta">상태: ${book.status === 'published' ? '발행됨' : '임시저장'}</p>
