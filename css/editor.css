@@ -219,7 +219,7 @@ input, textarea, select { font-family: inherit; }
 /* 표지 업로드 */
 .cover-upload {
   width: 100%;
- aspect-ratio: 3/4;
+ aspect-ratio: 9/14;
   height: auto;
   border: 2px dashed var(--color-border);
   border-radius: var(--radius-md);
