@@ -218,8 +218,9 @@
   flex-direction: column;
 }
 .author-book-card__cover {
-  width: 152px;
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 9/14;
+  height: auto;
   border-radius: var(--radius-sm);
   margin-bottom: 10px;
   display: flex;

@@ -270,7 +270,8 @@ input, textarea { font-family: inherit; }
 .book-card__cover {
   position: relative;
   width: 180px;
-  height: 240px;
+  height: 280px;
+  aspect-ratio: 9/14;
   border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
