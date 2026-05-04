@@ -14,6 +14,7 @@ import { getCurrentUser, isPurchased, formatPrice } from './common.js'
 let currentBook = null
 let allChapters = []
 let currentChapterIndex = 0
+window._chapterIndex = 0
 let chapterContents = []
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -133,6 +134,7 @@ function renderToc(fullAccess) {
 
 // ─── 챕터 렌더링 ───
 function renderChapter(index, fullAccess) {
+  window._chapterIndex = index
   const chapter = allChapters[index]
   if (!chapter) {
     document.getElementById('viewerContent').innerHTML = '<p style="color:var(--color-text-sub);padding:40px;text-align:center">챕터를 선택해주세요.</p>'
