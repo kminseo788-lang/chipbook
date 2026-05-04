@@ -66,9 +66,11 @@ async function renderRecommendBooks() {
     return
   }
 
-  container.innerHTML = books.map(book => createBookCard(book, { showRating: true, showPrice: true })).join('')
-  initSlider()
-   setTimeout(renderRecommendBooks, 60 * 1000)
+// 랜덤으로 섞기
+const shuffled = books.sort(() => Math.random() - 0.5)
+container.innerHTML = shuffled.map(book => createBookCard(book, { showRating: true, showPrice: true })).join('')
+initSlider()
+setInterval(renderRecommendBooks, 15 * 1000)
 }
 
 // ─── 검색 초기화 ───
