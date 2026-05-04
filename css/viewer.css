@@ -389,3 +389,26 @@
   .viewer-actions { gap: 8px; flex-wrap: wrap; }
   .viewer-action-btn { font-size: 12px; padding: 6px 10px; }
 }
+
+.viewer-nav-float {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+}
+.viewer-nav-float--prev { left: 16px; }
+.viewer-nav-float--next { right: 16px; }
+.viewer-nav-float__btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.viewer-nav-float__btn:hover { border-color: var(--color-primary); color: var(--color-primary); }

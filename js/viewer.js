@@ -376,3 +376,24 @@ function toggleMemoModal() {
 function handleSaveLibrary() {
   alert('내 서재 저장 기능은 준비 중입니다.')
 }
+
+// 키보드 방향키
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft' && currentChapterIndex > 0) {
+    goToChapterByIndex(currentChapterIndex - 1)
+  }
+  if (e.key === 'ArrowRight' && currentChapterIndex < allChapters.length - 1) {
+    goToChapterByIndex(currentChapterIndex + 1)
+  }
+})
+
+// 모바일 스와이프
+let touchStartX = 0
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX })
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX
+  if (Math.abs(diff) > 50) {
+    if (diff > 0 && currentChapterIndex < allChapters.length - 1) goToChapterByIndex(currentChapterIndex + 1)
+    if (diff < 0 && currentChapterIndex > 0) goToChapterByIndex(currentChapterIndex - 1)
+  }
+})
