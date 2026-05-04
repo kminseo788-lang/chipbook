@@ -396,8 +396,20 @@
   transform: translateY(-50%);
   z-index: 50;
 }
-.viewer-nav-float--prev { left: 16px; }
-.viewer-nav-float--next { right: 16px; }
+/* PC - 목차와 우측패널 사이 본문 영역 안에 */
+.viewer-nav-float--prev { left: 290px; }
+.viewer-nav-float--next { right: 330px; }
+
+/* 모바일 - 화면 양쪽 끝에 작게 */
+@media (max-width: 768px) {
+  .viewer-nav-float--prev { left: 4px; }
+  .viewer-nav-float--next { right: 4px; }
+  .viewer-nav-float__btn {
+    width: 32px;
+    height: 32px;
+    opacity: 0.6;
+  }
+}
 .viewer-nav-float__btn {
   width: 44px;
   height: 44px;
