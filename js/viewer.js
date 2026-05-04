@@ -402,3 +402,10 @@ window.goToChapterByIndex = function(idx) {
   const fullAccess = currentBook.is_free || document.getElementById('viewerBadge').textContent === '구매한 도서'
   renderChapter(idx, fullAccess)
 }
+
+window.toggleMobileToc = function() {
+  const toc = document.querySelector('.viewer-toc')
+  const overlay = document.getElementById('mobileTocOverlay')
+  toc?.classList.toggle('show')
+  overlay?.classList.toggle('show')
+}

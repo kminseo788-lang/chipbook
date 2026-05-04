@@ -418,3 +418,26 @@
 .viewer-nav-float__btn { width: 32px; height: 32px; opacity: 0.6; } 
 }
 
+/* PC에서 숨김 */
+/* PC에서 숨김 */
+.mobile-toc-btn { display: none; }
+.mobile-toc-overlay { display: none; }
+
+@media (max-width: 768px) {
+  .mobile-toc-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-primary);
+  }
+  .mobile-toc-overlay.show { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 90; }
+  .viewer-toc.show { display: flex; position: fixed; left: 0; top: 56px; bottom: 0; width: 280px; z-index: 100; box-shadow: 4px 0 16px rgba(0,0,0,0.1); }
+}
