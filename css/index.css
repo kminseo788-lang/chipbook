@@ -488,3 +488,7 @@
     border-radius: var(--radius-md);
   }
 }
+
+#recommendBookList {
+  transition: opacity 0.5s ease;
+}

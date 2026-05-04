@@ -68,8 +68,12 @@ async function renderRecommendBooks() {
 
 // 랜덤으로 섞기
 const shuffled = books.sort(() => Math.random() - 0.5)
-container.innerHTML = shuffled.map(book => createBookCard(book, { showRating: true, showPrice: true })).join('')
-initSlider()
+container.style.opacity = '0'
+setTimeout(() => {
+  container.innerHTML = shuffled.map(book => createBookCard(book, { showRating: true, showPrice: true })).join('')
+  initSlider()
+  container.style.opacity = '1'
+}, 500)
 setInterval(renderRecommendBooks, 15 * 1000)
 }
 
