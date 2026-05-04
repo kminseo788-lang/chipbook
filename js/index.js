@@ -54,11 +54,11 @@ async function renderRecommendBooks() {
   const container = document.getElementById('recommendBookList')
   if (!container) return
 
-  const { data: books, error } = await supabase
+ const { data: books, error } = await supabase
     .from('books')
     .select('*, authors(pen_name)')
+    .eq('is_free', false)
     .eq('status', 'published')
-    .order('random()')
     .limit(8)
 
   if (error || !books?.length) {
