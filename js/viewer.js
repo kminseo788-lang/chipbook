@@ -342,11 +342,7 @@ function updateNavPages() {
   container.innerHTML = html
 }
 
-window.goToChapterByIndex = function(idx) {
-  currentChapterIndex = idx
-  const fullAccess = currentBook.is_free || document.getElementById('viewerBadge').textContent === '구매한 도서'
-  renderChapter(idx, fullAccess)
-}
+
 
 function updateProgress() {
   const pct = allChapters.length ? Math.round(((currentChapterIndex + 1) / allChapters.length) * 100) : 0
@@ -399,3 +395,10 @@ document.addEventListener('touchend', (e) => {
     if (diff < 0 && currentChapterIndex > 0) goToChapterByIndex(currentChapterIndex - 1)
   }
 })
+
+window.goToChapterByIndex = function(idx) {
+  if (idx < 0 || idx >= allChapters.length) return  // ← 범위 체크 추가
+  currentChapterIndex = idx
+  const fullAccess = currentBook.is_free || document.getElementById('viewerBadge').textContent === '구매한 도서'
+  renderChapter(idx, fullAccess)
+}
