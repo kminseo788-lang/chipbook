@@ -209,7 +209,8 @@ function renderChapter(index, fullAccess) {
 document.getElementById('viewerContent').innerHTML = html
 updateNavPages()
 updateProgress()
-window.scrollTo({ top: 0, behavior: 'smooth' })
+const viewerMain = document.querySelector('.viewer-main')
+if (viewerMain) viewerMain.scrollTo({ top: 0, behavior: 'smooth' })
 
   // 목차 활성화
   document.querySelectorAll('.toc-chapter').forEach((btn, i) => {
