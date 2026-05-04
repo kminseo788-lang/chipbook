@@ -1,4 +1,4 @@
-/**
+/**const payload = {async function renderRecommendBooks() {
  * chipbook index.js — 메인페이지
  * Supabase 연동 버전
  */
@@ -57,8 +57,8 @@ async function renderRecommendBooks() {
   const { data: books, error } = await supabase
     .from('books')
     .select('*, authors(pen_name)')
-    .eq('is_free', false)
     .eq('status', 'published')
+    .order('random()')
     .limit(8)
 
   if (error || !books?.length) {
@@ -68,6 +68,7 @@ async function renderRecommendBooks() {
 
   container.innerHTML = books.map(book => createBookCard(book, { showRating: true, showPrice: true })).join('')
   initSlider()
+   setTimeout(renderRecommendBooks, 60 * 1000)
 }
 
 // ─── 검색 초기화 ───
