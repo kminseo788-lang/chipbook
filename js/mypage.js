@@ -295,10 +295,11 @@ async function renderAuthorDashboard(container) {
 
 // ─── 찜한 도서 ───
 async function renderWishlist(container) {
-  const { data: wishlist } = await supabase
+const { data: wishlist, error } = await supabase
     .from('wishlist')
     .select('*, books(*, authors(pen_name))')
     .eq('user_id', currentUser.id)
+console.log('wishlist:', wishlist, 'error:', error)
 
   container.innerHTML = `
     <div class="content-section">
