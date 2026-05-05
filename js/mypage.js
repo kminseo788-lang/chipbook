@@ -316,7 +316,7 @@ async function renderWishlist(container) {
                 <p class="purchase-item__author">${book.authors?.pen_name || ''} 작가</p>
               </div>
               <div class="purchase-item__actions">
-                <a href="book-detail.html?id=${book.id}" class="btn btn--outline btn--sm">보러가기</a>
+                <a href="book-detail.html?book_id=${book.id}" class="btn btn--outline btn--sm">보러가기</a>
               </div>
             </div>`
         }).join('') : '<p style="font-size:14px;color:var(--color-text-sub)">찜한 도서가 없어요.</p>'}
