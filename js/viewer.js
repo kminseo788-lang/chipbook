@@ -212,7 +212,10 @@ document.getElementById('viewerContent').innerHTML = html
 updateNavPages()
 updateProgress()
 const viewerMain = document.querySelector('.viewer-main')
+const viewerLayout = document.querySelector('.viewer-layout')
 if (viewerMain) viewerMain.scrollTo({ top: 0, behavior: 'smooth' })
+if (viewerLayout) viewerLayout.scrollTo({ top: 0, behavior: 'smooth' })
+window.scrollTo({ top: 0, behavior: 'smooth' })
 
   // 목차 활성화
   document.querySelectorAll('.toc-chapter').forEach((btn, i) => {
