@@ -161,3 +161,28 @@ function initSlider() {
 
   updateBtns()
 }
+
+// DOMContentLoaded 안에 추가
+await renderWelcomeBooks()
+
+// 함수 추가
+async function renderWelcomeBooks() {
+  const container = document.getElementById('welcomeBookList')
+  if (!container) return
+
+  const { data: books, error } = await supabase
+    .from('books')
+    .select('*, authors(pen_name)')
+    .eq('is_welcome', true)
+    .eq('status', 'published')
+    .limit(5)
+
+  if (error || !books?.length) {
+    container.innerHTML = '<p style="color:var(--color-text-sub);font-size:14px">등록된 도서가 없습니다.</p>'
+    return
+  }
+
+  container.innerHTML = books.map(book =>
+    createBookCard(book, { showPrice: true })
+  ).join('')
+}
