@@ -101,7 +101,7 @@ function createBookCard(book, options = {}) {
       <a href="book-detail.html?book_id=${book.id}" class="book-card__cover-link">
         <div class="book-card__cover" style="background:${book.cover_color}; color:${book.cover_text_color}; overflow:hidden; position:relative;">
           ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
-          ${isFree ? '<span class="badge badge--free">무료</span>' : ''}
+          ${isFree ? '<span class="badge badge--free">무료</span>' : (book.is_welcome ? '<span class="badge" style="background:#C9A84C;color:#fff;">첫구매무료</span>' : '')}
           <div class="book-card__cover-title">${book.title}</div>
         </div>
       </a>
