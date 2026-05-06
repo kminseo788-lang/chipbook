@@ -12,10 +12,10 @@ let recommendInterval = null
 document.addEventListener('DOMContentLoaded', async () => {
   await renderTags()
   await renderFreeBooks()
+  await renderWelcomeBooks()
   await renderRecommendBooks()
   initSearch()
 
-  // 15초마다 추천도서 교체 — 딱 한 번만 등록
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
 })
 
@@ -162,8 +162,7 @@ function initSlider() {
   updateBtns()
 }
 
-// DOMContentLoaded 안에 추가
-await renderWelcomeBooks()
+
 
 // 함수 추가
 async function renderWelcomeBooks() {
