@@ -137,7 +137,7 @@ async function renderHeader(options = {}) {
         <a href="search.html?type=all" class="header__nav-item">도서검색</a>
         <a href="search.html?type=free" class="header__nav-item">무료도서</a>
         <a href="search.html?type=recommended" class="header__nav-item">추천도서</a>
-        <a href="author-landing.html" class="header__nav-item">작가도전</a>
+        <a href="author-landing.html" class="header__nav-item">이북 제작 강의</a>
       </nav>
       <div class="header__right">
         <a href="search.html" class="header__icon" title="검색">
@@ -170,7 +170,7 @@ async function renderHeader(options = {}) {
         <a href="search.html?type=all" class="mobile-menu__item">도서검색</a>
         <a href="search.html?type=free" class="mobile-menu__item">무료도서</a>
         <a href="search.html?type=recommended" class="mobile-menu__item">추천도서</a>
-        <a href="author-landing.html" class="mobile-menu__item">작가도전</a>
+        <a href="author-landing.html" class="mobile-menu__item">이북 제작 강의 </a>
       </nav>
       <div class="mobile-menu__footer">
         ${isLoggedIn
