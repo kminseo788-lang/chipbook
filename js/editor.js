@@ -439,7 +439,7 @@ window.saveDraft = async function() {
   description: document.getElementById('bookDesc')?.value || '',
   subtitle: document.getElementById('bookOneLine')?.value || '',
   price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
-  is_free: bookData.type === 'free' || bookData.type === 'welcome',
+  is_free: bookData.type === 'free',
   is_welcome: bookData.type === 'welcome',
   cover_color: bookData.coverColor,
   cover_text_color: bookData.coverTextColor,
