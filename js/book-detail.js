@@ -1,4 +1,6 @@
-/**없어요
+return} else {
+    mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
+  }/**없어요
  * chipbook book-detail.js
  * Supabase 연동 버전
  */
@@ -54,7 +56,12 @@ async function renderBookTop(book) {
   if (isFree || purchased) {
     mainBtn = `<a href="viewer.html?book_id=${book.id}" class="btn btn--primary btn--lg">바로 읽기</a>`
   } else {
-    mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
+    const user = await getCurrentUser()
+    if (user) {
+      mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
+    } else {
+      mainBtn = `<a href="login.html?redirect=book-detail.html%3Fbook_id%3D${book.id}" class="btn btn--primary btn--lg">로그인 후 구매하기</a>`
+    }
   }
 
   el.innerHTML = `
