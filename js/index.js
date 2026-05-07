@@ -63,6 +63,7 @@ async function renderRecommendBooks() {
     .from('books')
     .select('*, authors(pen_name)')
     .eq('is_free', false)
+    .eq('is_welcome', false)   // ← 이 줄 추가
     .eq('status', 'published')
     .limit(8)
 
