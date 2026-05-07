@@ -27,7 +27,7 @@ if (welcomeBtn) {
     welcomeBtn.href = 'search.html?type=welcome'
   } else {
     welcomeBtn.textContent = '회원가입하고 받기 →'
-    welcomeBtn.href = 'signup.html?redirect=welcome'
+    welcomeBtn.href = 'signup.html'
   }
 }
 })

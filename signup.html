@@ -79,12 +79,7 @@
     try {
 await signUp(email, password, name)
 alert('회원가입이 완료됐습니다! 첫 구매 무료 도서를 확인해보세요 🎁')
-const redirect = new URLSearchParams(window.location.search).get('redirect')
-if (redirect) {
-  window.location.href = decodeURIComponent(redirect)
-} else {
-  window.location.href = 'index.html'
-}
+window.location.href = 'index.html'
     } catch (err) {
       alert('회원가입 실패: ' + err.message)
     }
