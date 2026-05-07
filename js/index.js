@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSearch()
 
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
+  setInterval(renderWelcomeBooks, 15 * 1000)  // ← 이 줄만 추가
 })
 
 // ─── 태그 목록 렌더링 ───
@@ -168,20 +169,27 @@ function initSlider() {
 async function renderWelcomeBooks() {
   const container = document.getElementById('welcomeBookList')
   if (!container) return
-const { data: books, error } = await supabase
-  .from('books')
-  .select('*, authors(pen_name)')
-  .eq('is_free', false)
-  .eq('is_welcome', false)   // ← 이 줄 추가
-  .eq('status', 'published')
-  .limit(8)
+
+  const { data: books, error } = await supabase
+    .from('books')
+    .select('*, authors(pen_name)')
+    .eq('is_welcome', true)
+    .eq('status', 'published')
+    .limit(10)
 
   if (error || !books?.length) {
     container.innerHTML = '<p style="color:var(--color-text-sub);font-size:14px">등록된 도서가 없습니다.</p>'
     return
   }
 
-  container.innerHTML = books.map(book =>
-    createBookCard(book, { showPrice: true })
-  ).join('')
+  const shuffled = books.sort(() => Math.random() - 0.5).slice(0, 5)
+  container.style.transition = 'opacity 0.4s ease'
+  container.style.opacity = '0'
+
+  setTimeout(() => {
+    container.innerHTML = shuffled.map(book =>
+      createBookCard(book, { showPrice: true })
+    ).join('')
+    container.style.opacity = '1'
+  }, 400)
 }
