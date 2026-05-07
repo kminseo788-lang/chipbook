@@ -1,9 +1,4 @@
-return} else {
-    mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
-  }/**없어요
- * chipbook book-detail.js
- * Supabase 연동 버전
- */
+
 
 import { supabase } from './supabase.js'
 import { getCurrentUser, isPurchased, toggleWishlist, isWishlisted, formatPrice, createBookCard } from './common.js'
