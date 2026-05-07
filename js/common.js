@@ -259,7 +259,7 @@ function renderTabBar() {
 renderTabBar()
 
 // 채널톡
-(function(){var w=window;if(w.ChannelIO){return w.ChannelIO('reattach_activator');w.ChannelIO('update',w.ChannelIOSettings);}var d=window.document;var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};w.ChannelIO=ch;function l(){if(w.ChannelIOBootstrapped){return;}w.ChannelIOBootstrapped=true;var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://cdn.channel.io/plugin/ch-plugin-web.js';s.charset='UTF-8';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(d.readyState==='complete'){l();}else if(window.attachEvent){window.attachEvent('onload',l);}else{window.addEventListener('DOMContentLoaded',l,false);window.addEventListener('load',l,false);}}());
-ChannelIO('boot', {
-  pluginKey: 'd5ee346b-6bc7-4b7d-8e52-ff9a1bd12b9d'
+document.addEventListener('DOMContentLoaded', function() {
+  (function(){var w=window;if(w.ChannelIO){return;}var d=window.document;var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};w.ChannelIO=ch;function l(){if(w.ChannelIOBootstrapped){return;}w.ChannelIOBootstrapped=true;var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://cdn.channel.io/plugin/ch-plugin-web.js';s.charset='UTF-8';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(d.readyState==='complete'){l();}else{window.addEventListener('load',l,false);}})();
+  ChannelIO('boot', { pluginKey: 'd5ee346b-6bc7-4b7d-8e52-ff9a1bd12b9d' });
 });
