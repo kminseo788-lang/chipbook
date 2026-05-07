@@ -168,13 +168,13 @@ function initSlider() {
 async function renderWelcomeBooks() {
   const container = document.getElementById('welcomeBookList')
   if (!container) return
-
-  const { data: books, error } = await supabase
-    .from('books')
-    .select('*, authors(pen_name)')
-    .eq('is_welcome', true)
-    .eq('status', 'published')
-    .limit(5)
+const { data: books, error } = await supabase
+  .from('books')
+  .select('*, authors(pen_name)')
+  .eq('is_free', false)
+  .eq('is_welcome', false)   // ← 이 줄 추가
+  .eq('status', 'published')
+  .limit(8)
 
   if (error || !books?.length) {
     container.innerHTML = '<p style="color:var(--color-text-sub);font-size:14px">등록된 도서가 없습니다.</p>'
