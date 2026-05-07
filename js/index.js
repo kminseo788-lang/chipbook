@@ -18,6 +18,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
   setInterval(renderWelcomeBooks, 15 * 1000)  // ← 이 줄만 추가
+  // 로그인 상태에 따라 버튼 변경
+const { data: { user } } = await supabase.auth.getUser()
+const welcomeBtn = document.getElementById('welcomeBtn')
+if (welcomeBtn) {
+  if (user) {
+    welcomeBtn.textContent = '무료 도서 받으러 가기 →'
+    welcomeBtn.href = 'search.html?type=welcome'
+  } else {
+    welcomeBtn.textContent = '회원가입하고 받기 →'
+    welcomeBtn.href = 'signup.html?redirect=welcome'
+  }
+}
 })
 
 // ─── 태그 목록 렌더링 ───
