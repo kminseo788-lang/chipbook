@@ -96,13 +96,46 @@ function formatPrice(price) {
 function createBookCard(book, options = {}) {
   const isFree = book.is_free
   const authorName = book.authors?.pen_name || book.author_name || ''
+  
+  const seriesConfig = {
+    'spot': { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book', desc: '하나의 책, 하나의 문제 해결' },
+    'routine': { color: '#1B5E3A', textColor: '#ffffff', label: 'Routine Book', desc: '지금 상황을 쉽게 굴러가게' },
+    'core': { color: '#1B3A4B', textColor: '#ffffff', label: 'Core Book', desc: '삶을 바라보는 기준과 철학' },
+  }
+  
+  const series = book.series ? seriesConfig[book.series] : null
+  const bgColor = series ? series.color : (book.cover_color || '#E8F5E9')
+  const textColor = series ? series.textColor : (book.cover_text_color || '#1B5E3A')
+
+  const coverContent = series ? `
+    <div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:16px 14px;box-sizing:border-box;">
+      <div style="text-align:center;">
+        ${book.is_series ? `<p style="font-size:9px;letter-spacing:2px;opacity:0.7;margin-bottom:4px;">CHIP BOOK SERIES</p><div style="border-top:1px solid currentColor;opacity:0.3;margin-bottom:6px;"></div>` : ''}
+        <p style="font-size:11px;font-weight:700;letter-spacing:1px;">${series.label}</p>
+        <div style="border-top:1px solid currentColor;opacity:0.3;margin:6px 0;"></div>
+        <p style="font-size:9px;opacity:0.75;">${series.desc}</p>
+      </div>
+      <div style="text-align:center;">
+        <p style="font-size:16px;font-weight:900;line-height:1.3;word-break:keep-all;">${book.title}</p>
+        ${book.subtitle ? `<p style="font-size:10px;opacity:0.8;margin-top:6px;line-height:1.4;">${book.subtitle}</p>` : ''}
+      </div>
+      <div style="text-align:center;">
+        <div style="border-top:1px solid currentColor;opacity:0.3;margin-bottom:6px;"></div>
+        <p style="font-size:9px;letter-spacing:2px;opacity:0.7;">— CHIP BOOK —</p>
+      </div>
+    </div>
+  ` : `
+    ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
+    ${isFree ? '<span class="badge badge--free">무료</span>' : (book.is_welcome ? '<span class="badge" style="background:#C9A84C;color:#fff;">첫구매무료</span>' : '')}
+    <div class="book-card__cover-title">${book.title}</div>
+  `
+
   return `
     <div class="book-card" data-book-id="${book.id}">
       <a href="book-detail.html?book_id=${book.id}" class="book-card__cover-link">
-        <div class="book-card__cover" style="background:${book.cover_color}; color:${book.cover_text_color}; overflow:hidden; position:relative;">
-          ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
-          ${isFree ? '<span class="badge badge--free">무료</span>' : (book.is_welcome ? '<span class="badge" style="background:#C9A84C;color:#fff;">첫구매무료</span>' : '')}
-          <div class="book-card__cover-title">${book.title}</div>
+        <div class="book-card__cover" style="background:${bgColor};color:${textColor};overflow:hidden;position:relative;">
+          ${coverContent}
+          ${series ? (isFree ? '<span class="badge badge--free" style="position:absolute;top:10px;left:10px;">무료</span>' : (book.is_welcome ? '<span class="badge" style="position:absolute;top:10px;left:10px;background:#C9A84C;color:#fff;">첫구매무료</span>' : '')) : ''}
         </div>
       </a>
       <div class="book-card__info">
