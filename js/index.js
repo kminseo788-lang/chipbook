@@ -18,19 +18,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSearch()
 
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
-  setInterval(renderWelcomeBooks, 15 * 1000)  // ← 이 줄만 추가
+  setInterval(renderWelcomeBooks, 15 * 1000)
+
   // 로그인 상태에 따라 버튼 변경
-const { data: { user } } = await supabase.auth.getUser()
-const welcomeBtn = document.getElementById('welcomeBtn')
-if (welcomeBtn) {
-  if (user) {
-    welcomeBtn.textContent = '무료 도서 받으러 가기 →'
-    welcomeBtn.href = 'search.html?type=welcome'
-  } else {
-    welcomeBtn.textContent = '회원가입하고 받기 →'
-    welcomeBtn.href = 'signup.html'
+  const { data: { user } } = await supabase.auth.getUser()
+  const welcomeBtn = document.getElementById('welcomeBtn')
+  if (welcomeBtn) {
+    if (user) {
+      welcomeBtn.textContent = '무료 도서 받으러 가기 →'
+      welcomeBtn.href = 'search.html?type=welcome'
+    } else {
+      welcomeBtn.textContent = '회원가입하고 받기 →'
+      welcomeBtn.href = 'signup.html'
+    }
   }
-}
 })
 
 // ─── 태그 목록 렌더링 ───
@@ -76,7 +77,7 @@ async function renderRecommendBooks() {
     .from('books')
     .select('*, authors(pen_name)')
     .eq('is_free', false)
-    .eq('is_welcome', false)   // ← 이 줄 추가
+    .eq('is_welcome', false)
     .eq('status', 'published')
     .limit(8)
 
@@ -87,7 +88,6 @@ async function renderRecommendBooks() {
 
   const shuffled = books.sort(() => Math.random() - 0.5)
 
-  // 페이드 아웃
   container.style.transition = 'opacity 0.4s ease'
   container.style.opacity = '0'
 
@@ -95,11 +95,7 @@ async function renderRecommendBooks() {
     container.innerHTML = shuffled.map(book =>
       createBookCard(book, { showRating: true, showPrice: true })
     ).join('')
-
-    // 슬라이더 초기화 (이벤트 중복 방지)
     initSlider()
-
-    // 페이드 인
     container.style.opacity = '1'
   }, 400)
 }
@@ -127,7 +123,6 @@ function initSlider() {
   const nextBtn = document.getElementById('sliderNext')
   if (!track) return
 
-  // 기존 이벤트 리스너 제거 (중복 방지)
   const newPrev = prevBtn?.cloneNode(true)
   const newNext = nextBtn?.cloneNode(true)
   if (prevBtn && newPrev) prevBtn.parentNode.replaceChild(newPrev, prevBtn)
@@ -177,9 +172,7 @@ function initSlider() {
   updateBtns()
 }
 
-
-
-// 함수 추가
+// ─── 첫 구매 환영 도서 렌더링 ───
 async function renderWelcomeBooks() {
   const container = document.getElementById('welcomeBookList')
   if (!container) return
@@ -207,22 +200,43 @@ async function renderWelcomeBooks() {
     container.style.opacity = '1'
   }, 400)
 }
+
+// ─── 시리즈 도서 렌더링 (전용 미니카드) ───
 async function renderSeriesBooks() {
   const series = ['spot', 'routine', 'core']
   const ids = ['seriesSpotList', 'seriesRoutineList', 'seriesCoreList']
+
   for (let i = 0; i < series.length; i++) {
     const container = document.getElementById(ids[i])
     if (!container) continue
+
     const { data: books } = await supabase
       .from('books')
       .select('*, authors(pen_name)')
       .eq('series', series[i])
       .eq('status', 'published')
-      .limit(3)
-    if (books?.length) {
-      container.innerHTML = books.map(book =>
-        createBookCard(book, { showPrice: true })
-      ).join('')
-    }
+      .limit(2)  // 2권으로 제한
+
+    if (!books?.length) continue
+
+    container.innerHTML = books.map(book => {
+      const priceHTML = book.is_free
+        ? `<span class="series-mini-price series-mini-price--free">무료</span>`
+        : `<span class="series-mini-price">${formatPrice(book.price)}원</span>`
+
+      const coverHTML = book.cover_url
+        ? `<img src="${book.cover_url}" alt="${book.title}">`
+        : `<span>${book.title}</span>`
+
+      return `
+        <a href="book.html?id=${book.id}" class="series-mini-card">
+          <div class="series-mini-cover">${coverHTML}</div>
+          <div class="series-mini-info">
+            <div class="series-mini-title">${book.title}</div>
+            ${priceHTML}
+          </div>
+        </a>
+      `
+    }).join('')
   }
 }
