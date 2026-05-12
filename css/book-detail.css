@@ -14,11 +14,8 @@
   aspect-ratio: 9/14;
   height: auto;
   border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 24px;
+  overflow: hidden;
+  position: relative;
   box-shadow: -8px 6px 0 rgba(0,0,0,.12);
 }
 

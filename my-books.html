@@ -117,7 +117,7 @@
 
   <script type="module">
     import { supabase } from './js/supabase.js'
-    import { getCurrentUser, renderHeader, renderFooter, formatPrice } from './js/common.js'
+    import { getCurrentUser, renderHeader, renderFooter, formatPrice, createCoverHTML } from './js/common.js'
 
     document.addEventListener('DOMContentLoaded', async () => {
       await renderHeader()
@@ -153,9 +153,9 @@
       document.getElementById('booksList').innerHTML = books.map(book => `
         <div class="books-table-row">
           <div>
-            <div class="book-cover-thumb" style="background:${book.cover_color};color:${book.cover_text_color}">
-              ${book.cover_url ? `<img src="${book.cover_url}" style="width:100%;height:100%;object-fit:cover;border-radius:4px">` : book.title?.slice(0,4)}
-            </div>
+            <div class="book-cover-thumb" style="overflow:hidden;position:relative;">
+  ${createCoverHTML(book)}
+</div>
           </div>
           <div class="book-title-cell">
             <span class="book-title-cell__name">${book.title}</span>

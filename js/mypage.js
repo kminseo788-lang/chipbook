@@ -309,15 +309,16 @@ console.log('wishlist:', wishlist, 'error:', error)
         ${wishlist?.length ? wishlist.map(w => {
           const book = w.books
           return `
-            <div class="purchase-item">
-              <div class="purchase-item__cover" style="overflow:hidden;position:relative;width:60px;height:80px;flex-shrink:0;">${createCoverHTML(book)}</div>
-                <p class="purchase-item__title">${book.title}</p>
-                <p class="purchase-item__author">${book.authors?.pen_name || ''} 작가</p>
-              </div>
-              <div class="purchase-item__actions">
-                <a href="book-detail.html?book_id=${book.id}" class="btn btn--outline btn--sm">보러가기</a>
-              </div>
-            </div>`
+           <div class="purchase-item">
+  <div class="purchase-item__cover" style="overflow:hidden;position:relative;width:60px;height:80px;flex-shrink:0;">${createCoverHTML(book)}</div>
+  <div class="purchase-item__info">
+    <p class="purchase-item__title">${book.title}</p>
+    <p class="purchase-item__author">${book.authors?.pen_name || ''} 작가</p>
+  </div>
+  <div class="purchase-item__actions">
+    <a href="book-detail.html?book_id=${book.id}" class="btn btn--outline btn--sm">보러가기</a>
+  </div>
+</div>`
         }).join('') : '<p style="font-size:14px;color:var(--color-text-sub)">찜한 도서가 없어요.</p>'}
       </div>
     </div>`
