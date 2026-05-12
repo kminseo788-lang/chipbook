@@ -219,14 +219,25 @@ async function renderSeriesBooks() {
 
     if (!books?.length) continue
 
-    container.innerHTML = books.map(book => {
-      const priceHTML = book.is_free
-        ? `<span class="series-mini-price series-mini-price--free">무료</span>`
-        : `<span class="series-mini-price">${formatPrice(book.price)}</span>`
+   const colors = {
+  spot:    { bg: '#ede4d0', text: '#1B5E3A' },
+  routine: { bg: '#174d30', text: '#ffffff' },
+  core:    { bg: '#0f1e2a', text: '#ffffff' },
+}
+const { bg: bgColor, text: textColor } = colors[series[i]]
 
-      return `
-        <a href="book-detail.html?book_id=${book.id}" class="series-mini-card">
-          <div class="series-mini-cover">${createCoverHTML(book, 'sm')}</div>
+container.innerHTML = books.map(book => {
+  const priceHTML = book.is_free
+    ? `<span class="series-mini-price series-mini-price--free">무료</span>`
+    : `<span class="series-mini-price">${formatPrice(book.price)}</span>`
+
+  const coverHTML = book.cover_url
+    ? `<img src="${book.cover_url}" alt="${book.title}" style="width:100%;height:100%;object-fit:cover;">`
+    : `<div style="width:100%;height:100%;background:${bgColor};color:${textColor};display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-size:13px;font-weight:800;line-height:1.4;text-align:center;">${book.title}</div>`
+
+  return `
+    <a href="book-detail.html?book_id=${book.id}" class="series-mini-card">
+      <div class="series-mini-cover">${coverHTML}</div>
           <div class="series-mini-info">
             <div class="series-mini-title">${book.title}</div>
             ${priceHTML}
