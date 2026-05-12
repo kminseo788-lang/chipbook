@@ -240,9 +240,8 @@ container.innerHTML = books.map(book => {
     <a href="book-detail.html?book_id=${book.id}" class="series-mini-card">
       <div class="series-mini-cover">${coverHTML}</div>
           <div class="series-mini-info">
-            <div class="series-mini-title">${book.title}</div>
-            ${priceHTML}
-          </div>
+  ${priceHTML}
+</div>
         </a>
       `
     }).join('')
