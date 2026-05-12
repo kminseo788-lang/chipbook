@@ -1,8 +1,7 @@
 
 
 import { supabase } from './supabase.js'
-import { getCurrentUser, isPurchased, toggleWishlist, isWishlisted, formatPrice, createBookCard } from './common.js'
-
+import { getCurrentUser, isPurchased, toggleWishlist, isWishlisted, formatPrice, createBookCard, createCoverHTML } from './common.js'
 document.addEventListener('DOMContentLoaded', async () => {
   const bookId = new URLSearchParams(window.location.search).get('book_id')
   if (!bookId) { window.location.href = 'index.html'; return }
@@ -60,11 +59,9 @@ async function renderBookTop(book) {
   }
 
   el.innerHTML = `
-   <div class="book-detail-cover" style="background:${book.cover_color};color:${book.cover_text_color};overflow:hidden;position:relative;">
-  ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
-      <div class="book-detail-cover__title">${book.title}</div>
-      <div class="book-detail-cover__author">${authorName} 지음</div>
-    </div>
+   <div class="book-detail-cover" style="overflow:hidden;position:relative;">
+  ${createCoverHTML(book, 'lg')}
+</div>
     <div class="book-detail-info">
       <div class="book-detail-cats">
         ${(book.tags||[]).slice(0,2).map(t => `<span class="book-detail-cat">${t}</span>`).join('')}

@@ -9,7 +9,7 @@
  */
 
 import { supabase } from './supabase.js'
-import { getCurrentUser, isPurchased, formatPrice } from './common.js'
+import { getCurrentUser, isPurchased, formatPrice, createCoverHTML } from './common.js'
 
 document.addEventListener('DOMContentLoaded', async () => {
   const bookId = new URLSearchParams(window.location.search).get('book_id')
@@ -48,7 +48,7 @@ function renderProduct(book) {
   if (!el) return
   const authorName = book.authors?.pen_name || ''
   el.innerHTML = `
-    <div class="payment-product__cover" style="background:${book.cover_color};color:${book.cover_text_color}">${book.title}</div>
+    <div class="payment-product__cover" style="overflow:hidden;position:relative;">${createCoverHTML(book)}</div>
     <div class="payment-product__info">
       <span class="payment-product__badge">전자책</span>
       <p class="payment-product__title">${book.title}</p>
