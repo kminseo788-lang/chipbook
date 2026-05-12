@@ -186,11 +186,13 @@
     .series-col--core   .series-mini-cover { background: #0f1e2a; color: #fff; }
 
     .series-mini-info {
-      height: 32px;
-      background: #fff;
-      padding: 7px 8px;
-      overflow: hidden;
-    }
+  height: 36px;
+  background: #fff;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
     .series-mini-title {
       font-size: 10px;
       font-weight: 600;
@@ -203,10 +205,13 @@
       overflow: hidden;
     }
     .series-mini-price {
-      font-size: 10px;
-      color: #888;
+      font-size: 13px;
+      color: var(--color-text-secondary);
     }
-    .series-mini-price--free { color: #1B5E3A; font-weight: 700; }
+   .series-mini-price--free {
+  color: #1B5E3A;
+  font-weight: 700;
+}
 
     /* 하단 피처 태그 (네모 없이 리스트) */
     .series-feats {
