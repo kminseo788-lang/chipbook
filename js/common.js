@@ -98,10 +98,10 @@ function createBookCard(book, options = {}) {
   const authorName = book.authors?.pen_name || book.author_name || ''
   
   const seriesConfig = {
-    'spot': { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book', desc: '하나의 책, 하나의 문제 해결' },
-    'routine': { color: '#1B5E3A', textColor: '#ffffff', label: 'Routine Book', desc: '지금 상황을 쉽게 굴러가게' },
-    'core': { color: '#1B3A4B', textColor: '#ffffff', label: 'Core Book', desc: '삶을 바라보는 기준과 철학' },
-  }
+  'spot': { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book', desc: '하나의 책, 하나의 문제 해결' },
+  'routine': { color: '#1B5E3A', textColor: '#ffffff', label: 'Routine Book', desc: '지금 상황을 쉽게 굴러가게 만드는 책' },
+  'core': { color: '#1B3A4B', textColor: '#ffffff', label: 'Core Book', desc: '삶을 바라보는 기준과 철학' },
+}
   
   const series = book.series ? seriesConfig[book.series] : null
   const bgColor = series ? series.color : (book.cover_color || '#E8F5E9')
