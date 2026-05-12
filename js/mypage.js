@@ -4,7 +4,7 @@
  */
 
 import { supabase } from './supabase.js'
-import { getCurrentUser, formatPrice } from './common.js'
+import { getCurrentUser, formatPrice, createCoverHTML } from './common.js'
 
 let currentMode = 'reader'
 let currentUser = null
@@ -277,10 +277,9 @@ async function renderAuthorDashboard(container) {
       <div class="author-books-grid">
         ${authorBooks.map(book => `
   <div class="author-book-card">
-  <div class="author-book-card__cover" style="background:${book.cover_color};color:${book.cover_text_color};overflow:hidden;position:relative;">
-    ${book.cover_url ? `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">` : ''}
-    
-  </div>
+ <div class="author-book-card__cover" style="overflow:hidden;position:relative;">
+  ${createCoverHTML(book)}
+</div>
   <p class="author-book-card__title">${book.title}</p>
   <p class="author-book-card__meta">상태: ${book.status}</p>
   <a href="editor.html?book_id=${book.id}" class="btn btn--outline btn--sm btn--full">도서 관리</a>
@@ -311,7 +310,7 @@ console.log('wishlist:', wishlist, 'error:', error)
           const book = w.books
           return `
             <div class="purchase-item">
-              <div class="purchase-item__cover" style="background:${book.cover_color};color:${book.cover_text_color}">${book.title?.slice(0,6)}</div>
+              <div class="purchase-item__cover" style="overflow:hidden;position:relative;">${createCoverHTML(book)}</div>
               <div class="purchase-item__info">
                 <p class="purchase-item__title">${book.title}</p>
                 <p class="purchase-item__author">${book.authors?.pen_name || ''} 작가</p>

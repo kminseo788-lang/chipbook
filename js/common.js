@@ -92,6 +92,38 @@ async function searchBooks(params = {}) {
 function formatPrice(price) {
   return price === 0 ? '무료' : price.toLocaleString('ko-KR') + '원'
 }
+function createCoverHTML(book, size = 'sm') {
+  const seriesConfig = {
+    'spot': { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book' },
+    'routine': { color: '#1B5E3A', textColor: '#ffffff', label: 'Routine Book' },
+    'core': { color: '#1B3A4B', textColor: '#ffffff', label: 'Core Book' },
+  }
+  const series = book.series ? seriesConfig[book.series] : null
+  const bgColor = series ? series.color : (book.cover_color || '#E8F5E9')
+  const textColor = series ? series.textColor : (book.cover_text_color || '#1B5E3A')
+
+  if (series) {
+    return `
+      <div style="background:${bgColor};color:${textColor};width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:12px 10px;box-sizing:border-box;position:relative;">
+        <div style="text-align:center;">
+          ${book.is_series ? `<p style="font-size:8px;letter-spacing:1px;opacity:0.7;margin-bottom:2px;">CHIP BOOK SERIES</p><div style="border-top:1px solid currentColor;opacity:0.3;margin-bottom:4px;"></div>` : ''}
+          <p style="font-size:10px;font-weight:700;">${series.label}</p>
+          <div style="border-top:1px solid currentColor;opacity:0.3;margin:4px 0;"></div>
+        </div>
+        <div style="text-align:center;flex:1;display:flex;align-items:center;justify-content:center;">
+          <p style="font-size:13px;font-weight:900;line-height:1.3;word-break:keep-all;">${book.title}</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="border-top:1px solid currentColor;opacity:0.3;margin-bottom:4px;"></div>
+          <p style="font-size:8px;letter-spacing:1px;opacity:0.7;">— CHIP BOOK —</p>
+        </div>
+      </div>`
+  } else if (book.cover_url) {
+    return `<img src="${book.cover_url}" style="width:100%;height:100%;object-fit:cover;">`
+  } else {
+    return `<div style="background:${bgColor};color:${textColor};width:100%;height:100%;display:flex;align-items:flex-end;padding:12px;box-sizing:border-box;"><span style="font-size:13px;font-weight:700;">${book.title}</span></div>`
+  }
+}
 
 function createBookCard(book, options = {}) {
   const isFree = book.is_free
@@ -256,7 +288,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 export {
   getCurrentUser, getParam, getCurrentBookId, getBookById, getAuthorById,
   isPurchased, isWishlisted, toggleWishlist, searchBooks,
-  formatPrice, createBookCard, renderHeader, renderFooter
+  formatPrice, createBookCard, createCoverHTML, renderHeader, renderFooter
 }
 
 window.handleSignOut = async function() {
