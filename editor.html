@@ -145,6 +145,24 @@
 <input type="radio" name="bookType" value="paid" checked onchange="togglePrice('paid')"> 유료
   </label>
 </div>
+<!-- 시리즈 설정 -->
+          <div class="form-field form-field--row" style="margin-top:16px;">
+            <div class="form-field__sub">
+              <label class="form-field__label">시리즈 설정</label>
+              <select class="input form-field__input" id="bookSeries" onchange="toggleSeries(this.value)">
+                <option value="">시리즈 없음</option>
+                <option value="spot">Spot Book</option>
+                <option value="routine">Routine Book</option>
+                <option value="core">Core Book</option>
+              </select>
+            </div>
+            <div class="form-field__sub" id="isSeriesField" style="display:none;">
+              <label class="form-field__label">시리즈물 여부</label>
+              <label class="radio-item">
+                <input type="checkbox" id="isSeriesCheck"> 시리즈물입니다 (표지 상단에 CHIP BOOK SERIES 표시)
+              </label>
+            </div>
+          </div>
             </div>
             <div class="form-field__sub" id="priceField">
               <label class="form-field__label">가격 <span class="required">*</span></label>

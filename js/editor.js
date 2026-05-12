@@ -170,6 +170,12 @@ window.togglePrice = function(type) {
   const pf = document.getElementById('priceField')
   if (pf) pf.style.display = type === 'free' ? 'none' : 'block'
 }
+window.toggleSeries = function(value) {
+  const isSeriesField = document.getElementById('isSeriesField')
+  if (isSeriesField) {
+    isSeriesField.style.display = value ? 'block' : 'none'
+  }
+}
 
 // ─── 표지 미리보기 ───
 window.previewCover = function(input) {
@@ -434,6 +440,8 @@ window.saveDraft = async function() {
 
   try {
   const payload = {
+    series: document.getElementById('bookSeries')?.value || null,
+is_series: document.getElementById('isSeriesCheck')?.checked || false,
   author_id: authorId,
   title,
   description: document.getElementById('bookDesc')?.value || '',
@@ -518,6 +526,8 @@ window.publishBook = async function() {
 
   try {
  const bookPayload = {
+  series: document.getElementById('bookSeries')?.value || null,
+is_series: document.getElementById('isSeriesCheck')?.checked || false,
   author_id: authorId,
   title,
   description: document.getElementById('bookDesc')?.value || '',
