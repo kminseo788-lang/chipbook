@@ -4,7 +4,7 @@
  */
 
 import { supabase } from './supabase.js'
-import { formatPrice, createBookCard, getParam } from './common.js'
+import { formatPrice, createBookCard, createCoverHTML, getParam } from './common.js'
 
 // setInterval을 함수 밖에서 한 번만 선언
 let recommendInterval = null
@@ -215,22 +215,18 @@ async function renderSeriesBooks() {
       .select('*, authors(pen_name)')
       .eq('series', series[i])
       .eq('status', 'published')
-      .limit(2)  // 2권으로 제한
+      .limit(2)
 
     if (!books?.length) continue
 
     container.innerHTML = books.map(book => {
       const priceHTML = book.is_free
         ? `<span class="series-mini-price series-mini-price--free">무료</span>`
-        : `<span class="series-mini-price">${formatPrice(book.price)}원</span>`
-
-      const coverHTML = book.cover_url
-        ? `<img src="${book.cover_url}" alt="${book.title}">`
-        : `<span>${book.title}</span>`
+        : `<span class="series-mini-price">${formatPrice(book.price)}</span>`
 
       return `
-        <a href="book.html?id=${book.id}" class="series-mini-card">
-          <div class="series-mini-cover">${coverHTML}</div>
+        <a href="book-detail.html?book_id=${book.id}" class="series-mini-card">
+          <div class="series-mini-cover">${createCoverHTML(book, 'sm')}</div>
           <div class="series-mini-info">
             <div class="series-mini-title">${book.title}</div>
             ${priceHTML}
