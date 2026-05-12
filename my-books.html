@@ -151,9 +151,7 @@
       document.getElementById('booksList').innerHTML = books.map(book => `
         <div class="books-table-row">
           <div>
-            <div class="book-cover-thumb" style="overflow:hidden;position:relative;">
-  ${createCoverHTML(book)}
-</div>
+           <div class="book-cover-thumb">${createCoverHTML(book)}</div>
           </div>
           <div class="book-title-cell">
             <span class="book-title-cell__name">${book.title}</span>
