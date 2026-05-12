@@ -199,11 +199,17 @@ async function renderHeader(options = {}) {
         <span class="header__slogan">작은 습관이 만드는 큰 변화</span>
       </div>
       <nav class="header__nav">
-        <a href="search.html?type=all" class="header__nav-item">도서검색</a>
-        <a href="search.html?type=free" class="header__nav-item">무료도서</a>
-        <a href="search.html?type=recommended" class="header__nav-item">추천도서</a>
-        <a href="author-landing.html" class="header__nav-item">이북 제작 강의</a>
-      </nav>
+  <a href="search.html" class="header__nav-item">도서 찾기</a>
+  <div class="header__nav-dropdown">
+    <span class="header__nav-item header__nav-item--dropdown">시리즈 ▾</span>
+    <div class="header__nav-dropdown-menu">
+      <a href="search.html?series=spot" class="header__nav-dropdown-item">📗 Spot Book</a>
+      <a href="search.html?series=routine" class="header__nav-dropdown-item">📘 Routine Book</a>
+      <a href="search.html?series=core" class="header__nav-dropdown-item">📕 Core Book</a>
+    </div>
+  </div>
+  <a href="author-landing.html" class="header__nav-item">강의</a>
+</nav>
       <div class="header__right">
         <a href="search.html" class="header__icon" title="검색">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -232,11 +238,12 @@ async function renderHeader(options = {}) {
     <!-- 모바일 메뉴 -->
     <div class="mobile-menu" id="mobileMenu">
       <nav class="mobile-menu__nav">
-        <a href="search.html?type=all" class="mobile-menu__item">도서검색</a>
-        <a href="search.html?type=free" class="mobile-menu__item">무료도서</a>
-        <a href="search.html?type=recommended" class="mobile-menu__item">추천도서</a>
-        <a href="author-landing.html" class="mobile-menu__item">이북 제작 강의 </a>
-      </nav>
+  <a href="search.html" class="mobile-menu__item">도서 찾기</a>
+  <a href="search.html?series=spot" class="mobile-menu__item">Spot Book</a>
+  <a href="search.html?series=routine" class="mobile-menu__item">Routine Book</a>
+  <a href="search.html?series=core" class="mobile-menu__item">Core Book</a>
+  <a href="author-landing.html" class="mobile-menu__item">강의</a>
+</nav>
       <div class="mobile-menu__footer">
         ${isLoggedIn
           ? `<a href="mypage.html" class="btn btn--primary btn--full">마이페이지</a>
