@@ -23,6 +23,7 @@ async function parseUrlAndSearch() {
   const type = new URLSearchParams(window.location.search).get('type')
   const tag = new URLSearchParams(window.location.search).get('tag')
   const authorId = new URLSearchParams(window.location.search).get('author_id')
+  const series = new URLSearchParams(window.location.search).get('series')
 
   const inputEl = document.getElementById('searchInput')
   if (keyword && inputEl) inputEl.value = keyword
@@ -32,12 +33,13 @@ async function parseUrlAndSearch() {
     renderSelectedTags()
   }
 
-  currentResults = await fetchBooks({ keyword, type, tag, author_id: authorId })
+currentResults = await fetchBooks({ keyword, type, tag, author_id: authorId, series })
   renderResults(currentResults)
 }
 
 // ─── Supabase 도서 조회 ───
 async function fetchBooks(params = {}) {
+  if (params.series) query = query.eq('series', params.series)
   let query = supabase
     .from('books')
     .select('*, authors(pen_name)')

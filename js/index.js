@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderFreeBooks()
   await renderWelcomeBooks()
   await renderRecommendBooks()
+  await renderSeriesBooks()
   initSearch()
 
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
@@ -205,4 +206,23 @@ async function renderWelcomeBooks() {
     ).join('')
     container.style.opacity = '1'
   }, 400)
+}
+async function renderSeriesBooks() {
+  const series = ['spot', 'routine', 'core']
+  const ids = ['seriesSpotList', 'seriesRoutineList', 'seriesCoreList']
+  for (let i = 0; i < series.length; i++) {
+    const container = document.getElementById(ids[i])
+    if (!container) continue
+    const { data: books } = await supabase
+      .from('books')
+      .select('*, authors(pen_name)')
+      .eq('series', series[i])
+      .eq('status', 'published')
+      .limit(3)
+    if (books?.length) {
+      container.innerHTML = books.map(book =>
+        createBookCard(book, { showPrice: true })
+      ).join('')
+    }
+  }
 }
