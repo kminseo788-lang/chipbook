@@ -30,16 +30,14 @@
     }
     .books-table-row:last-child { border-bottom: none; }
     .books-table-row:hover { background: var(--color-bg-sub); }
-    .book-cover-thumb {
-      width: 40px;
-      height: 54px;
-      border-radius: 4px;
-      display: flex;
-      align-items: flex-end;
-      padding: 4px;
-      font-size: 8px;
-      font-weight: 700;
-    }
+   .book-cover-thumb {
+  width: 40px;
+  height: 54px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
     .book-title-cell { display: flex; flex-direction: column; gap: 4px; padding-right: 16px; }
     .book-title-cell__name { font-weight: 600; line-height: 1.4; }
     .book-title-cell__date { font-size: 12px; color: var(--color-text-sub); }

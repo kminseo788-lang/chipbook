@@ -118,8 +118,8 @@ function createCoverHTML(book, size = 'sm') {
           <p style="font-size:8px;letter-spacing:1px;opacity:0.7;">— CHIP BOOK —</p>
         </div>
       </div>`
-  } else if (book.cover_url) {
-    return `<img src="${book.cover_url}" style="width:100%;height:100%;object-fit:cover;">`
+ } else if (book.cover_url) {
+  return `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">`
   } else {
     return `<div style="background:${bgColor};color:${textColor};width:100%;height:100%;display:flex;align-items:flex-end;padding:12px;box-sizing:border-box;"><span style="font-size:13px;font-weight:700;">${book.title}</span></div>`
   }
