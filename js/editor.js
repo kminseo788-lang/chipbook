@@ -116,6 +116,17 @@ if (pf) pf.style.display = bookData.type === 'paid' || bookData.type === 'welcom
   if (placeholder) placeholder.style.display = 'none'
   if (deleteBtn) deleteBtn.style.display = 'block'
   bookData.coverUrl = book.cover_url
+  // 시리즈 드롭다운 동기화
+const seriesEl = document.getElementById('bookSeries')
+if (seriesEl && book.series) {
+  seriesEl.value = book.series
+  const isSeriesField = document.getElementById('isSeriesField')
+  if (isSeriesField) isSeriesField.style.display = 'block'
+}
+
+// 시리즈물 체크박스 동기화
+const isSeriesCheck = document.getElementById('isSeriesCheck')
+if (isSeriesCheck) isSeriesCheck.checked = book.is_series || false
 }
 
   document.getElementById('titleCount').textContent = (book.title || '').length
