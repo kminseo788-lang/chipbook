@@ -16,7 +16,7 @@
   <meta name="twitter:image" content="https://www.chipbook.net/images/Open-Graph.png">
 
   <style>
-    /* ── 골드 포인트 컬러 추가 ── */
+    /* ── 골드 포인트 컬러 ── */
     :root {
       --color-gold: #C9A84C;
       --color-gold-light: rgba(201,168,76,0.12);
@@ -61,106 +61,151 @@
       line-height: 1.8;
       margin-bottom: 28px;
     }
-    .btn--gold {
-      background: var(--color-gold);
-      color: var(--color-primary);
-      font-weight: 700;
-    }
+    .btn--gold { background: var(--color-gold); color: var(--color-primary); font-weight: 700; }
     .btn--gold:hover { background: #dbb95a; }
-
-    .lecture-cta__right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-shrink: 0;
-    }
-    .lecture-cta__steps {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .lecture-step {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: rgba(255,255,255,0.85);
-      font-size: 14px;
-    }
+    .lecture-cta__right { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+    .lecture-cta__steps { display: flex; flex-direction: column; gap: 12px; }
+    .lecture-step { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.85); font-size: 14px; }
     .lecture-step__num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--color-gold);
-      color: var(--color-primary);
-      font-size: 12px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--color-gold); color: var(--color-primary);
+      font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .lecture-cta__book {
-      width: 130px;
-      height: 175px;
+      width: 130px; height: 175px;
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.2);
       border-radius: 4px 12px 12px 4px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: flex-end;
+      display: flex; flex-direction: column;
+      align-items: flex-end; justify-content: flex-end;
       padding: 16px;
       box-shadow: -6px 4px 0 rgba(0,0,0,.2);
     }
-    .lecture-cta__book-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--color-gold);
-      text-align: right;
-      line-height: 1.5;
+    .lecture-cta__book-title { font-size: 12px; font-weight: 700; color: var(--color-gold); text-align: right; line-height: 1.5; }
+
+    /* ── 시리즈 섹션 ── */
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+    .series-col {
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+    }
+    .series-col--spot   { background: #f2ece0; }
+    .series-col--routine { background: #1B5E3A; }
+    .series-col--core   { background: #1B3A4B; }
+
+    .series-head { padding: 1.2rem 1.2rem 1rem; }
+
+    .series-badge {
+      display: inline-block;
+      font-size: 9px; font-weight: 700; letter-spacing: .12em;
+      padding: 3px 9px; border-radius: 20px; margin-bottom: 10px;
+    }
+    .series-col--spot   .series-badge { background: #1B5E3A; color: #f2ece0; }
+    .series-col--routine .series-badge,
+    .series-col--core   .series-badge { background: rgba(255,255,255,.18); color: #fff; }
+
+    .series-head-row {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 8px;
+    }
+    .series-title { font-size: 17px; font-weight: 800; line-height: 1.35; }
+    .series-col--spot   .series-title { color: #2a1a0e; }
+    .series-col--routine .series-title,
+    .series-col--core   .series-title { color: #fff; }
+
+    .series-arrow {
+      flex-shrink: 0; width: 30px; height: 30px;
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700; margin-top: 2px;
+    }
+    .series-col--spot   .series-arrow { background: #1B5E3A; color: #f2ece0; }
+    .series-col--routine .series-arrow,
+    .series-col--core   .series-arrow { background: rgba(255,255,255,.2); color: #fff; }
+
+    .series-desc { font-size: 11px; margin-top: 8px; line-height: 1.65; }
+    .series-col--spot   .series-desc { color: #6b5040; }
+    .series-col--routine .series-desc,
+    .series-col--core   .series-desc { color: rgba(255,255,255,.7); }
+
+    /* 책 영역 */
+    .series-books { padding: 0 1.2rem; }
+    .series-books-label {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 8px;
+    }
+    .series-books-label span { font-size: 10px; font-weight: 600; letter-spacing: .06em; }
+    .series-col--spot   .series-books-label span { color: #6b5040; }
+    .series-col--routine .series-books-label span,
+    .series-col--core   .series-books-label span { color: rgba(255,255,255,.5); }
+
+    .series-view-all { font-size: 10px; font-weight: 600; text-decoration: none; }
+    .series-col--spot   .series-view-all { color: #1B5E3A; }
+    .series-col--routine .series-view-all,
+    .series-col--core   .series-view-all { color: rgba(255,255,255,.8); }
+
+    /* JS가 렌더링하는 book-list를 2열 그리드로 강제 */
+    .series-books .book-list {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 7px !important;
+      flex-wrap: unset !important;
+      overflow: hidden !important;
+    }
+    /* 카드 너비/높이 고정 (기존 book-card 스타일 오버라이드) */
+    .series-books .book-list > * {
+      width: auto !important;
+      min-width: unset !important;
+      max-width: 100% !important;
+      flex-shrink: unset !important;
+    }
+    /* 표지 이미지 고정 높이 */
+    .series-books .book-card__cover,
+    .series-books .book-card img {
+      height: 100px !important;
+      object-fit: cover !important;
+      aspect-ratio: unset !important;
+    }
+    /* 메타 영역 고정 높이 */
+    .series-books .book-card__info {
+      height: 56px !important;
+      overflow: hidden !important;
     }
 
-    /* ── 첫 구매 무료 섹션 ── */
-    .first-free-banner {
-      background: var(--color-gold-light);
-      border: 1px solid var(--color-gold-border);
-      border-radius: var(--radius-xl);
-      padding: 20px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
+    /* 하단 피처 태그 (네모 없이 리스트) */
+    .series-feats {
+      display: flex; flex-direction: column;
+      padding: 10px 1.2rem 1.2rem;
+      margin-top: 8px;
     }
-    .first-free-banner__text {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      color: #7a5c1e;
+    .series-feat {
+      display: flex; align-items: center;
+      gap: 8px; padding: 5px 0;
+      font-size: 10px; line-height: 1.4; font-weight: 500;
     }
-    .first-free-banner__icon { font-size: 22px; }
-    .first-free-banner__sub {
-      font-size: 13px;
-      font-weight: 400;
-      color: #9a7a3e;
-      margin-left: 4px;
-    }
+    .series-feat + .series-feat { border-top: 0.5px solid rgba(0,0,0,.07); }
+    .series-col--routine .series-feat + .series-feat,
+    .series-col--core   .series-feat + .series-feat { border-top: 0.5px solid rgba(255,255,255,.1); }
+    .series-feat__icon { font-size: 13px; flex-shrink: 0; }
+    .series-col--spot   .series-feat { color: #2a4a30; }
+    .series-col--routine .series-feat,
+    .series-col--core   .series-feat { color: rgba(255,255,255,.75); }
 
     /* 반응형 */
     @media (max-width: 768px) {
-      .lecture-cta {
-        flex-direction: column;
-        padding: 32px 24px;
-        text-align: center;
-      }
+      .lecture-cta { flex-direction: column; padding: 32px 24px; text-align: center; }
       .lecture-cta__title { font-size: 22px; }
       .lecture-cta__right { display: none; }
-      .first-free-banner {
-        flex-direction: column;
-        gap: 12px;
-        text-align: center;
-      }
+      .series-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -203,79 +248,125 @@
       </div>
     </section>
 
-   
     <!-- 무료도서 섹션 -->
-<section class="section section--white">
-  <div class="inner">
-    <div class="section-header">
-      <div class="section-header__left">
-        <h2 class="section-header__title">무료도서</h2>
-        <span class="section-header__sub">부담 없이 먼저 읽어보세요</span>
+    <section class="section section--white">
+      <div class="inner">
+        <div class="section-header">
+          <div class="section-header__left">
+            <h2 class="section-header__title">무료도서</h2>
+            <span class="section-header__sub">부담 없이 먼저 읽어보세요</span>
+          </div>
+          <a href="search.html?type=free" class="section-header__more">더보기 →</a>
+        </div>
+        <div class="book-list" id="freeBookList"></div>
       </div>
-      <a href="search.html?type=free" class="section-header__more">더보기 →</a>
-    </div>
-    <div class="book-list" id="freeBookList"></div>
-  </div>
-</section>
+    </section>
 
+    <!-- 첫 구매 무료 섹션 -->
+    <section class="section section--white">
+      <div class="inner">
+        <div style="background:var(--color-primary);border-radius:12px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:22px;">🎁</span>
+            <div>
+              <span style="font-size:17px;font-weight:700;color:#fff;">첫 구매 무료</span>
+              <span style="font-size:13px;color:rgba(255,255,255,0.75);margin-left:10px;">회원가입 후 유료 도서 1권을 무료로 받으세요</span>
+            </div>
+          </div>
+          <a href="signup.html" id="welcomeBtn" class="btn btn--sm" style="border:1px solid rgba(255,255,255,0.6);color:#fff;background:transparent;white-space:nowrap;">회원가입하고 받기 →</a>
+        </div>
+        <div class="book-list" id="welcomeBookList"></div>
+      </div>
+    </section>
 
-<!-- 첫 구매 무료 섹션 -->
-<section class="section section--white">
-  <div class="inner">
-    <div style="background:var(--color-primary);border-radius:12px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-size:22px;">🎁</span>
-        <div>
-          <span style="font-size:17px;font-weight:700;color:#fff;">첫 구매 무료</span>
-          <span style="font-size:13px;color:rgba(255,255,255,0.75);margin-left:10px;">회원가입 후 유료 도서 1권을 무료로 받으세요</span>
+    <!-- 칩북 시리즈 섹션 -->
+    <section class="section section--gray">
+      <div class="inner">
+        <div class="section-header">
+          <div class="section-header__left">
+            <h2 class="section-header__title">칩북 시리즈</h2>
+            <span class="section-header__sub">주제와 깊이로 나뉘는 세 가지 시리즈</span>
+          </div>
+        </div>
+
+        <div class="series-grid">
+
+          <!-- SPOT BOOK -->
+          <a href="search.html?series=spot" class="series-col series-col--spot">
+            <div class="series-head">
+              <div class="series-badge">SPOT BOOK</div>
+              <div class="series-head-row">
+                <div class="series-title">하나의 문제,<br>하나의 해결</div>
+                <div class="series-arrow">→</div>
+              </div>
+              <div class="series-desc">지금 당장 해결하고 싶은<br>단 하나의 문제를 위한 책</div>
+            </div>
+            <div class="series-books">
+              <div class="series-books-label">
+                <span>대표 도서</span>
+                <span class="series-view-all">전체 보기 →</span>
+              </div>
+              <div class="book-list" id="seriesSpotList"></div>
+            </div>
+            <div class="series-feats">
+              <div class="series-feat"><span class="series-feat__icon">📄</span>짧고 실용적인 해결책</div>
+              <div class="series-feat"><span class="series-feat__icon">⚡</span>바로 적용 가능한 노하우</div>
+              <div class="series-feat"><span class="series-feat__icon">💡</span>핵심만 담은 미니 가이드</div>
+            </div>
+          </a>
+
+          <!-- ROUTINE BOOK -->
+          <a href="search.html?series=routine" class="series-col series-col--routine">
+            <div class="series-head">
+              <div class="series-badge">ROUTINE BOOK</div>
+              <div class="series-head-row">
+                <div class="series-title">지금 상황을<br>굴러가게</div>
+                <div class="series-arrow">→</div>
+              </div>
+              <div class="series-desc">일상을 쉽게 운영하는<br>루틴과 방법을 담은 책</div>
+            </div>
+            <div class="series-books">
+              <div class="series-books-label">
+                <span>대표 도서</span>
+                <span class="series-view-all">전체 보기 →</span>
+              </div>
+              <div class="book-list" id="seriesRoutineList"></div>
+            </div>
+            <div class="series-feats">
+              <div class="series-feat"><span class="series-feat__icon">🔄</span>지속 가능한 일상 루틴</div>
+              <div class="series-feat"><span class="series-feat__icon">🎯</span>작은 실행의 큰 변화</div>
+              <div class="series-feat"><span class="series-feat__icon">📈</span>꾸준함을 만드는 실진 방법</div>
+            </div>
+          </a>
+
+          <!-- CORE BOOK -->
+          <a href="search.html?series=core" class="series-col series-col--core">
+            <div class="series-head">
+              <div class="series-badge">CORE BOOK</div>
+              <div class="series-head-row">
+                <div class="series-title">삶의 기준과<br>철학</div>
+                <div class="series-arrow">→</div>
+              </div>
+              <div class="series-desc">삶을 바라보는 근본적인<br>기준을 세워주는 책</div>
+            </div>
+            <div class="series-books">
+              <div class="series-books-label">
+                <span>대표 도서</span>
+                <span class="series-view-all">전체 보기 →</span>
+              </div>
+              <div class="book-list" id="seriesCoreList"></div>
+            </div>
+            <div class="series-feats">
+              <div class="series-feat"><span class="series-feat__icon">👁</span>근본을 꿰뚫는 통찰</div>
+              <div class="series-feat"><span class="series-feat__icon">⚖️</span>삶의 기준을 세우는 철학</div>
+              <div class="series-feat"><span class="series-feat__icon">📈</span>더 나은 방향으로 성장</div>
+            </div>
+          </a>
+
         </div>
       </div>
-<a href="signup.html" id="welcomeBtn" class="btn btn--sm" style="border:1px solid rgba(255,255,255,0.6);color:#fff;background:transparent;white-space:nowrap;">회원가입하고 받기 →</a>
-    </div>
-    <div class="book-list" id="welcomeBookList"></div>
-  </div>
-</section>
-    
-<!-- 시리즈 섹션 -->
-<section class="section section--gray">
-  <div class="inner">
-    <div class="section-header">
-      <div class="section-header__left">
-        <h2 class="section-header__title">칩북 시리즈</h2>
-        <span class="section-header__sub">주제와 깊이로 나뉘는 세 가지 시리즈</span>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
-      <a href="search.html?series=spot" style="text-decoration:none;">
-        <div style="background:#F5F0E8;border-radius:16px;padding:24px;height:100%;box-sizing:border-box;">
-          <p style="font-size:11px;letter-spacing:2px;color:#1B5E3A;font-weight:700;margin-bottom:8px;">SPOT BOOK</p>
-          <p style="font-size:18px;font-weight:800;color:#1B3A4B;margin-bottom:6px;">하나의 문제,<br>하나의 해결</p>
-          <p style="font-size:13px;color:#666;margin-bottom:16px;">지금 당장 해결하고 싶은 단 하나의 문제를 위한 책</p>
-          <div class="book-list" id="seriesSpotList" style="flex-wrap:nowrap;overflow:hidden;gap:8px;"></div>
-          <p style="font-size:13px;color:#1B5E3A;font-weight:600;margin-top:12px;">전체 보기 →</p>
-        </div>
-      </a>
-      <a href="search.html?series=routine" style="text-decoration:none;">
-        <div style="background:#1B5E3A;border-radius:16px;padding:24px;height:100%;box-sizing:border-box;">
-          <p style="font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:8px;">ROUTINE BOOK</p>
-          <p style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">지금 상황을<br>굴러가게</p>
-          <p style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:16px;">일상을 쉽게 운영하는 루틴과 방법을 담은 책</p>
-          <div class="book-list" id="seriesRoutineList" style="flex-wrap:nowrap;overflow:hidden;gap:8px;"></div>
-          <p style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:12px;">전체 보기 →</p>
-        </div>
-      </a>
-      <a href="search.html?series=core" style="text-decoration:none;">
-        <div style="background:#1B3A4B;border-radius:16px;padding:24px;height:100%;box-sizing:border-box;">
-          <p style="font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:8px;">CORE BOOK</p>
-          <p style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">삶의 기준과<br>철학</p>
-          <p style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:16px;">삶을 바라보는 근본적인 기준을 세워주는 책</p>
-          <div class="book-list" id="seriesCoreList" style="flex-wrap:nowrap;overflow:hidden;gap:8px;"></div>
-          <p style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;margin-top:12px;">전체 보기 →</p>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
+    </section>
+
     <!-- 추천도서 섹션 -->
     <section class="section section--gray">
       <div class="inner">
@@ -315,22 +406,10 @@
           </div>
           <div class="lecture-cta__right">
             <div class="lecture-cta__steps">
-              <div class="lecture-step">
-                <div class="lecture-step__num">1</div>
-                <span>팔리는 주제 선정법</span>
-              </div>
-              <div class="lecture-step">
-                <div class="lecture-step__num">2</div>
-                <span>AI로 글쓰기 완성</span>
-              </div>
-              <div class="lecture-step">
-                <div class="lecture-step__num">3</div>
-                <span>디자인 & PDF 제작</span>
-              </div>
-              <div class="lecture-step">
-                <div class="lecture-step__num">4</div>
-                <span>판매 채널 세팅</span>
-              </div>
+              <div class="lecture-step"><div class="lecture-step__num">1</div><span>팔리는 주제 선정법</span></div>
+              <div class="lecture-step"><div class="lecture-step__num">2</div><span>AI로 글쓰기 완성</span></div>
+              <div class="lecture-step"><div class="lecture-step__num">3</div><span>디자인 & PDF 제작</span></div>
+              <div class="lecture-step"><div class="lecture-step__num">4</div><span>판매 채널 세팅</span></div>
             </div>
             <div class="lecture-cta__book">
               <p class="lecture-cta__book-title">이북<br>제작<br>강의</p>
