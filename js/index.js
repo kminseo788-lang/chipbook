@@ -233,7 +233,10 @@ container.innerHTML = books.map(book => {
 
   const coverHTML = book.cover_url
     ? `<img src="${book.cover_url}" alt="${book.title}" style="width:100%;height:100%;object-fit:cover;">`
-    : `<div style="width:100%;height:100%;background:${bgColor};color:${textColor};display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-size:13px;font-weight:800;line-height:1.4;text-align:center;">${book.title}</div>`
+    : `<div style="width:100%;height:100%;background:${bgColor};color:${textColor};display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;text-align:center;gap:6px;">
+    <span style="font-size:13px;font-weight:800;line-height:1.4;">${book.title}</span>
+    ${book.subtitle ? `<span style="font-size:10px;opacity:0.75;line-height:1.4;">${book.subtitle}</span>` : ''}
+   </div>`
 
   return `
     <a href="book-detail.html?book_id=${book.id}" class="series-mini-card">
