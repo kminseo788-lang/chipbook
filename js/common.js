@@ -256,8 +256,8 @@ async function renderHeader(options = {}) {
 
   const path = window.location.pathname.split('/').pop()
   headerEl.querySelectorAll('.header__nav-item').forEach(a => {
-    if (a.href.includes(path)) a.classList.add('active')
-  })
+  if (a.href && a.href.includes(path)) a.classList.add('active')
+})
 }
 
 // ─── 모바일 메뉴 토글 ───
