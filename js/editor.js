@@ -191,6 +191,18 @@ window.previewCover = function(input) {
     bookData.coverUrl = e.target.result
   }
   reader.readAsDataURL(file)
+  const deleteBtn = document.getElementById('coverDeleteBtn')
+if (deleteBtn) deleteBtn.style.display = 'block'
+}
+window.deleteCover = function() {
+  const preview = document.getElementById('coverPreview')
+  const placeholder = document.getElementById('coverPlaceholder')
+  const deleteBtn = document.getElementById('coverDeleteBtn')
+  if (preview) { preview.src = ''; preview.style.display = 'none' }
+  if (placeholder) placeholder.style.display = 'flex'
+  if (deleteBtn) deleteBtn.style.display = 'none'
+  bookData.coverUrl = ''
+  coverFile = null
 }
 
 // ─── 태그 렌더링 ───
