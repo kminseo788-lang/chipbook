@@ -96,38 +96,43 @@ async function loadExistingBook(id) {
   document.getElementById('bookOneLine').value = book.subtitle || ''
   document.getElementById('bookPrice').value = book.price || ''
   bookData.title = book.title
-bookData.type = book.is_welcome ? 'welcome' : (book.is_free ? 'free' : 'paid')
+  bookData.type = book.is_welcome ? 'welcome' : (book.is_free ? 'free' : 'paid')
 
-// 라디오 버튼 UI 동기화
-const radios = document.querySelectorAll('input[name="bookType"]')
-radios.forEach(r => { r.checked = r.value === bookData.type })
+  // 라디오 버튼 UI 동기화
+  const radios = document.querySelectorAll('input[name="bookType"]')
+  radios.forEach(r => { r.checked = r.value === bookData.type })
 
-// 가격 필드 표시/숨김
-const pf = document.getElementById('priceField')
-if (pf) pf.style.display = bookData.type === 'paid' || bookData.type === 'welcome' ? 'block' : 'none'
+  // 가격 필드 표시/숨김
+  const pf = document.getElementById('priceField')
+  if (pf) pf.style.display = bookData.type === 'paid' || bookData.type === 'welcome' ? 'block' : 'none'
+
   bookData.coverColor = book.cover_color || '#E8F5E9'
   bookData.coverTextColor = book.cover_text_color || '#1B5E3A'
 
- if (book.cover_url) {
-  const preview = document.getElementById('coverPreview')
-  const placeholder = document.getElementById('coverPlaceholder')
-  const deleteBtn = document.getElementById('coverDeleteBtn')
-  if (preview) { preview.src = book.cover_url; preview.style.display = 'block' }
-  if (placeholder) placeholder.style.display = 'none'
-  if (deleteBtn) deleteBtn.style.display = 'block'
-  bookData.coverUrl = book.cover_url
-  // 시리즈 드롭다운 동기화
-const seriesEl = document.getElementById('bookSeries')
-if (seriesEl && book.series) {
-  seriesEl.value = book.series
-  const isSeriesField = document.getElementById('isSeriesField')
-  if (isSeriesField) isSeriesField.style.display = 'block'
-}
+  // 표지 이미지 동기화
+  if (book.cover_url) {
+    const preview = document.getElementById('coverPreview')
+    const placeholder = document.getElementById('coverPlaceholder')
+    const deleteBtn = document.getElementById('coverDeleteBtn')
+    if (preview) { preview.src = book.cover_url; preview.style.display = 'block' }
+    if (placeholder) placeholder.style.display = 'none'
+    if (deleteBtn) deleteBtn.style.display = 'block'
+    bookData.coverUrl = book.cover_url
+  }
 
-// 시리즈물 체크박스 동기화
-const isSeriesCheck = document.getElementById('isSeriesCheck')
-if (isSeriesCheck) isSeriesCheck.checked = book.is_series || false
-}
+  // ✅ 시리즈 드롭다운 동기화 (cover_url 여부와 무관하게 항상 실행)
+  const seriesEl = document.getElementById('bookSeries')
+  if (seriesEl) {
+    seriesEl.value = book.series || ''
+    const isSeriesField = document.getElementById('isSeriesField')
+    if (isSeriesField) {
+      isSeriesField.style.display = book.series ? 'block' : 'none'
+    }
+  }
+
+  // ✅ 시리즈물 체크박스 동기화 (cover_url 여부와 무관하게 항상 실행)
+  const isSeriesCheck = document.getElementById('isSeriesCheck')
+  if (isSeriesCheck) isSeriesCheck.checked = book.is_series || false
 
   document.getElementById('titleCount').textContent = (book.title || '').length
   document.getElementById('descCount').textContent = (book.description || '').length
@@ -205,7 +210,7 @@ window.previewCover = function(input) {
   }
   reader.readAsDataURL(file)
   const deleteBtn = document.getElementById('coverDeleteBtn')
-if (deleteBtn) deleteBtn.style.display = 'block'
+  if (deleteBtn) deleteBtn.style.display = 'block'
 }
 window.deleteCover = function() {
   const preview = document.getElementById('coverPreview')
@@ -285,7 +290,7 @@ function renderParts() {
         <input type="text" class="input part-item__title" value="${part.title}"
           onchange="window.parts[${pi}].title = this.value" placeholder="파트 제목">
         <button class="btn btn--outline-gray btn--sm" onclick="insertPartAbove(${pi})">위에 추가</button>
-<button class="btn btn--outline-gray btn--sm" onclick="deletePart(${pi})">삭제</button>
+        <button class="btn btn--outline-gray btn--sm" onclick="deletePart(${pi})">삭제</button>
       </div>
       <div class="chapters-list" id="chapters-${pi}">
         ${part.chapters.map((ch, ci) => `
@@ -319,7 +324,6 @@ window.addChapter = function(pi) {
 }
 
 window.deleteChapter = function(pi, ci) {
-
   window.parts[pi].chapters.splice(ci, 1)
   renderParts()
 }
@@ -327,12 +331,11 @@ window.deleteChapter = function(pi, ci) {
 window.saveParts = function() {
   const allFilled = window.parts.every(p => p.title)
   if (!allFilled) { alert('파트 제목을 입력해주세요.'); return }
-  
-  // 소제목 없는 파트에 빈 소제목 자동 추가
+
   window.parts.forEach(p => {
     if (p.chapters.length === 0) p.chapters.push('')
   })
-  
+
   alert('파트 구성이 저장되었습니다.')
   goToStep(4)
 }
@@ -464,22 +467,22 @@ window.saveDraft = async function() {
   if (!title) { alert('제목을 먼저 입력해주세요.'); return }
 
   try {
-  const payload = {
-    series: document.getElementById('bookSeries')?.value || null,
-is_series: document.getElementById('isSeriesCheck')?.checked || false,
-  author_id: authorId,
-  title,
-  description: document.getElementById('bookDesc')?.value || '',
-  subtitle: document.getElementById('bookOneLine')?.value || '',
-  price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
-  is_free: bookData.type === 'free',
-  is_welcome: bookData.type === 'welcome',
-  cover_color: bookData.coverColor,
-  cover_text_color: bookData.coverTextColor,
-  cover_url: bookData.coverUrl || '',
-  tags: selectedTags.map(t => t.tag),
-}
-if (!bookId) payload.status = 'draft'
+    const payload = {
+      series: document.getElementById('bookSeries')?.value || null,
+      is_series: document.getElementById('isSeriesCheck')?.checked || false,
+      author_id: authorId,
+      title,
+      description: document.getElementById('bookDesc')?.value || '',
+      subtitle: document.getElementById('bookOneLine')?.value || '',
+      price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
+      is_free: bookData.type === 'free',
+      is_welcome: bookData.type === 'welcome',
+      cover_color: bookData.coverColor,
+      cover_text_color: bookData.coverTextColor,
+      cover_url: bookData.coverUrl || '',
+      tags: selectedTags.map(t => t.tag),
+    }
+    if (!bookId) payload.status = 'draft'
 
     if (bookId) {
       await supabase.from('books').update(payload).eq('id', bookId)
@@ -488,7 +491,6 @@ if (!bookId) payload.status = 'draft'
       if (data) bookId = data.id
     }
 
-    // 챕터 내용 저장
     if (bookId) {
       await supabase.from('book_contents').delete().eq('book_id', bookId)
       const contentRows = []
@@ -550,22 +552,22 @@ window.publishBook = async function() {
   if (!confirmed) return
 
   try {
- const bookPayload = {
-  series: document.getElementById('bookSeries')?.value || null,
-is_series: document.getElementById('isSeriesCheck')?.checked || false,
-  author_id: authorId,
-  title,
-  description: document.getElementById('bookDesc')?.value || '',
-  subtitle: document.getElementById('bookOneLine')?.value || '',
-  price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
-  is_free: bookData.type === 'free',
-  is_welcome: bookData.type === 'welcome',
-  cover_color: bookData.coverColor,
-  cover_text_color: bookData.coverTextColor,
-  cover_url: bookData.coverUrl || '',
-  status: 'published',
-  tags: selectedTags.map(t => t.tag),
-}
+    const bookPayload = {
+      series: document.getElementById('bookSeries')?.value || null,
+      is_series: document.getElementById('isSeriesCheck')?.checked || false,
+      author_id: authorId,
+      title,
+      description: document.getElementById('bookDesc')?.value || '',
+      subtitle: document.getElementById('bookOneLine')?.value || '',
+      price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
+      is_free: bookData.type === 'free',
+      is_welcome: bookData.type === 'welcome',
+      cover_color: bookData.coverColor,
+      cover_text_color: bookData.coverTextColor,
+      cover_url: bookData.coverUrl || '',
+      status: 'published',
+      tags: selectedTags.map(t => t.tag),
+    }
     let savedBookId = bookId
     if (bookId) {
       await supabase.from('books').update(bookPayload).eq('id', bookId)
@@ -601,8 +603,6 @@ is_series: document.getElementById('isSeriesCheck')?.checked || false,
   }
 }
 
-
-
 window.showExampleToc = function() {
   const modal = document.getElementById('exampleModal')
   if (modal) modal.style.display = 'flex'
@@ -612,7 +612,6 @@ window.closeExampleModal = function() {
   const modal = document.getElementById('exampleModal')
   if (modal) modal.style.display = 'none'
 }
-
 
 window.changeFontColor = function(color) {
   document.getElementById('editorContentArea')?.focus()
@@ -651,8 +650,8 @@ window.openPreview = function() {
   if (bookId) {
     const modal = document.getElementById('previewModal')
     const frame = document.getElementById('previewFrame')
-    frame.src = `viewer.html?book_id=${bookId}&preview=true`  
-        modal.style.display = 'flex'
+    frame.src = `viewer.html?book_id=${bookId}&preview=true`
+    modal.style.display = 'flex'
   } else {
     alert('먼저 임시저장을 해주세요.')
   }
@@ -663,7 +662,6 @@ window.closePreview = function() {
   modal.style.display = 'none'
   frame.src = ''
 }
-
 
 // 페이지 나가기 전 경고
 window.addEventListener('beforeunload', (e) => {
