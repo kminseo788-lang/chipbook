@@ -239,6 +239,21 @@
       .lecture-cta__right { display: none; }
       .series-grid { grid-template-columns: 1fr; }
     }
+    @media (max-width: 768px) {
+  .series-grid {
+    display: flex !important;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+  .series-grid::-webkit-scrollbar { display: none; }
+  .series-col {
+    flex: 0 0 82vw !important;
+    scroll-snap-align: start;
+  }
+}
   </style>
 </head>
 <body>
