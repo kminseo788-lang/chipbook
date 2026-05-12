@@ -487,6 +487,21 @@
     height: 56px;
     border-radius: var(--radius-md);
   }
+
+   .series-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+  .series-grid::-webkit-scrollbar { display: none; }
+
+  .series-col {
+    flex: 0 0 82vw;
+    scroll-snap-align: start;
+  }
 }
 
 #recommendBookList {
