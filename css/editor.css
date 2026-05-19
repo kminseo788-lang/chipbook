@@ -568,13 +568,13 @@ input, textarea, select { font-family: inherit; }
 }
 
 #editorContentArea {
-  font-size: 16px !important;
+  font-size: 17px !important;
   font-weight: 400 !important;
   line-height: 1.8 !important;
 }
 
 #editorContentArea h2,
 #editorContentArea h3 {
-  font-size: 16px !important;
+  font-size: 17px !important;
   font-weight: 400 !important;
 }
