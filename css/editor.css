@@ -566,3 +566,15 @@ input, textarea, select { font-family: inherit; }
   .editor-toolbar { gap: 2px; }
   .editor-content-area { min-height: 300px; }
 }
+
+#editorContentArea {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 1.8 !important;
+}
+
+#editorContentArea h2,
+#editorContentArea h3 {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+}
