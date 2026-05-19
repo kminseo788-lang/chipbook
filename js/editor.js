@@ -677,3 +677,6 @@ window.addEventListener('beforeunload', (e) => {
     e.returnValue = ''
   }
 })
+// 표지 색상 업데이트 (HTML에서 호출)
+window.updateCoverColor = function(value) { bookData.coverColor = value }
+window.updateCoverTextColor = function(value) { bookData.coverTextColor = value }
