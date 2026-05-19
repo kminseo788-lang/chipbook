@@ -91,6 +91,7 @@ async function loadExistingBook(id) {
   if (!book) return
   bookId = book.id
 
+
   document.getElementById('bookTitle').value = book.title || ''
   document.getElementById('bookDesc').value = book.description || ''
   document.getElementById('bookOneLine').value = book.subtitle || ''
@@ -133,6 +134,12 @@ async function loadExistingBook(id) {
   // ✅ 시리즈물 체크박스 동기화 (cover_url 여부와 무관하게 항상 실행)
   const isSeriesCheck = document.getElementById('isSeriesCheck')
   if (isSeriesCheck) isSeriesCheck.checked = book.is_series || false
+
+  // ✅ 표지 색상 피커 동기화
+const colorPicker = document.getElementById('coverColorPicker')
+const textColorPicker = document.getElementById('coverTextColorPicker')
+if (colorPicker) colorPicker.value = book.cover_color || '#E8F5E9'
+if (textColorPicker) textColorPicker.value = book.cover_text_color || '#1B5E3A'
 
   document.getElementById('titleCount').textContent = (book.title || '').length
   document.getElementById('descCount').textContent = (book.description || '').length
@@ -477,8 +484,8 @@ window.saveDraft = async function() {
       price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
       is_free: bookData.type === 'free',
       is_welcome: bookData.type === 'welcome',
-      cover_color: bookData.coverColor,
-      cover_text_color: bookData.coverTextColor,
+     cover_color: document.getElementById('coverColorPicker')?.value || bookData.coverColor,
+cover_text_color: document.getElementById('coverTextColorPicker')?.value || bookData.coverTextColor,
       cover_url: bookData.coverUrl || '',
       tags: selectedTags.map(t => t.tag),
     }
@@ -562,8 +569,8 @@ window.publishBook = async function() {
       price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
       is_free: bookData.type === 'free',
       is_welcome: bookData.type === 'welcome',
-      cover_color: bookData.coverColor,
-      cover_text_color: bookData.coverTextColor,
+  cover_color: document.getElementById('coverColorPicker')?.value || bookData.coverColor,
+cover_text_color: document.getElementById('coverTextColorPicker')?.value || bookData.coverTextColor,
       cover_url: bookData.coverUrl || '',
       status: 'published',
       tags: selectedTags.map(t => t.tag),
