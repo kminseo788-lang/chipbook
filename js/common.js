@@ -121,8 +121,16 @@ function createCoverHTML(book, size = 'sm') {
  } else if (book.cover_url) {
   return `<img src="${book.cover_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">`
   } else {
-    return `<div style="background:${bgColor};color:${textColor};width:100%;height:100%;display:flex;align-items:flex-end;padding:12px;box-sizing:border-box;"><span style="font-size:13px;font-weight:700;">${book.title}</span></div>`
-  }
+  return `
+    <div style="background:${bgColor};color:${textColor};width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:12px 10px;box-sizing:border-box;">
+      <div style="text-align:center;opacity:0.6;font-size:9px;letter-spacing:1px;">— CHIP BOOK —</div>
+      <div style="text-align:center;">
+        <p style="font-size:14px;font-weight:900;line-height:1.3;word-break:keep-all;">${book.title}</p>
+        ${book.subtitle ? `<p style="font-size:10px;opacity:0.75;margin-top:6px;line-height:1.4;">${book.subtitle}</p>` : ''}
+      </div>
+      <div style="text-align:center;opacity:0.6;font-size:9px;letter-spacing:1px;">— CHIP BOOK —</div>
+    </div>`
+}
 }
 
 function createBookCard(book, options = {}) {
