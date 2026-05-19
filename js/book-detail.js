@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderBreadcrumb(book)
   await renderBookTop(book)
   renderToc(book, bookId)
+  await renderPreview(bookId)
   renderAuthor(book)
   renderMoreBooks(book)
 })
@@ -182,4 +183,34 @@ async function renderMoreBooks(book) {
     const sliderWrap = moreEl.querySelector('.book-slider-wrap')
     listEl.insertAdjacentElement('afterend', moreBtn)
   }
+}
+
+async function renderPreview(bookId) {
+  const previewEl = document.getElementById('bookPreview')
+  if (!previewEl) return
+
+  const { data: contents } = await supabase
+    .from('book_contents')
+    .select('content, chapter_title, part_title')
+    .eq('book_id', bookId)
+    .order('order_index')
+    .limit(1)  // 첫 챕터만
+
+  if (!contents?.length || !contents[0].content) return
+
+  const text = contents[0].content
+  // HTML 태그 제거하고 텍스트만
+  const plain = text.replace(/<[^>]*>/g, '').trim()
+  if (!plain) return
+
+  previewEl.style.display = 'block'
+  document.getElementById('previewContent').innerHTML = `
+    <p style="font-size:12px;color:#888;margin-bottom:12px">${contents[0].part_title} · ${contents[0].chapter_title}</p>
+    <div style="position:relative;overflow:hidden;max-height:180px;">
+      <div style="font-size:14px;line-height:1.9;color:#333;white-space:pre-line">${plain}</div>
+      <div style="position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(transparent,#fff)"></div>
+    </div>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:#888">
+      🔒 전체 내용은 구매 후 읽을 수 있어요
+    </div>`
 }
