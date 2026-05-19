@@ -152,8 +152,7 @@ function renderChapter(index, fullAccess) {
 
   let html = `
     <div class="viewer-chapter-num">${chapter.part_title || 'PART'}</div>
-    <h2 class="viewer-chapter-title">${index + 1}. ${chapter.chapter_title}</h2>
-    ${copyrightIntro}
+    <h2 class="viewer-chapter-title">${chapter.chapter_title}</h2>
     <div class="viewer-chapter-body">
       ${isPreviewOnly
         ? `<p>이 챕터의 일부만 미리보기로 제공됩니다.</p><p>계속 읽으시려면 구매 후 이용해주세요.</p>`
