@@ -206,7 +206,7 @@ async function renderPreview(bookId) {
   previewEl.style.display = 'block'
   document.getElementById('previewContent').innerHTML = `
     <p style="font-size:12px;color:#888;margin-bottom:12px">${contents[0].part_title} · ${contents[0].chapter_title}</p>
-    <div style="position:relative;overflow:hidden;max-height:180px;">
+    <div style="position:relative;overflow:hidden;max-height:280px;">
       <div style="font-size:14px;line-height:1.9;color:#333;white-space:pre-line">${plain}</div>
       <div style="position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(transparent,#fff)"></div>
     </div>
