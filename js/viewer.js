@@ -77,8 +77,13 @@ const { data: authorData } = await supabase
   .single()
 
 const isAuthor = !!authorData
+console.log('user:', user?.id)
+console.log('authorData:', authorData)
+console.log('isAuthor:', isAuthor)
+
 const hasAccess = isFree || purchased || (isWelcome && isNewUser) || isAuthor
 _fullAccess = hasAccess
+console.log('hasAccess:', hasAccess)
 
 if (!hasAccess) {
   window.location.href = `book-detail.html?book_id=${bookId}`
