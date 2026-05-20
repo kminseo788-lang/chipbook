@@ -85,21 +85,7 @@ function updatePayBtn() {
 // ─── 결제 요청 ───
 // 나중에 PortOne SDK 연동 시 이 함수 수정
 window.requestPayment = async function() {
-  const bookId = new URLSearchParams(window.location.search).get('book_id')
-  const { data: book } = await supabase.from('books').select('*').eq('id', bookId).single()
-  if (!book) return
-
-  const confirmed = confirm(`${formatPrice(book.price)} 결제를 진행합니다.\n(현재 테스트 모드)`)
-  if (!confirmed) return
-
-  // TODO: PortOne 연동 시 아래 주석 해제
-  // IMP.request_pay({...}, async function(rsp) {
-  //   if (rsp.success) await verifyPayment(rsp.imp_uid, rsp.merchant_uid)
-  //   else alert('결제 실패: ' + rsp.error_msg)
-  // })
-
-  // 테스트 결제 처리
-  await verifyPaymentMock(bookId, book.price)
+  alert('현재 결제 시스템 준비 중입니다.\n빠른 시일 내에 오픈 예정이에요 🙏')
 }
 
 // 결제 검증 mock → 나중에 서버 API 호출로 교체
