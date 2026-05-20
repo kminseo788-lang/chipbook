@@ -69,7 +69,6 @@ if (user && isWelcome) {
   isNewUser = count === 0
 }
 
-// authors 테이블에서 user_id로 작가 여부 확인
 const { data: authorData } = await supabase
   .from('authors')
   .select('id')
@@ -77,19 +76,15 @@ const { data: authorData } = await supabase
   .single()
 
 const isAuthor = !!authorData
-console.log('user:', user?.id)
-console.log('authorData:', authorData)
-console.log('isAuthor:', isAuthor)
 
 const hasAccess = isFree || purchased || (isWelcome && isNewUser) || isAuthor
 _fullAccess = hasAccess
-console.log('hasAccess:', hasAccess)
 
-// 임시로 주석처리
-// if (!hasAccess) {
-//   window.location.href = `book-detail.html?book_id=${bookId}`
-//   return
-// }
+if (!hasAccess) {
+  window.location.href = `book-detail.html?book_id=${bookId}`
+  return
+}
+
 
 // 뱃지 설정
 const badge = document.getElementById('viewerBadge')
