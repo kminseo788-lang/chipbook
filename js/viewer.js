@@ -16,6 +16,7 @@ let allChapters = []
 let currentChapterIndex = 0
 window._chapterIndex = 0
 let chapterContents = []
+let _fullAccess = false
 
 document.addEventListener('DOMContentLoaded', async () => {
   const bookId = new URLSearchParams(window.location.search).get('book_id')
@@ -68,7 +69,14 @@ if (user && isWelcome) {
   isNewUser = count === 0
 }
 
-const hasAccess = isFree || purchased || (isWelcome && isNewUser)
+const isAuthor = user && user.id === book.author_id
+const hasAccess = isFree || purchased || (isWelcome && isNewUser) || isAuthor
+_fullAccess = hasAccess
+
+if (!hasAccess) {
+  window.location.href = `book-detail.html?book_id=${bookId}`
+  return
+}
 
 // 뱃지 설정
 const badge = document.getElementById('viewerBadge')
@@ -316,7 +324,7 @@ window.goToChapterById = function(id) {
   const idx = allChapters.findIndex(ch => ch.id === id)
   if (idx !== -1) {
     currentChapterIndex = idx
-    const fullAccess = currentBook.is_free || document.getElementById('viewerBadge').textContent === '구매한 도서'
+    const fullAccess = _fullAccess
     renderChapter(idx, fullAccess)
   }
 }
@@ -401,8 +409,8 @@ document.addEventListener('touchend', (e) => {
 window.goToChapterByIndex = function(idx) {
   if (idx < 0 || idx >= allChapters.length) return  // ← 범위 체크 추가
   currentChapterIndex = idx
-  const fullAccess = currentBook.is_free || document.getElementById('viewerBadge').textContent === '구매한 도서'
-  renderChapter(idx, fullAccess)
+  const fullAccess = _fullAccess
+    renderChapter(idx, fullAccess)
 }
 
 window.toggleMobileToc = function() {
