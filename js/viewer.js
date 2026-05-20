@@ -69,7 +69,14 @@ if (user && isWelcome) {
   isNewUser = count === 0
 }
 
-const isAuthor = user && user.id === book.author_id
+// authors 테이블에서 user_id로 작가 여부 확인
+const { data: authorData } = await supabase
+  .from('authors')
+  .select('id')
+  .eq('user_id', user?.id)
+  .single()
+
+const isAuthor = !!authorData
 const hasAccess = isFree || purchased || (isWelcome && isNewUser) || isAuthor
 _fullAccess = hasAccess
 
