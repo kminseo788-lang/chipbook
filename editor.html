@@ -132,14 +132,23 @@
 </div>
           </div>
 
-          <!-- 한 줄 소개 -->
-          <div class="form-field">
-            <label class="form-field__label">한 줄 소개 <span class="required">*</span></label>
-            <input type="text" class="input form-field__input" id="bookOneLine" maxlength="100"
-              placeholder="이 책의 핵심 내용을 한 줄로 소개해주세요."
-              oninput="updateCount(this, 'oneLineCount', 100)">
-            <span class="char-count"><span id="oneLineCount">0</span> / 100</span>
-          </div>
+          <!-- 부제목 -->
+<div class="form-field">
+  <label class="form-field__label">부제목</label>
+  <input type="text" class="input form-field__input" id="bookSubtitle" maxlength="100"
+    placeholder="예) 10년 설명해도 안 됐는데 기준 하나 바꾸니 달라졌다"
+    oninput="updateCount(this, 'subtitleCount', 100)">
+  <span class="char-count"><span id="subtitleCount">0</span> / 100</span>
+</div>
+
+<!-- 한 줄 소개 -->
+<div class="form-field">
+  <label class="form-field__label">한 줄 소개 <span class="required">*</span></label>
+  <input type="text" class="input form-field__input" id="bookOneLine" maxlength="100"
+    placeholder="예) 인간관계 / 나르시스트 / 감정소모 / 에너지관리"
+    oninput="updateCount(this, 'oneLineCount', 100)">
+  <span class="char-count"><span id="oneLineCount">0</span> / 100</span>
+</div>
 
           <!-- 도서 유형 + 가격 -->
           <div class="form-field form-field--row">

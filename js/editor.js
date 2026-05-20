@@ -17,7 +17,7 @@ let bookId = null
 let authorId = null
 let coverFile = null
 let bookData = {
-  title: '', description: '', oneLine: '',
+  title: '', description: '', oneLine: '', subtitle: '',
   type: 'paid', price: '',
   coverColor: '#E8F5E9', coverTextColor: '#1B5E3A', coverUrl: ''
 }
@@ -94,7 +94,10 @@ async function loadExistingBook(id) {
 
   document.getElementById('bookTitle').value = book.title || ''
   document.getElementById('bookDesc').value = book.description || ''
-  document.getElementById('bookOneLine').value = book.subtitle || ''
+  document.getElementById('bookSubtitle').value = book.subtitle || ''
+document.getElementById('bookOneLine').value = book.one_line || ''
+document.getElementById('subtitleCount').textContent = (book.subtitle || '').length
+document.getElementById('oneLineCount').textContent = (book.one_line || '').length
   document.getElementById('bookPrice').value = book.price || ''
   bookData.title = book.title
   bookData.type = book.is_welcome ? 'welcome' : (book.is_free ? 'free' : 'paid')
@@ -480,7 +483,8 @@ window.saveDraft = async function() {
       author_id: authorId,
       title,
       description: document.getElementById('bookDesc')?.value || '',
-      subtitle: document.getElementById('bookOneLine')?.value || '',
+      subtitle: document.getElementById('bookSubtitle')?.value || '',
+one_line: document.getElementById('bookOneLine')?.value || '',
       price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
       is_free: bookData.type === 'free',
       is_welcome: bookData.type === 'welcome',
@@ -565,7 +569,8 @@ window.publishBook = async function() {
       author_id: authorId,
       title,
       description: document.getElementById('bookDesc')?.value || '',
-      subtitle: document.getElementById('bookOneLine')?.value || '',
+      subtitle: document.getElementById('bookSubtitle')?.value || '',
+one_line: document.getElementById('bookOneLine')?.value || '',
       price: bookData.type === 'free' ? 0 : parseInt(document.getElementById('bookPrice')?.value || 0),
       is_free: bookData.type === 'free',
       is_welcome: bookData.type === 'welcome',
