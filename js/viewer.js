@@ -85,10 +85,11 @@ const hasAccess = isFree || purchased || (isWelcome && isNewUser) || isAuthor
 _fullAccess = hasAccess
 console.log('hasAccess:', hasAccess)
 
-if (!hasAccess) {
-  window.location.href = `book-detail.html?book_id=${bookId}`
-  return
-}
+// 임시로 주석처리
+// if (!hasAccess) {
+//   window.location.href = `book-detail.html?book_id=${bookId}`
+//   return
+// }
 
 // 뱃지 설정
 const badge = document.getElementById('viewerBadge')
