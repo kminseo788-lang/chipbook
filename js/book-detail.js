@@ -42,22 +42,30 @@ async function renderBookTop(book) {
   const el = document.getElementById('bookDetailTop')
   if (!el) return
 
-  const purchased = await isPurchased(book.id)
-  const wishlisted = await isWishlisted(book.id)
-  const isFree = book.is_free
-  const authorName = book.authors?.pen_name || ''
+const user = await getCurrentUser()
+const purchased = await isPurchased(book.id)
+const wishlisted = await isWishlisted(book.id)
+const isFree = book.is_free
+const authorName = book.authors?.pen_name || ''
 
   let mainBtn = ''
-  if (isFree || purchased) {
-    mainBtn = `<a href="viewer.html?book_id=${book.id}" class="btn btn--primary btn--lg">바로 읽기</a>`
+ // 작가 여부 확인
+const { data: authorData } = await supabase
+  .from('authors')
+  .select('id')
+  .eq('user_id', user?.id)
+  .single()
+const isAuthor = !!authorData
+
+if (isFree || purchased || isAuthor) {
+  mainBtn = `<a href="viewer.html?book_id=${book.id}" class="btn btn--primary btn--lg">바로 읽기</a>`
+} else {
+  if (user) {
+    mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
   } else {
-    const user = await getCurrentUser()
-    if (user) {
-      mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
-    } else {
-      mainBtn = `<a href="login.html?redirect=book-detail.html%3Fbook_id%3D${book.id}" class="btn btn--primary btn--lg">로그인 후 구매하기</a>`
-    }
+    mainBtn = `<a href="login.html?redirect=book-detail.html%3Fbook_id%3D${book.id}" class="btn btn--primary btn--lg">로그인 후 구매하기</a>`
   }
+}
 
   el.innerHTML = `
    <div class="book-detail-cover" style="overflow:hidden;position:relative;">
