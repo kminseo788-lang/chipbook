@@ -77,6 +77,7 @@ if (isFree || purchased || isAuthor) {
       </div>
       <h1 class="book-detail-title">${book.title}</h1>
       <p class="book-detail-subtitle">${book.subtitle || ''}</p>
+<p class="book-detail-oneline">${book.one_line || ''}</p>
       <p class="book-detail-desc">${book.description || ''}</p>
       <div class="book-detail-meta">
      <a href="author-room.html?author_id=${book.author_id}" style="color:inherit">👤 ${authorName} 작가</a>
