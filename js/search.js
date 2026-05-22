@@ -291,3 +291,32 @@ window.selectWelcomeBook = async function(bookId) {
 
   window.location.href = `viewer.html?book_id=${bookId}`
 }
+
+window.selectWelcomeBook = async function(bookId) {
+  const user = await getCurrentUser()
+  console.log('user:', user)
+  if (!user) { window.location.href = 'login.html'; return }
+
+  const { data: userData, error: selectError } = await supabase
+    .from('users')
+    .select('welcome_book_id')
+    .eq('id', user.id)
+    .single()
+
+  console.log('userData:', userData, 'selectError:', selectError)
+
+  if (userData?.welcome_book_id) {
+    alert('이미 무료 도서를 선택하셨습니다.')
+    window.location.href = `viewer.html?book_id=${userData.welcome_book_id}`
+    return
+  }
+
+  const { error: updateError } = await supabase
+    .from('users')
+    .update({ welcome_book_id: bookId })
+    .eq('id', user.id)
+
+  console.log('updateError:', updateError)
+
+  window.location.href = `viewer.html?book_id=${bookId}`
+}
