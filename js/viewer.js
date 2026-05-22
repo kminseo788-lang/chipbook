@@ -79,7 +79,7 @@ if (user && isWelcome) {
   welcomeBookId = userData?.welcome_book_id
 }
 
-const hasAccess = isFree || purchased || (isWelcome && welcomeBookId === bookId) || isAuthor
+const hasAccess = isFree || purchased || (isWelcome && String(welcomeBookId) === String(bookId)) || isAuthor
 _fullAccess = hasAccess
 
 if (!hasAccess) {

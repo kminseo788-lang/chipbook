@@ -291,7 +291,11 @@ window.selectWelcomeBook = async function(bookId) {
     .from('users')
     .update({ welcome_book_id: bookId })
     .eq('id', user.id)
+  await supabase
+  .from('library_books')
+  .insert({ user_id: user.id, book_id: bookId })
 
+window.location.href = `viewer.html?book_id=${bookId}`
   console.log('updateError:', updateError)
 
   window.location.href = `viewer.html?book_id=${bookId}`
