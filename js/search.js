@@ -167,8 +167,17 @@ function renderGridCard(book) {
   }
 
   const badge = book.is_free
-    ? '<span class="badge badge--free" style="position:absolute;top:10px;left:10px;">무료</span>'
-    : (book.is_welcome ? '<span class="badge" style="position:absolute;top:10px;left:10px;background:#C9A84C;color:#fff;">첫구매무료</span>' : '')
+  ? '<span class="badge badge--free" style="position:absolute;top:10px;left:10px;">무료</span>'
+  : (book.is_welcome 
+    ? '<span class="badge" style="position:absolute;top:10px;left:10px;background:#C9A84C;color:#fff;">첫구매무료</span>'
+    : '')
+  const welcomeBtn = book.is_welcome && new URLSearchParams(window.location.search).get('type') === 'welcome'
+  ? `<button onclick="selectWelcomeBook('${book.id}')" 
+       style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+       background:#C9A84C;color:#fff;border:none;border-radius:8px;
+       padding:6px 14px;font-size:12px;cursor:pointer;white-space:nowrap;">
+       이 책 무료로 받기</button>`
+  : ''
 
   return `
     <div class="book-card">
@@ -176,6 +185,7 @@ function renderGridCard(book) {
         <div class="book-card__cover" style="background:${bgColor};color:${textColor};overflow:hidden;position:relative;">
           ${coverContent}
           ${badge}
+          ${welcomeBtn}
         </div>
       </a>
       <div class="book-card__info">
@@ -253,4 +263,29 @@ function initControls() {
     currentResults = await fetchBooks({})
     renderResults(currentResults)
   })
+}
+window.selectWelcomeBook = async function(bookId) {
+  const user = await getCurrentUser()
+  if (!user) { window.location.href = 'login.html'; return }
+
+  // 이미 선택했는지 확인
+  const { data: userData } = await supabase
+    .from('users')
+    .select('welcome_book_id')
+    .eq('id', user.id)
+    .single()
+
+  if (userData?.welcome_book_id) {
+    alert('이미 무료 도서를 선택하셨습니다.')
+    window.location.href = `viewer.html?book_id=${userData.welcome_book_id}`
+    return
+  }
+
+  // welcome_book_id 저장
+  await supabase
+    .from('users')
+    .update({ welcome_book_id: bookId })
+    .eq('id', user.id)
+
+  window.location.href = `viewer.html?book_id=${bookId}`
 }

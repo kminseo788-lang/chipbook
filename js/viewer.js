@@ -58,16 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
  const isFree = book.is_free
 const isWelcome = book.is_welcome
 
-// 신규회원 여부 확인 (구매 내역이 0개면 신규)
-let isNewUser = false
-if (user && isWelcome) {
-  const { count } = await supabase
-    .from('payments')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-    .eq('payment_status', 'completed')
-  isNewUser = count === 0
-}
+
 
 const { data: authorData } = await supabase
   .from('authors')
@@ -77,7 +68,17 @@ const { data: authorData } = await supabase
 
 const isAuthor = !!authorData
 
-const hasAccess = isFree || purchased || (isWelcome && isNewUser) || isAuthor
+let welcomeBookId = null
+if (user && isWelcome) {
+  const { data: userData } = await supabase
+    .from('users')
+    .select('welcome_book_id')
+    .eq('id', user.id)
+    .single()
+  welcomeBookId = userData?.welcome_book_id
+}
+
+const hasAccess = isFree || purchased || (isWelcome && welcomeBookId === bookId) || isAuthor
 _fullAccess = hasAccess
 
 if (!hasAccess) {
@@ -89,29 +90,22 @@ if (!hasAccess) {
 // 뱃지 설정
 const badge = document.getElementById('viewerBadge')
 if (isFree) badge.textContent = '무료 도서'
-else if (isWelcome && isNewUser) badge.textContent = '신규회원 무료'
+else if (isWelcome && welcomeBookId === bookId) badge.textContent = '신규회원 무료'
 else if (purchased) badge.textContent = '구매한 도서'
 else badge.textContent = '미리보기'
 
 // 상태별 분기
-// 상태별 분기
 if (!isPreview) {
   if (isFree) {
     renderSideFree(user)
-  } else if (isWelcome && isNewUser) {
+  } else if (isWelcome && welcomeBookId === bookId) {
     renderSideFree(user)
   } else if (purchased) {
     renderSidePurchased()
   } else {
     renderSideUnpurchased()
   }
-} else {
-  document.getElementById('viewerSide').style.display = 'none'
 }
-  renderToc(hasAccess)
-renderChapter(0, hasAccess)
-initNavigation(hasAccess)
-})
 
 // ─── 목차 렌더링 ───
 function renderToc(fullAccess) {
