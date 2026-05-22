@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
  const isFree = book.is_free
 const isWelcome = book.is_welcome
 
+// 신규회원 여부 확인 (구매 내역이 0개면 신규)
 
 
 const { data: authorData } = await supabase
@@ -88,7 +89,7 @@ if (!hasAccess) {
 
 
 // 뱃지 설정
-const badge = document.getElementById('viewerBadge')
+const badge = document.getElementById('viewerBadge')  // ← 이 줄 유지
 if (isFree) badge.textContent = '무료 도서'
 else if (isWelcome && welcomeBookId === bookId) badge.textContent = '신규회원 무료'
 else if (purchased) badge.textContent = '구매한 도서'
@@ -105,7 +106,13 @@ if (!isPreview) {
   } else {
     renderSideUnpurchased()
   }
+} else {
+  document.getElementById('viewerSide').style.display = 'none'
 }
+  renderToc(hasAccess)
+renderChapter(0, hasAccess)
+initNavigation(hasAccess)
+})
 
 // ─── 목차 렌더링 ───
 function renderToc(fullAccess) {
@@ -154,11 +161,7 @@ function renderChapter(index, fullAccess) {
   // 유료 미구매 → 2챕터 이후 미리보기 제한
   const isPreviewOnly = !fullAccess && index >= 2
 
-  // 저작권 문구 (첫 챕터 도입부)
-  const copyrightIntro = index === 0 ? `
-    <div style="font-size:12px;color:var(--color-text-light);text-align:center;padding:8px 0 20px;border-bottom:1px solid var(--color-border);margin-bottom:24px">
-      © ${new Date().getFullYear()} ${currentBook.authors?.pen_name || '저자'}. 이 책의 저작권은 저자에게 있습니다. 무단 전재 및 재배포를 금합니다.
-    </div>` : ''
+ 
 
   let html = `
     <div class="viewer-chapter-num">${chapter.part_title || 'PART'}</div>
