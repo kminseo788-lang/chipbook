@@ -57,14 +57,31 @@ const { data: authorData } = await supabase
   .single()
 const isAuthor = !!authorData
 
+let isNewUser = false
+if (user && book.is_welcome) {
+  const { data: userData } = await supabase
+    .from('users')
+    .select('welcome_book_id')
+    .eq('id', user.id)
+    .single()
+  if (!userData?.welcome_book_id) {
+    const { count } = await supabase
+      .from('payments')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('payment_status', 'completed')
+    isNewUser = count === 0
+  }
+}
+
 if (isFree || purchased || isAuthor) {
   mainBtn = `<a href="viewer.html?book_id=${book.id}" class="btn btn--primary btn--lg">바로 읽기</a>`
+} else if (book.is_welcome && isNewUser) {
+  mainBtn = `<button onclick="selectWelcomeBook('${book.id}')" class="btn btn--primary btn--lg">🎁 무료로 받기</button>`
+} else if (user) {
+  mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
 } else {
-  if (user) {
-    mainBtn = `<a href="book-payment.html?book_id=${book.id}" class="btn btn--primary btn--lg">구매하기</a>`
-  } else {
-    mainBtn = `<a href="login.html?redirect=book-detail.html%3Fbook_id%3D${book.id}" class="btn btn--primary btn--lg">로그인 후 구매하기</a>`
-  }
+  mainBtn = `<a href="login.html?redirect=book-detail.html%3Fbook_id%3D${book.id}" class="btn btn--primary btn--lg">로그인 후 구매하기</a>`
 }
 
   el.innerHTML = `
@@ -223,4 +240,13 @@ async function renderPreview(bookId) {
     <div style="text-align:center;margin-top:16px;font-size:13px;color:#888">
       🔒 전체 내용은 구매 후 읽을 수 있어요
     </div>`
+}
+window.selectWelcomeBook = async function(bookId) {
+  const user = await getCurrentUser()
+  if (!user) { window.location.href = 'login.html'; return }
+
+  await supabase.from('users').update({ welcome_book_id: bookId }).eq('id', user.id)
+  await supabase.from('library_books').insert({ user_id: user.id, book_id: bookId })
+  
+  window.location.href = `viewer.html?book_id=${bookId}`
 }
