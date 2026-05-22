@@ -82,6 +82,8 @@ async function searchBooks(params = {}) {
   if (params.keyword) query = query.or(`title.ilike.%${params.keyword}%,description.ilike.%${params.keyword}%`)
   if (params.type === 'free') query = query.eq('is_free', true)
   if (params.type === 'recommended') query = query.eq('is_free', false)
+  if (params.type === 'welcome') query = query.eq('is_welcome', true)  // ← 추가
+  if (params.series) query = query.eq('series', params.series)          // ← 추가
   if (params.tag) query = query.contains('tags', [params.tag])
   if (params.author_id) query = query.eq('author_id', params.author_id)
   const { data, error } = await query
