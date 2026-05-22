@@ -9,6 +9,7 @@ import { getCurrentUser, toggleWishlist, isWishlisted, formatPrice } from './com
 let selectedTags = []
 let viewMode = 'grid'
 let currentResults = []
+let alreadySelectedWelcomeBookId = null
 
 const allTags = ['문학', '비문학', '살림', '육아', '건강', '인간관계', '자기계발', '재테크', '시간관리', '정리정돈', '심리', '시', '소설', '에세이', '1인가구', '신혼부부', '직장인', '주부', '초보부모', '학생', '시니어']
 document.addEventListener('DOMContentLoaded', async () => {
@@ -33,7 +34,20 @@ async function parseUrlAndSearch() {
     renderSelectedTags()
   }
 
-currentResults = await fetchBooks({ keyword, type, tag, author_id: authorId, series })
+  // welcome 페이지면 이미 선택했는지 확인
+  if (type === 'welcome') {
+    const user = await getCurrentUser()
+    if (user) {
+      const { data: userData } = await supabase
+        .from('users')
+        .select('welcome_book_id')
+        .eq('id', user.id)
+        .single()
+      alreadySelectedWelcomeBookId = userData?.welcome_book_id || null
+    }
+  }
+
+  currentResults = await fetchBooks({ keyword, type, tag, author_id: authorId, series })
   renderResults(currentResults)
 }
 
@@ -171,7 +185,7 @@ function renderGridCard(book) {
   : (book.is_welcome 
     ? '<span class="badge" style="position:absolute;top:10px;left:10px;background:#C9A84C;color:#fff;">첫구매무료</span>'
     : '')
-  const welcomeBtn = book.is_welcome && new URLSearchParams(window.location.search).get('type') === 'welcome'
+  const welcomeBtn = book.is_welcome && new URLSearchParams(window.location.search).get('type') === 'welcome' && !alreadySelectedWelcomeBookId
   ? `<button onclick="selectWelcomeBook('${book.id}')" 
        style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
        background:#C9A84C;color:#fff;border:none;border-radius:8px;
