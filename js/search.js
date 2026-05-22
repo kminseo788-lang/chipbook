@@ -179,23 +179,25 @@ function renderGridCard(book) {
        이 책 무료로 받기</button>`
   : ''
 
-  return `
-    <div class="book-card">
-      <a href="book-detail.html?book_id=${book.id}" class="book-card__cover-link">
-        <div class="book-card__cover" style="background:${bgColor};color:${textColor};overflow:hidden;position:relative;">
-          ${coverContent}
-          ${badge}
-          ${welcomeBtn}
-        </div>
-      </a>
-      <div class="book-card__info">
-        <a href="book-detail.html?book_id=${book.id}"><p class="book-card__title">${book.title}</p></a>
-        <p class="book-card__author">${authorName} 지음</p>
-        <div class="book-card__rating"><span class="stars">★</span> ${book.rating || 0}</div>
-        <p class="book-card__price">${book.is_free ? '무료' : formatPrice(book.price)}</p>
+ return `
+  <div class="book-card">
+    <div class="book-card__cover-link"
+         onclick="${welcomeBtn ? '' : `window.location.href='book-detail.html?book_id=${book.id}'`}">
+      <div class="book-card__cover" style="background:${bgColor};color:${textColor};overflow:hidden;position:relative;">
+        ${coverContent}
+        ${badge}
+        ${welcomeBtn}
       </div>
-    </div>`
+    </div>
+    <div class="book-card__info">
+      <a href="book-detail.html?book_id=${book.id}"><p class="book-card__title">${book.title}</p></a>
+      <p class="book-card__author">${authorName} 지음</p>
+      <div class="book-card__rating"><span class="stars">★</span> ${book.rating || 0}</div>
+      <p class="book-card__price">${book.is_free ? '무료' : formatPrice(book.price)}</p>
+    </div>
+  </div>`
 }
+
 function renderListItem(book) {
   const authorName = book.authors?.pen_name || ''
   return `
