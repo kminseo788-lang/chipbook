@@ -266,31 +266,7 @@ function initControls() {
     renderResults(currentResults)
   })
 }
-window.selectWelcomeBook = async function(bookId) {
-  const user = await getCurrentUser()
-  if (!user) { window.location.href = 'login.html'; return }
 
-  // 이미 선택했는지 확인
-  const { data: userData } = await supabase
-    .from('users')
-    .select('welcome_book_id')
-    .eq('id', user.id)
-    .single()
-
-  if (userData?.welcome_book_id) {
-    alert('이미 무료 도서를 선택하셨습니다.')
-    window.location.href = `viewer.html?book_id=${userData.welcome_book_id}`
-    return
-  }
-
-  // welcome_book_id 저장
-  await supabase
-    .from('users')
-    .update({ welcome_book_id: bookId })
-    .eq('id', user.id)
-
-  window.location.href = `viewer.html?book_id=${bookId}`
-}
 
 window.selectWelcomeBook = async function(bookId) {
   const user = await getCurrentUser()
