@@ -141,9 +141,9 @@ function renderGridCard(book) {
   const authorName = book.authors?.pen_name || ''
 
   const seriesConfig = {
-    'spot':    { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book',    desc: '하나의 책, 하나의 문제 해결' },
-    'routine': { color: '#1B5E3A', textColor: '#ffffff', label: 'Routine Book', desc: '지금 상황을 쉽게 굴러가게 만드는 책' },
-    'core':    { color: '#1B3A4B', textColor: '#ffffff', label: 'Core Book',    desc: '삶을 바라보는 기준과 철학' },
+    'spot':  { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book',  desc: '하나의 책, 하나의 문제 해결' },
+    'frame': { color: '#1B5E3A', textColor: '#ffffff', label: 'Frame Book', desc: '분야 전체를 다루는 기준서' },
+    'fit':   { color: '#1B3A4B', textColor: '#ffffff', label: 'Fit Book',   desc: '나를 위한 맞춤형 지침서' },
   }
 
   const series = book.series ? seriesConfig[book.series] : null
@@ -207,7 +207,7 @@ function renderGridCard(book) {
     </div>
     <div class="book-card__info">
       <a href="book-detail.html?book_id=${book.id}"><p class="book-card__title">${book.title}</p></a>
-      <p class="book-card__author">${authorName} 지음</p>
+      <p class="book-card__author">칩북 편집부</p>
       <div class="book-card__rating"><span class="stars">★</span> ${book.rating || 0}</div>
       <p class="book-card__price">${book.is_free ? '무료' : formatPrice(book.price)}</p>
     </div>
@@ -223,7 +223,7 @@ function renderListItem(book) {
       </a>
       <div class="book-list-item__info">
         <a href="book-detail.html?book_id=${book.id}"><p class="book-list-item__title">${book.title}</p></a>
-        <p class="book-list-item__author">${authorName} 지음</p>
+        <p class="book-list-item__author">칩북 편집부</p>
         <p class="book-list-item__desc">${book.description || ''}</p>
         <div class="book-list-item__tags">${(book.tags||[]).map(t => `<span class="book-list-item__tag">${t}</span>`).join('')}</div>
       </div>

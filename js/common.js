@@ -97,8 +97,8 @@ function formatPrice(price) {
 function createCoverHTML(book, size = 'sm') {
   const seriesConfig = {
     'spot': { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book' },
-    'routine': { color: '#1B5E3A', textColor: '#ffffff', label: 'Routine Book' },
-    'core': { color: '#1B3A4B', textColor: '#ffffff', label: 'Core Book' },
+    'frame': { color: '#1B5E3A', textColor: '#ffffff', label: 'Frame Book' },
+    'fit': { color: '#1B3A4B', textColor: '#ffffff', label: 'Fit Book' },
   }
   const series = book.series ? seriesConfig[book.series] : null
   const bgColor = series ? series.color : (book.cover_color || '#E8F5E9')
@@ -141,8 +141,8 @@ function createBookCard(book, options = {}) {
 
   const seriesConfig = {
     'spot':    { color: '#F5F0E8', textColor: '#1B5E3A', label: 'Spot Book',    desc: '하나의 책, 하나의 문제 해결' },
-    'routine': { color: '#1B5E3A', textColor: '#ffffff', label: 'Routine Book', desc: '지금 상황을 쉽게 굴러가게 만드는 책' },
-    'core':    { color: '#1B3A4B', textColor: '#ffffff', label: 'Core Book',    desc: '삶을 바라보는 기준과 철학' },
+    'frame': { color: '#1B5E3A', textColor: '#ffffff', label: 'Frame Book', desc: '분야 전체를 다루는 기준서' },
+    'fit':   { color: '#1B3A4B', textColor: '#ffffff', label: 'Fit Book',   desc: '나를 위한 맞춤형 지침서' },
   }
 
   const series = book.series ? seriesConfig[book.series] : null
@@ -198,7 +198,7 @@ function createBookCard(book, options = {}) {
       <div class="book-card__info">
         <a href="book-detail.html?book_id=${book.id}"><p class="book-card__title">${book.title}</p></a>
         <p class="book-card__subtitle">${book.subtitle || ''}</p>
-        <p class="book-card__author">${authorName} 지음</p>
+        <p class="book-card__author">칩북 편집부</p>
         ${options.showStats ? `<div class="book-card__stats"><span>♡ ${((book.like_count||0)/1000).toFixed(1)}K</span><span>👁 ${((book.view_count||0)/1000).toFixed(1)}K</span></div>` : ''}
         ${options.showRating ? `<div class="book-card__rating"><span class="stars">★</span> ${book.rating||0} (${book.review_count||0})</div>` : ''}
         ${options.showPrice ? `<p class="book-card__price">${isFree ? '무료' : formatPrice(book.price)}</p>` : ''}
@@ -229,11 +229,10 @@ async function renderHeader(options = {}) {
     <span class="header__nav-item header__nav-item--dropdown">시리즈 ▾</span>
     <div class="header__nav-dropdown-menu">
       <a href="search.html?series=spot" class="header__nav-dropdown-item">📗 Spot Book</a>
-      <a href="search.html?series=routine" class="header__nav-dropdown-item">📘 Routine Book</a>
-      <a href="search.html?series=core" class="header__nav-dropdown-item">📕 Core Book</a>
-    </div>
-  </div>
-  <a href="author-landing.html" class="header__nav-item">강의</a>
+      <a href="search.html?series=frame" class="header__nav-dropdown-item">📘 Frame Book</a>
+<a href="search.html?series=fit" class="header__nav-dropdown-item">📕 Fit Book</a>
+</div>
+</div>
 </nav>
       <div class="header__right">
         <a href="search.html" class="header__icon" title="검색">
@@ -265,9 +264,8 @@ async function renderHeader(options = {}) {
       <nav class="mobile-menu__nav">
   <a href="search.html" class="mobile-menu__item">도서 찾기</a>
   <a href="search.html?series=spot" class="mobile-menu__item">Spot Book</a>
-  <a href="search.html?series=routine" class="mobile-menu__item">Routine Book</a>
-  <a href="search.html?series=core" class="mobile-menu__item">Core Book</a>
-  <a href="author-landing.html" class="mobile-menu__item">강의</a>
+  <a href="search.html?series=frame" class="mobile-menu__item">Frame Book</a>
+  <a href="search.html?series=fit" class="mobile-menu__item">Fit Book</a>
 </nav>
       <div class="mobile-menu__footer">
         ${isLoggedIn

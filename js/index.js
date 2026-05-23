@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderWelcomeBooks()
   await renderRecommendBooks()
   await renderSeriesBooks()
+  await renderIntroBooks()
   initSearch()
 
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
@@ -203,9 +204,8 @@ async function renderWelcomeBooks() {
 
 // ─── 시리즈 도서 렌더링 (전용 미니카드) ───
 async function renderSeriesBooks() {
-  const series = ['spot', 'routine', 'core']
-  const ids = ['seriesSpotList', 'seriesRoutineList', 'seriesCoreList']
-
+  const series = ['spot', 'frame', 'fit']
+  const ids = ['seriesSpotList', 'seriesFrameList', 'seriesFitList']
   for (let i = 0; i < series.length; i++) {
     const container = document.getElementById(ids[i])
     if (!container) continue
@@ -220,9 +220,9 @@ async function renderSeriesBooks() {
     if (!books?.length) continue
 
    const colors = {
-  spot:    { bg: '#ede4d0', text: '#1B5E3A' },
-  routine: { bg: '#174d30', text: '#ffffff' },
-  core:    { bg: '#0f1e2a', text: '#ffffff' },
+  spot:  { bg: '#ede4d0', text: '#1B5E3A' },
+  frame: { bg: '#174d30', text: '#ffffff' },
+  fit:   { bg: '#0f1e2a', text: '#ffffff' },
 }
 const { bg: bgColor, text: textColor } = colors[series[i]]
 
@@ -247,3 +247,32 @@ container.innerHTML = books.map(book => {
     }).join('')
   }
 }
+
+async function renderIntroBooks() {
+  const container = document.getElementById('chipbookIntroBooks')
+  if (!container) return
+
+  const { data: books } = await supabase
+    .from('books')
+    .select('*, authors(pen_name)')
+    .eq('status', 'published')
+    .limit(2)
+
+  if (!books?.length) return
+
+  const seriesColors = {
+    spot:  { bg: '#F5F0E8', text: '#1B5E3A', label: 'SPOT BOOK' },
+    frame: { bg: '#F5F0E8', text: '#1B5E3A', label: 'FRAME BOOK' },
+    fit:   { bg: '#1B3A4B', text: '#ffffff', label: 'FIT BOOK' },
+  }
+
+  container.innerHTML = books.map(book => {
+    const s = seriesColors[book.series] || { bg: '#F5F0E8', text: '#1B5E3A', label: 'CHIPBOOK' }
+    return `
+      <a href="book-detail.html?book_id=${book.id}" style="width:90px;height:120px;background:${s.bg};border-radius:4px 10px 10px 4px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px;text-align:center;text-decoration:none;">
+        <p style="font-size:9px;font-weight:500;color:${s.text};letter-spacing:1px;margin:0 0 4px;opacity:0.7;">${s.label}</p>
+        <div style="width:20px;height:1px;background:${s.text};opacity:0.3;margin:0 0 6px;"></div>
+        <p style="font-size:11px;font-weight:500;color:${s.text};line-height:1.3;margin:0;">${book.title}</p>
+      </a>`
+  }).join('')
+}ㄴ
