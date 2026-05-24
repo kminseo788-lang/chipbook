@@ -419,7 +419,7 @@
   height: 148px !important;
   transform: rotate(10deg) !important;
   transform-origin: bottom right !important;
-  margin-right: 8px !important;
+  margin-right: 20px !important;
 }
 .hero__book:nth-child(2) {
   width: 44px !important;
@@ -444,9 +444,7 @@
 .hero__book-logo { font-size: 5px !important; }
 .hero__book::before { width: 5px !important; }
 
-/* 도서 리스트 — 가로 스크롤 */
-
-  /* 도서 리스트 — 가로 스크롤 */
+ /* 도서 리스트 — 가로 스크롤 */
   .book-list {
     overflow-x: auto;
     padding-bottom: 12px;
