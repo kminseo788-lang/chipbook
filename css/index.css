@@ -385,9 +385,6 @@
   .hero__label { font-size: 15px; }
   .hero__title { font-size: 26px; letter-spacing: -0.5px; }
   .hero__desc { font-size: 14px; margin-bottom: 24px; }
-  .hero__visual {
-  display: none;
-}
   .hero__image-placeholder {
     width: 100%;
     height: 200px;
@@ -403,6 +400,23 @@
 
   /* 섹션 */
   .section { padding: 48px 0; }
+
+  /* 히어로 책장 모바일 */
+  .hero__visual { display: block !important; }
+  .hero__shelf-scene { width: 100%; }
+  .hero__bookrow {
+    gap: 2px;
+    justify-content: center;
+    padding: 0 4px;
+  }
+  .hero__book { transform: scale(0.72); transform-origin: bottom center; }
+  .hero__bookrow > .hero__book:first-child {
+    transform: scale(0.72) rotate(10deg) !important;
+    transform-origin: bottom right !important;
+    margin-right: 0px !important;
+  }
+  .hero__shelf-top { margin: 0 -4px; }
+  .hero__shelf-front { margin: 0 -4px; }
 
   /* 도서 리스트 — 가로 스크롤 */
   .book-list {
