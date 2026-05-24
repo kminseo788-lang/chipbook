@@ -40,12 +40,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function renderTags() {
   const container = document.getElementById('heroTagList')
   if (!container) return
-  const tags = ['살림', '육아', '재테크', '인간관계', '자기계발', '시간관리', '정리정돈', '건강', '1인가구', '직장인']
+  const tags = ['살림', '육아', '인간관계', '재테크', '건강', '자기계발']
   container.innerHTML = tags.map(tag =>
     `<span class="tag" onclick="searchByTag('${tag}')">#${tag}</span>`
   ).join('')
 }
-
 window.searchByTag = function(tag) {
   window.location.href = `search.html?tag=${encodeURIComponent(tag)}`
 }
