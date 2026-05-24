@@ -546,7 +546,12 @@
     flex: 0 0 82vw;
     scroll-snap-align: start;
   }
+   #welcomeBtn {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
+
 
 #recommendBookList {
   transition: opacity 0.5s ease;
