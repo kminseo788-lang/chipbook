@@ -405,6 +405,8 @@
 .hero__visual { display: block !important; }
 .hero__shelf-scene { width: 100%; overflow: hidden; }
 .hero__bookrow {
+  display: flex;          
+  align-items: flex-end;  
   gap: 3px;
   justify-content: center;
   padding: 0 8px;
