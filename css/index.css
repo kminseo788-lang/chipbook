@@ -417,7 +417,7 @@
 .hero__book:nth-child(1) {
   width: 38px !important;
   height: 148px !important;
-  transform: rotate(30deg) !important;
+  transform: rotate(25deg) !important;
   transform-origin: bottom right !important;
   margin-right: 40px !important;
 }
