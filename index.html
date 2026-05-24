@@ -353,20 +353,18 @@
 
     <!-- 첫 구매 무료 섹션 -->
     <section class="section section--white">
-      <div class="inner">
-        <div style="background:var(--color-primary);border-radius:12px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:22px;">🎁</span>
-            <div>
-              <span style="font-size:17px;font-weight:700;color:#fff;">첫 구매 무료</span>
-              <span style="font-size:13px;color:rgba(255,255,255,0.75);margin-left:10px;">회원가입 후 유료 도서 1권을 무료로 받으세요</span>
-            </div>
-          </div>
-          <a href="signup.html" id="welcomeBtn" class="btn btn--sm" style="border:1px solid rgba(255,255,255,0.6);color:#fff;background:transparent;white-space:nowrap;">회원가입하고 받기 →</a>
-        </div>
-        <div class="book-list" id="welcomeBookList"></div>
+  <div class="inner">
+    <div style="background:var(--color-primary);border-radius:12px;padding:20px 20px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="font-size:20px;">🎁</span>
+        <span style="font-size:16px;font-weight:700;color:#fff;">첫 구매 무료</span>
       </div>
-    </section>
+      <p style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:16px;">회원가입 후 유료 도서 1권을 무료로 받으세요</p>
+      <a href="signup.html" id="welcomeBtn" class="btn btn--sm" style="display:block;text-align:center;border:1px solid rgba(255,255,255,0.6);color:#fff;background:transparent;padding:12px;border-radius:8px;">회원가입하고 받기 →</a>
+    </div>
+    <div class="book-list" id="welcomeBookList"></div>
+  </div>
+</section>
 
     <!-- 칩북 시리즈 섹션 -->
 <section class="section section--gray">
@@ -483,20 +481,50 @@
       </div>
     </section>
 
-    <!-- 이북 제작 강의 CTA 섹션 -->
+    <!-- 맞춤 독서 -->
     <section class="section section--white">
   <div class="inner">
-    <div style="background:#1B5E3A;border-radius:16px;padding:48px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:220px;">
-        <p style="font-size:11px;font-weight:500;color:#C9A84C;letter-spacing:2px;margin:0 0 14px;">CHIPBOOK</p>
-        <h2 style="font-size:24px;font-weight:500;color:#fff;line-height:1.4;margin:0 0 12px;">핵심만 담은 맞춤형 전자책<br>검색하다 하루 끝내지 마세요</h2>
-        <p style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.8;margin:0 0 24px;">살림, 육아, 건강, 인간관계, 재테크<br>칩북 편집부가 엮은 실용 전자책</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a href="search.html" style="background:#C9A84C;color:#1B3A4B;padding:11px 22px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;display:inline-block;">도서 찾아보기 →</a>
-          <a href="search.html?type=welcome" style="background:transparent;color:#fff;padding:11px 22px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;display:inline-block;border:1px solid rgba(255,255,255,0.4);">첫 권 무료로 받기</a>
-        </div>
+    <div style="background:#F5F0E8;border-radius:20px;padding:48px 40px;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <p style="font-size:11px;color:#1B5E3A;letter-spacing:2px;margin:0 0 10px;">CHIPBOOK PACKAGE</p>
+        <h2 style="font-size:26px;font-weight:700;color:#1B3A4B;line-height:1.4;margin:0 0 10px;">나에게 맞는 책만 골라드려요</h2>
+        <p style="font-size:14px;color:#6b6560;margin:0;">내 상황을 선택하면 꼭 필요한 책들을 추천해드려요</p>
       </div>
-      <div style="display:flex;gap:10px;flex-shrink:0;" id="chipbookIntroBooks"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;">
+        <a href="search.html?tag=1인가구" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:24px;margin-bottom:8px;">🏠</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">1인가구</p>
+          <p style="font-size:11px;color:#888;margin:0;">살림·재테크·건강</p>
+        </a>
+        <a href="search.html?tag=신혼부부" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:24px;margin-bottom:8px;">💑</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">신혼부부</p>
+          <p style="font-size:11px;color:#888;margin:0;">살림·재테크·관계</p>
+        </a>
+        <a href="search.html?tag=직장인" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:24px;margin-bottom:8px;">💼</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">직장인</p>
+          <p style="font-size:11px;color:#888;margin:0;">인간관계·시간관리</p>
+        </a>
+        <a href="search.html?tag=초보부모" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:24px;margin-bottom:8px;">👶</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">초보부모</p>
+          <p style="font-size:11px;color:#888;margin:0;">육아·살림·건강</p>
+        </a>
+        <a href="search.html?tag=주부" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:24px;margin-bottom:8px;">🏡</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">주부</p>
+          <p style="font-size:11px;color:#888;margin:0;">살림·육아·건강</p>
+        </a>
+        <a href="search.html?tag=시니어" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:24px;margin-bottom:8px;">👴</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">시니어</p>
+          <p style="font-size:11px;color:#888;margin:0;">건강·관계·노후</p>
+        </a>
+      </div>
+      <div style="text-align:center;">
+        <a href="search.html" style="background:#1B5E3A;color:#fff;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:700;display:inline-block;text-decoration:none;">전체 도서 보러가기 →</a>
+      </div>
     </div>
   </div>
 </section>
