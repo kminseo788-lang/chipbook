@@ -401,27 +401,44 @@
   /* 섹션 */
   .section { padding: 48px 0; }
 
-  /* 히어로 책장 모바일 */
+ /* 히어로 책장 모바일 */
 .hero__visual { display: block !important; }
-.hero__shelf-scene { width: 100%; }
+.hero__shelf-scene { width: 100%; overflow: hidden; }
 .hero__bookrow {
   gap: 3px;
   justify-content: center;
-  padding: 0 4px;
+  padding: 0 8px;
+  transform: none;
 }
-.hero__book { 
-  transform: scale(0.58); 
-  transform-origin: bottom center; 
-  margin-left: -8px;
-}
-.hero__bookrow > .hero__book:first-child {
-  transform: scale(0.58) rotate(10deg) !important;
-  transform-origin: bottom right !important;
-  margin-right: -4px !important;
+.hero__book {
+  transform: none !important;
   margin-left: 0 !important;
 }
-.hero__shelf-top { margin: 0 -4px; }
-.hero__shelf-front { margin: 0 -4px; }
+.hero__book:nth-child(1) {
+  width: 38px !important;
+  height: 148px !important;
+  transform: rotate(10deg) !important;
+  transform-origin: bottom right !important;
+  margin-right: 8px !important;
+}
+.hero__book:nth-child(2) {
+  width: 44px !important;
+  height: 200px !important;
+}
+.hero__book:nth-child(3) {
+  width: 36px !important;
+  height: 122px !important;
+}
+.hero__book:nth-child(4) {
+  width: 42px !important;
+  height: 184px !important;
+}
+.hero__book:nth-child(5) {
+  width: 40px !important;
+  height: 153px !important;
+}
+.hero__shelf-top { margin: 0 -8px; }
+.hero__shelf-front { margin: 0 -8px; }
 
   /* 도서 리스트 — 가로 스크롤 */
   .book-list {
