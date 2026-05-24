@@ -76,13 +76,26 @@
       return
     }
 
-    try {
-await signUp(email, password, name)
-alert('회원가입이 완료됐습니다! 첫 구매 무료 도서를 확인해보세요 🎁')
-window.location.href = 'search.html?type=welcome'
-    } catch (err) {
-      alert('회원가입 실패: ' + err.message)
-    }
+  try {
+  await signUp(email, password, name)
+  // 이메일 인증 필요하므로 바로 이동 안 하고 메시지 표시
+  document.querySelector('.auth-card').innerHTML = `
+    <div style="text-align:center;padding:40px 0;">
+      <div style="font-size:48px;margin-bottom:16px;">📧</div>
+      <h2 style="font-size:22px;font-weight:700;color:#1B3A4B;margin-bottom:12px;">이메일을 확인해주세요</h2>
+      <p style="font-size:15px;color:#6b6560;line-height:1.7;margin-bottom:8px;">
+        <strong>${email}</strong>로<br>인증 이메일을 보냈어요
+      </p>
+      <p style="font-size:13px;color:#aaa;margin-bottom:32px;">
+        이메일 링크를 클릭하면 가입이 완료돼요<br>
+        스팸함도 확인해보세요
+      </p>
+      <a href="login.html" class="btn btn--primary btn--full">로그인 하러가기</a>
+    </div>
+  `
+} catch (err) {
+  alert('회원가입 실패: ' + err.message)
+}
   })
 </script>
 </body>
