@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderSeriesBooks()
   await renderIntroBooks()
   initSearch()
+  initHeroBookText() 
 
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
   setInterval(renderWelcomeBooks, 15 * 1000)
@@ -275,4 +276,27 @@ async function renderIntroBooks() {
         <p style="font-size:11px;font-weight:500;color:${s.text};line-height:1.3;margin:0;">${book.title}</p>
       </a>`
   }).join('')
-}ㄴ
+}
+
+function initHeroBookText() {
+  const pool = [
+    {id:'bt0', titles:['나르시스트 사용설명서','왜 하나를 끊으면','손해보지 않는 기준']},
+    {id:'bt1', titles:['평생 살 안찌는 식습관법','냉비 없는 살림법','몸 감각을 잃어버린 시대']},
+    {id:'bt2', titles:['앞으로는 쓰는 사람','하이퍼니즈 사는 사람','단기간 결과 만드는 공부법']},
+    {id:'bt3', titles:['20대 미혼여성 지침서','예쁜데 연애도 인생도','단기간 결과 만드는 공부법']},
+    {id:'bt4', titles:['30대 돌싱맘 지침서','손해보지 않는 인간관계','냉비 없는 살림법']},
+  ]
+  let idx = 0
+  setInterval(() => {
+    idx = (idx + 1) % 3
+    pool.forEach(b => {
+      const el = document.getElementById(b.id)
+      if (!el) return
+      el.style.opacity = '0'
+      setTimeout(() => {
+        el.textContent = b.titles[idx]
+        el.style.opacity = '1'
+      }, 300)
+    })
+  }, 5000)
+}
