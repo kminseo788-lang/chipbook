@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderSeriesBooks()
   await renderIntroBooks()
   initSearch()
-  initHeroBookText() 
+  await initHeroBookText() 
 
   recommendInterval = setInterval(renderRecommendBooks, 15 * 1000)
   setInterval(renderWelcomeBooks, 15 * 1000)
@@ -277,25 +277,56 @@ async function renderIntroBooks() {
   }).join('')
 }
 
-function initHeroBookText() {
-  const pool = [
-    {id:'bt0', titles:['나르시스트 사용설명서','왜 하나를 끊으면','손해보지 않는 기준']},
-    {id:'bt1', titles:['평생 살 안찌는 식습관법','낭비 없는 살림법','몸 감각을 잃어버린 시대']},
-    {id:'bt2', titles:['앞으로는 쓰는 사람','하이퍼니즈 사는 사람','단기간 결과 만드는 공부법']},
-    {id:'bt3', titles:['20대 미혼여성 지침서','예쁜데 연애도 인생도','단기간 결과 만드는 공부법']},
-    {id:'bt4', titles:['30대 돌싱맘 지침서','손해보지 않는 인간관계','냉비 없는 살림법']},
+
+
+async function initHeroBookText() {
+  const { data: books } = await supabase
+    .from('books')
+    .select('id, title, series')
+    .eq('status', 'published')
+    .limit(20)
+
+  if (!books?.length) return
+
+  const bySpot = books.filter(b => b.series === 'spot')
+  const byFrame = books.filter(b => b.series === 'frame')
+  const byFit = books.filter(b => b.series === 'fit')
+  const all = books
+
+  function getRandom(arr) {
+    return arr.length ? arr[Math.floor(Math.random() * arr.length)] : all[0]
+  }
+
+  const slots = [
+    { id: 'bt0', pool: all },
+    { id: 'bt1', pool: byFrame.length ? byFrame : all },
+    { id: 'bt2', pool: bySpot.length ? bySpot : all },
+    { id: 'bt3', pool: byFit.length ? byFit : all },
+    { id: 'bt4', pool: byFit.length ? byFit : all },
   ]
-  let idx = 0
-  setInterval(() => {
-    idx = (idx + 1) % 3
-    pool.forEach(b => {
-      const el = document.getElementById(b.id)
-      if (!el) return
+
+  function update() {
+    slots.forEach(s => {
+      const el = document.getElementById(s.id)
+      const book = getRandom(s.pool)
+      if (!el || !book) return
+
       el.style.opacity = '0'
       setTimeout(() => {
-        el.textContent = b.titles[idx]
+        el.textContent = book.title
         el.style.opacity = '1'
+
+        // 클릭하면 상세페이지로
+        const bookDiv = el.closest('.hero__book')
+        if (bookDiv) {
+          bookDiv.onclick = () => {
+            window.location.href = `book-detail.html?book_id=${book.id}`
+          }
+        }
       }, 300)
     })
-  }, 5000)
+  }
+
+  update()
+  setInterval(update, 5000)
 }
