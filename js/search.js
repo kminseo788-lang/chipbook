@@ -60,7 +60,9 @@ async function fetchBooks(params = {}) {
     .select('*, authors(pen_name)')
     .eq('status', 'published')
 
-  if (params.keyword) query = query.or(`title.ilike.%${params.keyword}%,description.ilike.%${params.keyword}%`)
+ if (params.keyword) query = query.or(
+  `title.ilike.%${params.keyword}%,description.ilike.%${params.keyword}%,one_line.ilike.%${params.keyword}%`
+)
   if (params.type === 'free') query = query.eq('is_free', true)
   if (params.type === 'welcome') query = query.eq('is_welcome', true).eq('is_free', false)
   if (params.series) query = query.eq('series', params.series)  // ← 순서 맞게 이동
