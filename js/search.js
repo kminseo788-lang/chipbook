@@ -70,13 +70,6 @@ if (params.keyword) {
   ).join(',')
   query = query.or(conditions)
 }
- if (params.keyword) {
-  const keywords = params.keyword.trim().split(/\s+/)
-  const conditions = keywords.map(kw =>
-    `title.ilike.%${kw}%,description.ilike.%${kw}%,one_line.ilike.%${kw}%`
-  ).join(',')
-  query = query.or(conditions)
-}
   if (params.type === 'free') query = query.eq('is_free', true)
   if (params.type === 'welcome') query = query.eq('is_welcome', true).eq('is_free', false)
   if (params.series) query = query.eq('series', params.series)  // ← 순서 맞게 이동
