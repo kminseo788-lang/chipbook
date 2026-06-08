@@ -659,8 +659,9 @@
   margin: 2px 10px 0;
 }
 
-/* 첫구매무료 섹션 세로쓰기 방지 */
-.section--white *,
-.section--gray * {
-  writing-mode: horizontal-tb;
+/* 첫구매무료 섹션 writing-mode 강제 초기화 */
+.section--white .inner > div,
+.section--white .inner > div * {
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
 }
