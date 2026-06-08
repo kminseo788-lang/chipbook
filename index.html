@@ -336,21 +336,75 @@
     </div>
   </div>
 </section>
+<!-- 검색 가이드 섹션 -->
+<section class="section section--gray">
+  <div class="inner">
+    <div style="background:#fff;border-radius:20px;padding:36px 40px;">
+      <p style="font-size:20px;font-weight:700;color:#1B3A4B;margin-bottom:6px;">원하는 책을 바로 찾아보세요</p>
+      <p style="font-size:13px;color:#888;margin-bottom:24px;">키워드나 내 상황을 클릭하면 관련 도서를 바로 볼 수 있어요</p>
 
-    <!-- 무료도서 섹션 -->
-    <section class="section section--white">
-      <div class="inner">
-        <div class="section-header">
-          <div class="section-header__left">
-            <h2 class="section-header__title">무료도서</h2>
-            <span class="section-header__sub">부담 없이 먼저 읽어보세요</span>
-          </div>
-          <a href="search.html?type=free" class="section-header__more">더보기 →</a>
-        </div>
-        <div class="book-list" id="freeBookList"></div>
+      <p style="font-size:11px;font-weight:700;color:#1B5E3A;letter-spacing:1px;margin-bottom:12px;">자주 찾는 키워드</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">
+        <a href="search.html?keyword=직장인" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#직장인</a>
+        <a href="search.html?keyword=30대여성" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#30대여성</a>
+        <a href="search.html?keyword=육아" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#육아</a>
+        <a href="search.html?keyword=살림" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#살림</a>
+        <a href="search.html?keyword=인간관계" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#인간관계</a>
+        <a href="search.html?keyword=번아웃" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#번아웃</a>
+        <a href="search.html?keyword=돈관리" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#돈관리</a>
+        <a href="search.html?keyword=자존감" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#자존감</a>
+        <a href="search.html?keyword=20대여성" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#20대여성</a>
+        <a href="search.html?series=fit" style="background:#1B3A4B;color:#fff;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#핏북</a>
+        <a href="search.html?series=frame" style="background:#1B5E3A;color:#fff;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#프레임북</a>
+        <a href="search.html?series=spot" style="background:#F5F0E8;color:#1B3A4B;font-size:13px;font-weight:600;padding:7px 14px;border-radius:50px;text-decoration:none;">#스팟북</a>
       </div>
-    </section>
 
+      <p style="font-size:11px;font-weight:700;color:#1B5E3A;letter-spacing:1px;margin-bottom:12px;">내 상황으로 찾기</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+        <a href="search.html?keyword=직장 번아웃" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">😮‍💨</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">직장이 힘들어요</p>
+          <p style="font-size:11px;color:#888;margin:0;">번아웃·인간관계</p>
+        </a>
+        <a href="search.html?keyword=돈 소비 저축" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">💸</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">돈이 안 모여요</p>
+          <p style="font-size:11px;color:#888;margin:0;">소비습관·재테크</p>
+        </a>
+        <a href="search.html?keyword=관계 인간관계" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">🥲</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">관계가 지쳐요</p>
+          <p style="font-size:11px;color:#888;margin:0;">인간관계·경계</p>
+        </a>
+        <a href="search.html?keyword=육아 아이" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">👶</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">육아가 어려워요</p>
+          <p style="font-size:11px;color:#888;margin:0;">육아·훈육·발달</p>
+        </a>
+        <a href="search.html?keyword=살림 정리" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">🏠</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">살림이 버거워요</p>
+          <p style="font-size:11px;color:#888;margin:0;">살림·정리·청소</p>
+        </a>
+        <a href="search.html?keyword=감정 불안 자존감" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">🌊</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">감정 조절이 어려워요</p>
+          <p style="font-size:11px;color:#888;margin:0;">감정·불안·자존감</p>
+        </a>
+        <a href="search.html?keyword=연애 이성관계" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">💙</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">연애가 힘들어요</p>
+          <p style="font-size:11px;color:#888;margin:0;">연애·이성심리</p>
+        </a>
+        <a href="search.html?keyword=건강 수면 피로" style="background:#F5F0E8;border-radius:12px;padding:16px 12px;text-align:center;text-decoration:none;display:block;">
+          <div style="font-size:22px;margin-bottom:7px;">😴</div>
+          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 3px;">몸이 자꾸 지쳐요</p>
+          <p style="font-size:11px;color:#888;margin:0;">건강·수면·피로</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
     <!-- 첫 구매 무료 섹션 -->
     <section class="section section--white">
   <div class="inner">

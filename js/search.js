@@ -216,7 +216,6 @@ function renderGridCard(book) {
     </div>
     <div class="book-card__info">
       <a href="book-detail.html?book_id=${book.id}"><p class="book-card__title">${book.title}</p></a>
-      <p class="book-card__author">칩북 편집부</p>
       <div class="book-card__rating"><span class="stars">★</span> ${book.rating || 0}</div>
       <p class="book-card__price">${book.is_free ? '무료' : formatPrice(book.price)}</p>
     </div>
@@ -232,7 +231,7 @@ function renderListItem(book) {
       </a>
       <div class="book-list-item__info">
         <a href="book-detail.html?book_id=${book.id}"><p class="book-list-item__title">${book.title}</p></a>
-        <p class="book-list-item__author">칩북 편집부</p>
+        
         <p class="book-list-item__desc">${book.description || ''}</p>
         <div class="book-list-item__tags">${(book.tags||[]).map(t => `<span class="book-list-item__tag">${t}</span>`).join('')}</div>
       </div>
