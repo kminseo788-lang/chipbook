@@ -659,9 +659,8 @@
   margin: 2px 10px 0;
 }
 
-/* 첫구매무료 섹션 writing-mode 강제 초기화 */
-.section--white .inner > div,
-.section--white .inner > div * {
-  writing-mode: horizontal-tb !important;
-  text-orientation: mixed !important;
+.hero__book-series,
+.hero__book-title,
+.hero__book-logo {
+  writing-mode: vertical-rl;
 }
