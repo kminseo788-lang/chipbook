@@ -611,14 +611,14 @@
   border-radius: 0 3px 3px 0;
   z-index: 4;
 }
-.hero__book-series {
+.hero .hero__book-series {
   font-size: 7px;
   writing-mode: vertical-rl;
   letter-spacing: 1.5px;
   opacity: 0.6;
   position: relative; z-index: 5;
 }
-.hero__book-title {
+.hero .hero__book-title {
   font-size: 11px;
   font-weight: 700;
   writing-mode: vertical-rl;
@@ -629,7 +629,7 @@
   overflow: visible;
   max-height: none;
 }
-.hero__book-logo {
+.hero .hero__book-logo {
   font-size: 7px;
   writing-mode: vertical-rl;
   opacity: 0.4;
@@ -659,8 +659,3 @@
   margin: 2px 10px 0;
 }
 
-.hero__book-series,
-.hero__book-title,
-.hero__book-logo {
-  writing-mode: vertical-rl;
-}
