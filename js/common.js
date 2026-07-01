@@ -307,6 +307,11 @@ function renderFooter() {
         <a href="refund.html">환불정책</a>
       </div>
       <p class="footer__email">contact@chipbook.net</p>
+      <div class="footer__biz">
+        <p>상호: 마침 &nbsp;|&nbsp; 대표자: 강민서 &nbsp;|&nbsp; 사업자등록번호: 859-05-03573</p>
+        <p>통신판매업신고번호: 제2026-서울동대문-1218호</p>
+        <p>소재지: 서울특별시 동대문구 회기로23나길 1, 104호(회기동) &nbsp;|&nbsp; 연락처: 010-6503-7888</p>
+      </div>
     </div>`
 }
 
