@@ -7,7 +7,7 @@ import { supabase } from './supabase.js'
 import { getCurrentUser, isPurchased, formatPrice, createCoverHTML } from './common.js'
 
 // PortOne SDK 로드
-const IMP_UID = 'store-5953daa0-ff3c-49cc-ab90-529761466261' // 포트원 가맹점 식별코드
+const IMP_UID = 'imp10806041' // 포트원 가맹점 식별코드
 
 document.addEventListener('DOMContentLoaded', async () => {
   // PortOne SDK 동적 로드
