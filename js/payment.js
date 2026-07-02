@@ -1,21 +1,27 @@
 /**
  * chipbook payment.js
- * Supabase 연동 버전
- * 
- * 결제 흐름:
- * requestPayment() → PortOne 결제창 (추후 연동)
- * → verifyPayment() → 서버 검증 (추후)
- * → grantBookAccess() → Supabase library_books INSERT
+ * Supabase + PortOne(아임포트) KCP 연동 버전
  */
 
 import { supabase } from './supabase.js'
 import { getCurrentUser, isPurchased, formatPrice, createCoverHTML } from './common.js'
 
+// PortOne SDK 로드
+const IMP_UID = 'store-5953daa0-ff3c-49cc-ab90-529761466261' // 포트원 가맹점 식별코드
+
 document.addEventListener('DOMContentLoaded', async () => {
+  // PortOne SDK 동적 로드
+  if (!window.IMP) {
+    const script = document.createElement('script')
+    script.src = 'https://cdn.iamport.kr/v1/iamport.js'
+    document.head.appendChild(script)
+    await new Promise(resolve => script.onload = resolve)
+  }
+  window.IMP.init(IMP_UID)
+
   const bookId = new URLSearchParams(window.location.search).get('book_id')
   if (!bookId) { window.location.href = 'index.html'; return }
 
-  // 도서 정보 조회
   const { data: book } = await supabase
     .from('books')
     .select('*, authors(pen_name)')
@@ -24,14 +30,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (!book) { window.location.href = 'index.html'; return }
 
-  // 무료 도서면 뷰어로
   if (book.is_free) {
     alert('무료 도서는 바로 읽을 수 있어요!')
     window.location.href = `viewer.html?book_id=${bookId}`
     return
   }
 
-  // 이미 구매했으면 뷰어로
   const purchased = await isPurchased(bookId)
   if (purchased) {
     alert('이미 구매한 도서예요.')
@@ -61,7 +65,6 @@ function renderProduct(book) {
   if (btn) btn.textContent = `🔒 ${formatPrice(book.price)} 결제하기`
 }
 
-// 전체 동의
 window.toggleAll = function(masterCb) {
   document.querySelectorAll('.term-check').forEach(cb => cb.checked = masterCb.checked)
   updatePayBtn()
@@ -83,18 +86,7 @@ function updatePayBtn() {
 }
 
 // ─── 결제 요청 ───
-// 나중에 PortOne SDK 연동 시 이 함수 수정
 window.requestPayment = async function() {
-  alert('현재 결제 시스템 준비 중입니다.\n빠른 시일 내에 오픈 예정이에요 🙏')
-}
-
-// 결제 검증 mock → 나중에 서버 API 호출로 교체
-async function verifyPaymentMock(bookId, amount) {
-  await grantBookAccess(bookId, amount)
-}
-
-// 구매 권한 부여 → Supabase library_books INSERT
-async function grantBookAccess(bookId, amount) {
   const user = await getCurrentUser()
   if (!user) {
     alert('로그인이 필요합니다.')
@@ -102,7 +94,39 @@ async function grantBookAccess(bookId, amount) {
     return
   }
 
-  // library_books 테이블에 구매 기록 저장
+  const bookId = new URLSearchParams(window.location.search).get('book_id')
+  const { data: book } = await supabase
+    .from('books')
+    .select('*, authors(pen_name)')
+    .eq('id', bookId)
+    .single()
+
+  if (!book) return
+
+  const orderId = `chipbook_${Date.now()}`
+
+  window.IMP.request_pay({
+    pg: 'kcp',
+    pay_method: 'card',
+    merchant_uid: orderId,
+    name: book.title,
+    amount: book.price,
+    buyer_email: user.email,
+    buyer_name: user.email,
+  }, async function(rsp) {
+    if (rsp.success) {
+      // 결제 성공
+      await grantBookAccess(bookId, book.price, orderId, rsp.imp_uid)
+    } else {
+      alert('결제에 실패했습니다.\n' + rsp.error_msg)
+    }
+  })
+}
+
+// 구매 권한 부여
+async function grantBookAccess(bookId, amount, orderId, impUid) {
+  const user = await getCurrentUser()
+
   const { error: libError } = await supabase
     .from('library_books')
     .insert({
@@ -111,14 +135,13 @@ async function grantBookAccess(bookId, amount) {
       access_type: 'purchased'
     })
 
-  // payments 테이블에 결제 기록 저장
   await supabase
     .from('payments')
     .insert({
       user_id: user.id,
       book_id: bookId,
       amount: amount,
-      order_id: `order_${Date.now()}`,
+      order_id: orderId,
       payment_status: 'completed',
       paid_at: new Date().toISOString()
     })
