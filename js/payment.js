@@ -105,8 +105,8 @@ window.requestPayment = async function() {
 
   const orderId = `chipbook_${Date.now()}`
 
-  window.IMP.request_pay({
-    pg: 'kcp_v2',
+    window.IMP.request_pay({
+    channelKey: 'channel-key-cd1697c8-0052-4b24-b57b-67e1df23a219',
     pay_method: 'card',
     merchant_uid: orderId,
     name: book.title,
