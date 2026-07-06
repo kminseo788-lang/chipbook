@@ -4,32 +4,61 @@
    ========================================= */
 
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;600;700&display=swap');
 
-/* ─── CSS 변수 ─── */
+/* ─── CSS 변수 ───
+   톤: 짙은 포레스트그린 + 무광 브라스골드 + 따뜻한 아이보리
+   ("선명한 로고색" 대신 "오래된 양장본" 느낌으로) */
 :root {
-  --color-primary: #1B5E3A;
-  --color-primary-light: #2E7D52;
-  --color-primary-bg: #F0F5F2;
-  --color-bg: #FFFFFF;
-  --color-bg-sub: #F7F7F7;
-  --color-text: #1A1A1A;
-  --color-text-sub: #777777;
-  --color-text-light: #AAAAAA;
-  --color-border: #E5E5E5;
-  --color-star: #F5A623;
-  --color-free: #1B5E3A;
+  --color-primary: #14342A;
+  --color-primary-light: #2C5643;
+  --color-primary-bg: #EEF2ED;
+  --color-bg: #FCFAF5;
+  --color-bg-sub: #F4F0E6;
+  --color-text: #1E1B16;
+  --color-text-sub: #6E6459;
+  --color-text-light: #A79E8F;
+  --color-border: #E5DFCF;
+  --color-star: #B8862E;
+  --color-free: #14342A;
+  --color-brass: #A9812E;
+  --color-brass-light: rgba(169,129,46,.12);
+  --color-brass-border: rgba(169,129,46,.4);
 
   --font-main: 'Noto Sans KR', sans-serif;
+  --font-display: 'Noto Serif KR', serif;
   --inner-width: 1200px;
   --header-height: 72px;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-  --shadow-sm: 0 1px 4px rgba(0,0,0,.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-sm: 0 1px 4px rgba(20,15,5,.06);
+  --shadow-md: 0 8px 24px rgba(20,15,5,.12);
   --transition: .2s ease;
+}
+
+/* ─── 서체 유틸리티 ─── */
+.font-display { font-family: var(--font-display); }
+
+/* 도서 카탈로그 라벨 — 도서관 청구기호 모티브 (모든 페이지 공용) */
+.spine-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  color: var(--color-brass);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.spine-tag::before {
+  content: '';
+  width: 16px;
+  height: 1px;
+  background: var(--color-brass);
 }
 
 /* ─── 리셋 ─── */
@@ -84,10 +113,11 @@ input, textarea { font-family: inherit; }
 }
 
 .header__logo {
-  font-size: 22px;
+  font-family: var(--font-display);
+  font-size: 23px;
   font-weight: 700;
   color: var(--color-primary);
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
 }
 
 .header__slogan {
@@ -151,6 +181,7 @@ input, textarea { font-family: inherit; }
 }
 
 .footer__logo {
+  font-family: var(--font-display);
   font-size: 18px;
   font-weight: 700;
   color: var(--color-primary);
@@ -353,9 +384,11 @@ input, textarea { font-family: inherit; }
   gap: 10px;
 }
 .section-header__title {
-  font-size: 22px;
+  font-family: var(--font-display);
+  font-size: 24px;
   font-weight: 700;
   color: var(--color-text);
+  letter-spacing: -0.3px;
 }
 .section-header__sub {
   font-size: 14px;

@@ -15,246 +15,6 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://www.chipbook.net/images/Open-Graph.png">
 
-  <style>
-    /* ── 골드 포인트 컬러 ── */
-    :root {
-      --color-gold: #C9A84C;
-      --color-gold-light: rgba(201,168,76,0.12);
-      --color-gold-border: rgba(201,168,76,0.4);
-    }
-
-    /* ── 이북 강의 CTA ── */
-    .lecture-cta {
-      background: var(--color-primary);
-      border-radius: var(--radius-xl);
-      padding: 56px 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-    }
-    .lecture-cta__left { flex: 1; }
-    .lecture-cta__badge {
-      display: inline-block;
-      background: var(--color-gold-light);
-      border: 1px solid var(--color-gold-border);
-      color: var(--color-gold);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 5px 14px;
-      border-radius: 50px;
-      margin-bottom: 16px;
-      letter-spacing: 0.5px;
-    }
-    .lecture-cta__title {
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 1.4;
-      color: #fff;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-    .lecture-cta__title span { color: var(--color-gold); }
-    .lecture-cta__desc {
-      font-size: 15px;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.8;
-      margin-bottom: 28px;
-    }
-    .btn--gold { background: var(--color-gold); color: var(--color-primary); font-weight: 700; }
-    .btn--gold:hover { background: #dbb95a; }
-    .lecture-cta__right { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
-    .lecture-cta__steps { display: flex; flex-direction: column; gap: 12px; }
-    .lecture-step { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.85); font-size: 14px; }
-    .lecture-step__num {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--color-gold); color: var(--color-primary);
-      font-size: 12px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .lecture-cta__book {
-      width: 130px; height: 175px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px 12px 12px 4px;
-      display: flex; flex-direction: column;
-      align-items: flex-end; justify-content: flex-end;
-      padding: 16px;
-      box-shadow: -6px 4px 0 rgba(0,0,0,.2);
-    }
-    .lecture-cta__book-title { font-size: 12px; font-weight: 700; color: var(--color-gold); text-align: right; line-height: 1.5; }
-
-    /* ── 시리즈 섹션 ── */
-    .series-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      align-items: start;
-    }
-    .series-col {
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-    }
-    .series-col--spot   { background: #f2ece0; }
-    .series-col--routine { background: #1B5E3A; }
-    .series-col--core   { background: #1B3A4B; }
-
-    .series-head { padding: 1.2rem 1.2rem 1rem; }
-
-    .series-badge {
-      display: inline-block;
-      font-size: 9px; font-weight: 700; letter-spacing: .12em;
-      padding: 3px 9px; border-radius: 20px; margin-bottom: 10px;
-    }
-    .series-col--spot   .series-badge { background: #1B5E3A; color: #f2ece0; }
-    .series-col--routine .series-badge,
-    .series-col--core   .series-badge { background: rgba(255,255,255,.18); color: #fff; }
-
-    .series-head-row {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; gap: 8px;
-    }
-    .series-title { font-size: 17px; font-weight: 800; line-height: 1.35; }
-    .series-col--spot   .series-title { color: #2a1a0e; }
-    .series-col--routine .series-title,
-    .series-col--core   .series-title { color: #fff; }
-
-    .series-arrow {
-      flex-shrink: 0; width: 30px; height: 30px;
-      border-radius: 50%; display: flex;
-      align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 700; margin-top: 2px;
-    }
-    .series-col--spot   .series-arrow { background: #1B5E3A; color: #f2ece0; }
-    .series-col--routine .series-arrow,
-    .series-col--core   .series-arrow { background: rgba(255,255,255,.2); color: #fff; }
-
-    .series-desc { font-size: 11px; margin-top: 8px; line-height: 1.65; }
-    .series-col--spot   .series-desc { color: #6b5040; }
-    .series-col--routine .series-desc,
-    .series-col--core   .series-desc { color: rgba(255,255,255,.7); }
-
-    /* 책 영역 */
-    .series-books { padding: 0 1.2rem; }
-    .series-books-label {
-      display: flex; justify-content: space-between;
-      align-items: center; margin-bottom: 8px;
-    }
-    .series-books-label span { font-size: 10px; font-weight: 600; letter-spacing: .06em; }
-    .series-col--spot   .series-books-label span { color: #6b5040; }
-    .series-col--routine .series-books-label span,
-    .series-col--core   .series-books-label span { color: rgba(255,255,255,.5); }
-
-    .series-view-all { font-size: 10px; font-weight: 600; text-decoration: none; }
-    .series-col--spot   .series-view-all { color: #1B5E3A; }
-    .series-col--routine .series-view-all,
-    .series-col--core   .series-view-all { color: rgba(255,255,255,.8); }
-
-    /* 시리즈 전용 미니카드 */
-    .series-books .book-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-    }
-    .series-mini-card {
-      display: block;
-      text-decoration: none;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #fff;
-      transition: transform 0.15s;
-    }
-    .series-mini-card:hover { transform: translateY(-2px); }
-
-    .series-mini-cover {
-      height: 140px;
-      overflow: hidden;
-      position: relative;
-    }
-    .series-mini-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    /* 시리즈별 표지 배경 (이미지 없을 때) */
-    .series-col--spot   .series-mini-cover { background: #ede4d0; color: #1B5E3A; }
-    .series-col--routine .series-mini-cover { background: #174d30; color: #fff; }
-    .series-col--core   .series-mini-cover { background: #0f1e2a; color: #fff; }
-
-    .series-mini-info {
-  height: 36px;
-  background: #fff;
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-    .series-mini-title {
-      font-size: 10px;
-      font-weight: 600;
-      color: #1a1a1a;
-      line-height: 1.4;
-      margin-bottom: 3px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .series-mini-price {
-      font-size: 13px;
-      color: var(--color-text-secondary);
-    }
-   .series-mini-price--free {
-  color: #1B5E3A;
-  font-weight: 700;
-}
-
-    /* 하단 피처 태그 (네모 없이 리스트) */
-    .series-feats {
-      display: flex; flex-direction: column;
-      padding: 10px 1.2rem 1.2rem;
-      margin-top: 8px;
-    }
-    .series-feat {
-      display: flex; align-items: center;
-      gap: 8px; padding: 5px 0;
-      font-size: 10px; line-height: 1.4; font-weight: 500;
-    }
-    .series-feat + .series-feat { border-top: 0.5px solid rgba(0,0,0,.07); }
-    .series-col--routine .series-feat + .series-feat,
-    .series-col--core   .series-feat + .series-feat { border-top: 0.5px solid rgba(255,255,255,.1); }
-    .series-feat__icon { font-size: 13px; flex-shrink: 0; }
-    .series-col--spot   .series-feat { color: #2a4a30; }
-    .series-col--routine .series-feat,
-    .series-col--core   .series-feat { color: rgba(255,255,255,.75); }
-
-    /* 반응형 */
-    @media (max-width: 768px) {
-      .lecture-cta { flex-direction: column; padding: 32px 24px; text-align: center; }
-      .lecture-cta__title { font-size: 22px; }
-      .lecture-cta__right { display: none; }
-      .series-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
-  .series-grid {
-    display: flex !important;
-    flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 12px;
-    padding-bottom: 8px;
-  }
-  .series-grid::-webkit-scrollbar { display: none; }
-  .series-col {
-    flex: 0 0 82vw !important;
-    scroll-snap-align: start;
-  }
-}
-  </style>
 </head>
 <body>
   <header id="header"></header>
@@ -285,24 +45,24 @@
           <!-- 1번: 흰/크림 -->
             <div class="hero__book" style="width:58px;height:230px;background:#f5f0e6;border:1px solid #e0d8cc;transform:rotate(15deg);transform-origin:bottom right;z-index:1;margin-right:56px;">
             <div class="hero__book-side" style="right:-7px;width:7px;background:#c8c0b0;"></div>
-            <p class="hero__book-series" style="color:#155f3d;">SPOT BOOK</p>
+            <p class="hero__book-series" style="color:#1c4a36;">SPOT BOOK</p>
             <p class="hero__book-title" style="color:#1B3A4B;" id="bt0">나르시스트 사용설명서</p>
-            <p class="hero__book-logo" style="color:#155f3d;">chipbook</p>
+            <p class="hero__book-logo" style="color:#1c4a36;">chipbook</p>
           </div>
 
           <!-- 2번: 진초록 - 제일 높음 -->
-          <div class="hero__book" style="width:66px;height:310px;background:#155f3d;transform:rotate(0.3deg);z-index:5;box-shadow:0 4px 0 rgba(0,0,0,0.2),5px 0 14px rgba(0,0,0,0.28);">
-            <div class="hero__book-top" style="background:#1e7a4a;"></div>
-            <div class="hero__book-side" style="right:-9px;width:9px;background:#0a3520;"></div>
+          <div class="hero__book" style="width:66px;height:310px;background:#1c4a36;transform:rotate(0.3deg);z-index:5;box-shadow:0 4px 0 rgba(0,0,0,0.2),5px 0 14px rgba(0,0,0,0.28);">
+            <div class="hero__book-top" style="background:#2c5f47;"></div>
+            <div class="hero__book-side" style="right:-9px;width:9px;background:#0d2a1e;"></div>
             <p class="hero__book-series" style="color:rgba(255,255,255,0.55);">FRAME BOOK</p>
             <p class="hero__book-title" style="color:#fff;" id="bt1">냉비 없는 살림법</p>
             <p class="hero__book-logo" style="color:rgba(255,255,255,0.4);">chipbook</p>
           </div>
 
           <!-- 3번: 골드 - 낮음 -->
-          <div class="hero__book" style="width:54px;height:190px;background:#c9aa43;transform:rotate(1.2deg);transform-origin:bottom center;z-index:2;">
-            <div class="hero__book-top" style="background:#d9bc55;"></div>
-            <div class="hero__book-side" style="right:-7px;width:7px;background:#8a6e20;"></div>
+          <div class="hero__book" style="width:54px;height:190px;background:#b8963e;transform:rotate(1.2deg);transform-origin:bottom center;z-index:2;">
+            <div class="hero__book-top" style="background:#c9a94e;"></div>
+            <div class="hero__book-side" style="right:-7px;width:7px;background:#7a5f2e;"></div>
             <p class="hero__book-series" style="color:rgba(27,58,75,0.65);">SPOT BOOK</p>
             <p class="hero__book-title" style="color:#1B3A4B;" id="bt2">앞으로는 쓰는 사람</p>
             <p class="hero__book-logo" style="color:rgba(27,58,75,0.5);">chipbook</p>
@@ -339,9 +99,9 @@
 <!-- 첫 구매 무료 섹션 -->
 <section class="section section--white">
   <div class="inner">
-    <div style="background:var(--color-primary);border-radius:12px;padding:12px 16px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-      <p style="font-size:14px;font-weight:700;color:#fff;margin:0;white-space:nowrap;">🎁 첫 구매 무료</p>
-      <a href="signup.html" id="welcomeBtn" style="flex-shrink:0;border:1px solid rgba(255,255,255,0.6);color:#fff;background:transparent;padding:7px 12px;border-radius:8px;font-size:12px;text-decoration:none;white-space:nowrap;">받으러 가기 →</a>
+    <div class="welcome-banner">
+      <p class="welcome-banner__label">🎁 첫 구매 무료</p>
+      <a href="signup.html" id="welcomeBtn" class="welcome-banner__btn">받으러 가기 →</a>
     </div>
     <div class="book-list" id="welcomeBookList"></div>
   </div>
@@ -351,9 +111,12 @@
 <section class="section section--gray">
   <div class="inner">
     <div class="section-header">
-      <div class="section-header__left">
-        <h2 class="section-header__title">칩북 시리즈</h2>
-        <span class="section-header__sub">주제와 깊이로 나뉘는 세 가지 시리즈</span>
+      <div class="section-header__left" style="flex-direction:column;align-items:flex-start;gap:2px;">
+        <p class="spine-tag" style="margin-bottom:2px;">SERIES · 01–03</p>
+        <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+          <h2 class="section-header__title">칩북 시리즈</h2>
+          <span class="section-header__sub">주제와 깊이로 나뉘는 세 가지 시리즈</span>
+        </div>
       </div>
     </div>
 
@@ -465,46 +228,46 @@
     <!-- 맞춤 독서 -->
     <section class="section section--white">
   <div class="inner">
-    <div style="background:#F5F0E8;border-radius:20px;padding:48px 40px;">
-      <div style="text-align:center;margin-bottom:32px;">
-        <p style="font-size:11px;color:#1B5E3A;letter-spacing:2px;margin:0 0 10px;">CHIPBOOK PACKAGE</p>
-        <h2 style="font-size:26px;font-weight:700;color:#1B3A4B;line-height:1.4;margin:0 0 10px;">나에게 맞는 책만 골라드려요</h2>
-        <p style="font-size:14px;color:#6b6560;margin:0;">내 상황을 선택하면 꼭 필요한 책들을 추천해드려요</p>
+    <div class="package-panel">
+      <div class="package-panel__head">
+        <p class="package-panel__eyebrow">CHIPBOOK · CATALOG</p>
+        <h2 class="package-panel__title">나에게 맞는 책만 골라드려요</h2>
+        <p class="package-panel__desc">내 상황을 선택하면 꼭 필요한 책들을 추천해드려요</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;">
-        <a href="search.html?tag=1인가구" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
-          <div style="font-size:24px;margin-bottom:8px;">🏠</div>
-          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">1인가구</p>
-          <p style="font-size:11px;color:#888;margin:0;">살림·재테크·건강</p>
+      <div class="package-grid">
+        <a href="search.html?tag=1인가구" class="package-item">
+          <div class="package-item__icon">🏠</div>
+          <p class="package-item__title">1인가구</p>
+          <p class="package-item__desc">살림·재테크·건강</p>
         </a>
-        <a href="search.html?tag=신혼부부" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
-          <div style="font-size:24px;margin-bottom:8px;">💑</div>
-          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">신혼부부</p>
-          <p style="font-size:11px;color:#888;margin:0;">살림·재테크·관계</p>
+        <a href="search.html?tag=신혼부부" class="package-item">
+          <div class="package-item__icon">💑</div>
+          <p class="package-item__title">신혼부부</p>
+          <p class="package-item__desc">살림·재테크·관계</p>
         </a>
-        <a href="search.html?tag=직장인" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
-          <div style="font-size:24px;margin-bottom:8px;">💼</div>
-          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">직장인</p>
-          <p style="font-size:11px;color:#888;margin:0;">인간관계·시간관리</p>
+        <a href="search.html?tag=직장인" class="package-item">
+          <div class="package-item__icon">💼</div>
+          <p class="package-item__title">직장인</p>
+          <p class="package-item__desc">인간관계·시간관리</p>
         </a>
-        <a href="search.html?tag=초보부모" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
-          <div style="font-size:24px;margin-bottom:8px;">👶</div>
-          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">초보부모</p>
-          <p style="font-size:11px;color:#888;margin:0;">육아·살림·건강</p>
+        <a href="search.html?tag=초보부모" class="package-item">
+          <div class="package-item__icon">👶</div>
+          <p class="package-item__title">초보부모</p>
+          <p class="package-item__desc">육아·살림·건강</p>
         </a>
-        <a href="search.html?tag=주부" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
-          <div style="font-size:24px;margin-bottom:8px;">🏡</div>
-          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">주부</p>
-          <p style="font-size:11px;color:#888;margin:0;">살림·육아·건강</p>
+        <a href="search.html?tag=주부" class="package-item">
+          <div class="package-item__icon">🏡</div>
+          <p class="package-item__title">주부</p>
+          <p class="package-item__desc">살림·육아·건강</p>
         </a>
-        <a href="search.html?tag=시니어" style="background:#fff;border-radius:12px;padding:18px 16px;text-align:center;text-decoration:none;display:block;">
-          <div style="font-size:24px;margin-bottom:8px;">👴</div>
-          <p style="font-size:13px;font-weight:700;color:#1B3A4B;margin:0 0 4px;">시니어</p>
-          <p style="font-size:11px;color:#888;margin:0;">건강·관계·노후</p>
+        <a href="search.html?tag=시니어" class="package-item">
+          <div class="package-item__icon">👴</div>
+          <p class="package-item__title">시니어</p>
+          <p class="package-item__desc">건강·관계·노후</p>
         </a>
       </div>
-      <div style="text-align:center;">
-        <a href="search.html" style="background:#1B5E3A;color:#fff;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:700;display:inline-block;text-decoration:none;">전체 도서 보러가기 →</a>
+      <div class="package-panel__cta">
+        <a href="search.html" class="package-panel__cta-btn">전체 도서 보러가기 →</a>
       </div>
     </div>
   </div>
