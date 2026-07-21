@@ -2,8 +2,6 @@
 // 요청이 들어올 때마다 Supabase에서 최신 도서 목록을 불러와 sitemap.xml을 생성합니다.
 // 접속 주소: https://chipbook.net/sitemap.xml (vercel.json의 rewrite 설정으로 연결됨)
 
-// ⚠️ 아래 두 값을 칩북 Supabase 프로젝트 정보로 채워주세요.
-// Supabase 대시보드 → 칩북 프로젝트 → Settings → API 에서 확인 가능합니다.
 const SUPABASE_URL = "https://dxnjeurgrhhubskdcidq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_oMEgZ8_yufr9j3zyIB3wNQ_qXtywKA8";
 
@@ -26,8 +24,8 @@ function escapeXml(str) {
 
 export default async function handler(req, res) {
   try {
-    // Supabase REST API로 출간된 책 목록만 조회 (id, 최종수정일)
-    const url = `${SUPABASE_URL}/rest/v1/books?select=id,updated_at&status=eq.published`;
+    // id만 조회 (컬럼명이 확실히 존재하는 것만 사용, 오류 최소화)
+    const url = `${SUPABASE_URL}/rest/v1/books?select=id&status=eq.published`;
     const response = await fetch(url, {
       headers: {
         apikey: SUPABASE_ANON_KEY,
@@ -36,7 +34,8 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      throw new Error(`Supabase 조회 실패: ${response.status}`);
+      const errText = await response.text();
+      throw new Error(`Supabase 조회 실패: ${response.status} - ${errText}`);
     }
 
     const books = await response.json();
@@ -50,17 +49,13 @@ export default async function handler(req, res) {
     ).join("");
 
     const bookUrls = books
-      .map((book) => {
-        const lastmod = book.updated_at
-          ? new Date(book.updated_at).toISOString().split("T")[0]
-          : "";
-        return `
+      .map(
+        (book) => `
   <url>
     <loc>${escapeXml(`${SITE_URL}/book-detail.html?book_id=${book.id}`)}</loc>
-    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}
     <priority>0.6</priority>
-  </url>`;
-      })
+  </url>`
+      )
       .join("");
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
